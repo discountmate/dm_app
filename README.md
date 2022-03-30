@@ -17,3 +17,14 @@ DiscountMate is built using the following technologies:
 - [Node.js](https://nodejs.org/)
 
 More details of the technical architecture can be found [here](documentation/technical-architecture.md).
+
+## Data Collection
+
+Be part of creation of Public Dataset DiscountMateDataset which will be the initial dataset used for the DiscountMate App which will help households save 1000s of dollars in their grocessery shoping.
+Eventually this Dataset could be used by public for education and other purposes as well. So be part of this great undertaking and contribute by collecting and sharing grocery receipts. You could
+1.Physically collect the receipts and let us know via email when you are ready to hand them over. We will then arrange collection.
+2. Take photo of receipts and email to discountmate@gmail.com
+Note: When taking photo of the receipts please make sure:
+ - the prints are visible and readable. 
+ - Photo taken against a clean background
+ - If the receipt is too long to capture in one photo fold it take photos of the folds, ideally renaming the folds with common prefix and numbering in sequence in      suffix. 
