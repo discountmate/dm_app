@@ -6,7 +6,7 @@ Short term goal is to develop an application with must have features. Long term 
 
 ## Tech Stack
 
-![Architecture Diagram](documentation/architecture-diagram.png "Architecture Diagram"){width=600}
+![Architecture Diagram](documentation/architecture-diagram.png "Architecture Diagram")
 
 DiscountMate is built using the following technologies:
 
