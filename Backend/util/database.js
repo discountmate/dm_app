@@ -10,10 +10,12 @@ const config = require('../config/config.json');
 
 //create mysql pool
 const pool = mysql.createPool({
+    connectionLimit: config.connectionLimit,
     host: config.host,
+    port: config.port,
     user: config.user,
-    database: config.database,
-    password: config.password
+    password: config.password,
+    database: config.database
 });
 
 //check connection to MySQL server

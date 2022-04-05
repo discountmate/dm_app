@@ -1,5 +1,7 @@
 {
-    "host": "localhost",
+    "connectionLimit" : 100,
+    "host": "discountmate.ddns.net",
+    "port": "3306",
     "user": "discountmateuser",
     "database": "discountmate",
     "password": "DMPassword$"

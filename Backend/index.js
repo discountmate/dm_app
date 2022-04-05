@@ -21,4 +21,4 @@ app.listen(ports, () => console.log('listening...'));
 //open browser
 const open = require('open');
 const res = require('express/lib/response');
-open('http://localhost:3000/');
+open('http://localhost:3000/shop');
