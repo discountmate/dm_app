@@ -16,5 +16,15 @@ const pool = mysql.createPool({
     password: config.password
 });
 
+//check connection to MySQL server
+pool.on('connection', function (connection) {
+    console.log("Connected to MySQL server");
+});
+
+//check for errors
+pool.on('error', function (error) {
+    console.error('MySQL server error: ', error.code);
+  });
+
 //export
 module.exports = pool.promise();
