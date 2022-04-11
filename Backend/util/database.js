@@ -8,7 +8,7 @@ const mysql = require('mysql2');
 //use details in config.json to login
 const config = require('../config/config.json');
 
-//create mysql pool
+//create mysql pool to connect to MySQL db
 const pool = mysql.createPool({
     connectionLimit: config.connectionLimit,
     host: config.host,
