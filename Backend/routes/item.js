@@ -9,5 +9,8 @@ const item = require('../models/item');
 //get request
 router.get('/', itemController.getAllItems)
 
+//post shop
+router.post('/', itemController.postItem);
+
 //export router
 module.exports = router;
