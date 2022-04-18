@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import {
@@ -9,22 +9,48 @@ import {
   TextInput,
   TouchableOpacity,
 } from 'react-native';
-import { setAuth } from '../redux/actions/common';
 
 const Register = () =>{
     const dispatch = useDispatch();
     const navigation = useNavigation();
 
-    const CheckLogin = async () => {
-        dispatch(setAuth(true));
+    const[pwd,setpwd] = useState('');
+    const[repwd,setrepwd] = useState('');
 
-        console.log("login");
+    const infoCheck = async () => {
+        //api
+        //result = 
+        //if(!result) {return;}
+        if(!pwdcheck()){
+            console.warn("Register False!");
+            return;
+        }
+        console.warn("Register success!");
+
+        navigation.navigate('Login');
         return 0;
+    }
+
+    const pwdcheck = () =>{
+        console.log('pw: ', pwd);
+        console.log('repw:', repwd);
+
+        if(pwd != repwd) {
+            return false;
+        }
+    return true;
+
     }
 
     return(
     <SafeAreaView style={styles.container}>
         <View>
+            <View style={styles.input_box}>
+                <TextInput
+                placeholder='Email'
+                />
+            </View>
+
             <View style={styles.input_box}>
                 <TextInput
                 placeholder='Username'
@@ -34,14 +60,23 @@ const Register = () =>{
             <View style={styles.input_box}>
                 <TextInput
                 placeholder='Password'
+                onChangeText={text => setpwd(text)}
                 />
             </View>
+
+            <View style={styles.input_box}>
+                <TextInput
+                placeholder='Input password again'
+                onChangeText={text =>setrepwd(text)}
+                />
+            </View>
+
         </View>
 
         <View style={{padding: 30}}>
           
 
-            <TouchableOpacity style={styles.btn} onPress={{}}>
+            <TouchableOpacity style={styles.btn} onPress={infoCheck}>
                 <Text style={styles.btn_text}>Sign Up</Text>
             </TouchableOpacity>
 

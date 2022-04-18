@@ -35,7 +35,7 @@ const Main = () =>{
         <View style={styles.touchContainer}>
           <TouchableOpacity onPress={() => navigation.navigate('DiscountNearby')}>
             <View style={styles.touch} >
-              <Text style={styles.touch_text}>DiscountNearby</Text>
+              <Text style={styles.touch_text}>Discount Nearby</Text>
               <RightArrow />
             </View>  
           </TouchableOpacity>
