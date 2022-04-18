@@ -12,7 +12,7 @@ module.exports = class shop {
     }
 
     //db test
-    static getAll() {
+    static fetchAll() {
         return db.execute('SELECT * FROM shops');
     }
 
