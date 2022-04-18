@@ -12,8 +12,7 @@ router.get('/', shopController.getAllShops)
 //post shop
 router.post('/', shopController.postShop);
 
-//post change
-router.put('/', shopController.postShop);
+//add put here
 
 //export router
 module.exports = router;

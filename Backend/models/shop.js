@@ -12,7 +12,7 @@ module.exports = class shop {
     }
 
     //db test
-    static fetchAll() {
+    static getAll() {
         return db.execute('SELECT * FROM shops');
     }
 
@@ -20,4 +20,6 @@ module.exports = class shop {
     static post(name, address, postcode) {
         return db.execute('INSERT INTO shops (name, address, postcode) VALUES (?, ?, ?)', [name, address, postcode]);
     }
+
+    //add put here
 }

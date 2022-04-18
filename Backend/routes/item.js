@@ -12,5 +12,7 @@ router.get('/', itemController.getAllItems)
 //post shop
 router.post('/', itemController.postItem);
 
+//add put here
+
 //export router
 module.exports = router;
