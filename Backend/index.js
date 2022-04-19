@@ -9,7 +9,7 @@ const db = require('./util/database');
 const config = require('./config/config.json');
 const mysql = require('mysql2');
 const mongoose= require('mongoose');
-const imageModel=require('./models')
+const imageModel=require('./models/image')
 const multer= require('multer');
 
 //routes
@@ -101,7 +101,7 @@ app.use((req, res, next) => {
   });
 
   //Multer to store uploaded images 
-const storage =multer.Storage({
+const storage =multer.diskStorage({
 	destination:(req, file, cb) =>
 	{
 		cb(null, 'upload')
