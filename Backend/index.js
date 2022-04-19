@@ -8,6 +8,9 @@ const path = require('path');
 const db = require('./util/database');
 const config = require('./config/config.json');
 const mysql = require('mysql2');
+const mongoose= require('mongoose');
+const imageModel=require('./models')
+const multer= require('multer');
 
 //routes
 const shopRoute = require('./routes/shop');
@@ -97,6 +100,58 @@ app.use((req, res, next) => {
     next();
   });
 
+  //Multer to store uploaded images 
+const storage =multer.Storage({
+	destination:(req, file, cb) =>
+	{
+		cb(null, 'upload')
+	},
+	filename: (req, file, cb) => {
+		cb(null,file.filename + '-'+ Date.now())
+	}
+	}
+);
+const upload = multer({storage: storage});
+// Get images
+app.get('/',(req,res)=>
+{
+	imageModel.find({}, (err,items)=>{
+	if(err)
+	{
+		console.log(err);  // throw error
+		res.status(500).send('There was an error');
+	}
+	else
+	{
+		res.render('image',{items: items});
+	}
+	})
+})
+//upload images
+	app.post('/', upload.single('image'),(req,res,next)=>{
+		const object = {
+			name: req.body.name,
+			description: req.body.description,
+			image: 
+			{
+				data:fstat.readFileSync(path.join(__dirname + '/upload/' + req.file.filename)),
+				contentType:'image/png'
+			}
+		}
+		imageModel.create(object,(err,item)=>
+		{
+			if(err)
+			{
+				console.log(err);// throw error
+			}
+			else{
+				item.save();
+				res.redirect('/home'); // redirect to homepage
+			}
+		}
+		)
+	}
+)
 //endpoints
 app.use('/shop', shopRoute);
 app.use('/item', itemRoute);
