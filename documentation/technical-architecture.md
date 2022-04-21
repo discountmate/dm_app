@@ -31,8 +31,22 @@ We use [morgan](https://www.npmjs.com/package/morgan) to log activities on the b
 
 ## Database
 
-  https://www.mysql.com/
+- https://www.mysql.com/
 - https://codeforgeek.com/encrypt-and-decrypt-data-in-node-js/
+- Use MVC architecture 	 
+- NoSQL to be used for image processing 
+
+ 
+## OCR Engineering and ML models 
+
+- Use Python for ML 
+- Tesseract Open Source OCR Engine
+ 
+ 
+## Data Capturing 
+
+For now ask everyone to email receipt images to discountmate@gmail.com 
+Ohter Mechanisms to gather receipt data to be discussed and finalised.This could include cloud drives, webforms, API, etc 
 
 ## Testing
 
