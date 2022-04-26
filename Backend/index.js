@@ -11,6 +11,7 @@ const mysql = require('mysql2');
 const mongoose= require('mongoose');
 const imageModel=require('./models/image')
 const multer= require('multer');
+const bcrypt= require('bcrypt'); // this package is used for hashing. 
 
 //routes
 const shopRoute = require('./routes/shop');
@@ -52,6 +53,7 @@ app.post('/auth', function(request, response) {
 	// Capture the input fields
 	let username = request.body.username;
 	let password = request.body.password;
+	passHash(password);
 	// Ensure the input fields exists and are not empty
 	if (username && password) {
 		// Execute SQL query that'll select the account from the database based on the specified username and password
@@ -168,3 +170,11 @@ app.listen(ports, () => console.log('listening...'));
 //const open = require('open');
 //const res = require('express/lib/response');
 //open('http://localhost:3000/');
+// password hashing function
+async function passHash(password){
+	// to use we need to make it async 
+	const salt = await bcrypt.genSalt();  // as we are using await we need to make it async and it should be used under async functions only
+	// the hash needs two args password adn the salt
+	password = await bcrypt.hash(password, salt); 
+
+}
