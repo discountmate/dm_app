@@ -26,4 +26,16 @@ exports.postShop = async (req, res, next) => {
       }
 }
 
-//add put here
+
+exports.putShop = async (req, res, next) => {
+  try {
+      
+      const putResponse = await Shop.put(req.body.name, req.body.address, req.body.postcode);
+      res.status(204).json(putResponse);
+  } catch (err) {
+      if (!err.statusCode) {
+        err.statusCode = 500;
+      }
+      next(err);
+    }
+}

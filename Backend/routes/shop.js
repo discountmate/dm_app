@@ -10,9 +10,9 @@ const shop = require('../models/shop');
 router.get('/', shopController.getAllShops)
 
 //post shop
-router.post('/', shopController.postShop);
+router.post('/', itemController.postItem);
 
-//add put here
-
+//put request
+router.put('/', itemController.putItem);
 //export router
 module.exports = router;
