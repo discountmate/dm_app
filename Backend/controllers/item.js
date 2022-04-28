@@ -44,7 +44,7 @@ exports.postItem = async (req, res, next) => {
 //changes an item, used in item model
 exports.putItem = async (req, res, next) => {
   try {
-      const putResponse = await Item.put(req.body.shopid, req.body.name, req.body.price, req.body.sale, req.body.discountend, req.body.category, req.body.discountprice, req.body.discountpercentage);
+      const putResponse = await Item.put(req.body.id, req.body.shopid, req.body.name, req.body.price, req.body.sale, req.body.discountend, req.body.category, req.body.discountprice, req.body.discountpercentage);
       res.status(204).json(putResponse);
   } catch (err) {
       if (!err.statusCode) {

@@ -46,7 +46,7 @@ exports.postShop = async (req, res, next) => {
 exports.putShop = async (req, res, next) => {
   try {
       
-      const putResponse = await Shop.put(req.body.name, req.body.address, req.body.postcode);
+      const putResponse = await Shop.put(req.body.id, req.body.name, req.body.address, req.body.postcode);
       res.status(204).json(putResponse);
   } catch (err) {
       if (!err.statusCode) {

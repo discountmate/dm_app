@@ -25,4 +25,9 @@ module.exports = class shop {
     static searchShop(name) {
         return db.execute('SELECT * FROM shops WHERE name = ?', [name]);
     }
+
+    //put shop
+    static put(id, name, address, postcode) {
+        return db.execute('UPDATE shops SET name = ?, address = ?, postcode = ? WHERE id = ?', [name, address, postcode, id])
+    }
 }
