@@ -5,13 +5,15 @@ const bodyParser = require('body-parser')
 const errorController = require('./controllers/error');
 const session = require('express-session');
 const path = require('path');
-const db = require('./util/database');
+//const db = require('./util/database');
 const config = require('./config/config.json');
 const mysql = require('mysql2');
-const mongoose= require('mongoose');
-const imageModel=require('./models/image')
-const multer= require('multer');
-const bcrypt= require('bcrypt'); // this package is used for hashing. 
+const mongoose = require('mongoose');
+const imageModel = require('./models/image')
+const multer = require('multer');
+const bcrypt = require('bcrypt'); // this package is used for hashing. 
+const generateAccessTokens = require("./util/generateAccessToken") //used for login token
+require("dotenv").config() //used to access the .env file easily
 
 //routes
 const shopRoute = require('./routes/shop');
@@ -20,76 +22,18 @@ const itemRoute = require('./routes/item');
 //port to listen on
 const ports = process.env.PORT || 3000;
 
-//login connection, need to change to use database.js instead with pool
-const connection = mysql.createConnection({
-  connectionLimit: config.connectionLimit,
-  host: config.host,
-  port: config.port,
-  user: config.user,
-  password: config.password,
-  database: config.database
+//create mysql pool to connect to MySQL db
+const db = mysql.createPool({
+    connectionLimit: config.connectionLimit,
+    host: config.host,
+    port: config.port,
+    user: config.user,
+    password: config.password,
+    database: config.database
 });
-
-//login
-app.use(session({
-	secret: 'secret',
-	resave: true,
-	saveUninitialized: true
-}));
 
 //login modules
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, 'static')));
-
-//login route
-app.get('/', function(request, response) {
-	// Render login template
-	response.sendFile(path.join(__dirname + '/logintest/login.html'));
-});
-
-//authenticate user
-app.post('/auth', function(request, response) {
-	// Capture the input fields
-	let username = request.body.username;
-	let password = request.body.password;
-	passHash(password);
-	// Ensure the input fields exists and are not empty
-	if (username && password) {
-		// Execute SQL query that'll select the account from the database based on the specified username and password
-		connection.query('SELECT * FROM users WHERE username = ? AND password = ?', [username, password], function(error, results, fields) {
-			// If there is an issue with the query, output the error
-			if (error) throw error;
-			// If the account exists
-			if (results.length > 0) {
-				// Authenticate the user
-				request.session.loggedin = true;
-				request.session.username = username;
-				// Redirect to home page
-				response.redirect('/home');
-			} else {
-				response.send('Incorrect Username and/or Password!');
-			}			
-			response.end();
-		});
-	} else {
-		response.send('Please enter Username and Password!');
-		response.end();
-	}
-});
-
-//home test
-app.get('/home', function(request, response) {
-	// If the user is loggedin
-	if (request.session.loggedin) {
-		// Output username
-		response.send('Welcome back, ' + request.session.username + '!');
-	} else {
-		// Not logged in
-		response.send('Please login to view this page!');
-	}
-	response.end();
-});
 
 //use bodyparser to format into json
 app.use(bodyParser.json());
@@ -101,7 +45,110 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
     next();
   });
+  
+//CREATE USER
+app.post("/createuser", async (req,res) => {
+	//use the following items to create a new user
+	const user = req.body.username;
+	const password = await bcrypt.hash(req.body.password,10); //use bcrypt to encrypt the passwords
+	const email = req.body.email;
+	const mobile = req.body.mobile;
+	const permission = 0; //admin is 1, user is 0
+	const postcode = req.body.postcode;
+	const searchradius = 100; //default search radius
+	const active = 1; //user is active (1)
 
+	//establish connection to db, will change to utilize util/database.js instead
+	db.getConnection( async (err, connection) => 
+	{
+		if (err) throw (err)
+
+		//sql search query
+		const sqlSearch = "SELECT * FROM users WHERE username = ?"
+		const search_query = mysql.format(sqlSearch,[user])
+
+		//sql insert query
+		const sqlInsert = "INSERT INTO users (username, password, email, mobile, permission, postcode, searchradius, active) VALUES (?,?,?,?,?,?,?,?)"
+		const insert_query = mysql.format(sqlInsert,[user, password, email, mobile, permission, postcode, searchradius, active])
+
+		//start search query
+		connection.query (search_query, async (err, result) => 
+		{
+			if (err) throw (err)
+			console.log("-> Search Results")
+			console.log(result.length)
+			if (result.length != 0) 
+			{
+				connection.release()
+				console.log("-> User already exists")
+				res.sendStatus(409) 
+			} 
+			else 
+			{
+				//if the user doesn't exist, insert new user
+				connection.query (insert_query, (err, result)=> 
+				{
+					connection.release()
+					if (err) throw (err)
+					console.log ("--> Created new User")
+					console.log(result.insertId)
+					res.sendStatus(201)
+				})
+			}
+		})
+	})
+})
+
+//LOGIN (AUTHENTICATE USER)
+app.post("/login", (req, res)=> {
+	//user details
+	const user = req.body.username
+	const password = req.body.password
+	//start db connection
+	db.getConnection ( async (err, connection)=> 
+	{
+		if (err) throw (err)
+		//sql search query
+		const sqlSearch = "Select * from users where username = ?"
+		const search_query = mysql.format(sqlSearch,[user])
+
+		//query db
+		connection.query (search_query, async (err, result) => 
+		{
+			connection.release()
+			
+			if (err) throw (err)
+			//if no results
+			if (result.length == 0) 
+			{
+				console.log("-> User does not exist")
+				res.sendStatus(404)
+			} 
+			else 
+			{
+				//if there is a result
+				const hashedPassword = result[0].password
+
+				//get the hashedPassword from result
+				if (await bcrypt.compare(password, hashedPassword)) 
+				{
+					//generate access token
+					console.log("--> Login Successful")
+					console.log("--> Generating accessToken")
+					const accessToken =  generateAccessTokens({user: user})
+					res.json ({accessToken: accessToken})
+				} 
+				else 
+				{
+					console.log("-> Password Incorrect")
+					res.send("Password incorrect!")
+				}
+			}
+		})
+	})
+})
+
+	
   //Multer to store uploaded images 
 const storage =multer.diskStorage({
 	destination:(req, file, cb) =>

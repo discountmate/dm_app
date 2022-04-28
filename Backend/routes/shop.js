@@ -4,7 +4,6 @@ const router = express.Router();
 
 //controller
 const shopController = require('../controllers/shop');
-const itemController = require('../controllers/item');
 const shop = require('../models/shop');
 
 //get request
@@ -16,7 +15,7 @@ router.post('/', shopController.postShop);
 //put request
 router.put('/', shopController.putShop);
 
-//shop search
+//shop get search
 router.get('/search', shopController.searchShops);
 
 //export router
