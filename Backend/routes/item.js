@@ -14,5 +14,9 @@ router.post('/', itemController.postItem);
 
 //put request
 router.put('/', itemController.putItem);
+
+//search get request
+router.get('/search?', itemController.searchItems)
+
 //export router
 module.exports = router;

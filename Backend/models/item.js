@@ -20,6 +20,11 @@ module.exports = class item {
     static fetchAll() {
         return db.execute('SELECT * FROM items');
     }
+    
+    //search for items by name
+    static searchItem(name) {
+        return db.execute('SELECT * FROM items WHERE name = ?', [name]);
+    }
 
     //post item
     static post(shopid, name, price, sale, discountend, category, discountpercentage, discountprice) {

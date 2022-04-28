@@ -21,5 +21,8 @@ module.exports = class shop {
         return db.execute('INSERT INTO shops (name, address, postcode) VALUES (?, ?, ?)', [name, address, postcode]);
     }
 
-    //add put here
+    //search for shops by name
+    static searchShop(name) {
+        return db.execute('SELECT * FROM shops WHERE name = ?', [name]);
+    }
 }
