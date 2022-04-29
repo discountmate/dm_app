@@ -4,8 +4,20 @@ Technical Architecture
 
 The project will consist of a backend (Express), frontend (React), mobile app (React Native) and Database (MySql).For Optical Character Recognition(OCR) Tesseract will be used. Python will used for Machine Learning.
 
+## Tech Stack:
 
-Cloud
+MySql
+MongoDB
+Express framework
+React Native
+Node.js
+
+## UI DEsign
+
+Use figma for prototyping
+https://www.figma.com/file/OkCtNMXeltVT51ScOIphJm/DM-Prototype?node-id=15%3A591
+
+## Cloud
 
 The server and frontend can be hosted by a cloud provider.
 Google cloud maybe be available for free via Deakin(Check this).
@@ -63,5 +75,10 @@ Tests will need to be performed on various mobile devices both via emulators and
 ## Repository
 Github: https://github.com/discountmate/dm_app
 
+## Security Aspects need to be considered 
 
+Login and passwords to be hashed I will be using bcrypt for this. 
+Using strong certificates and signatures for web application 
+If we are storing payments, then we need to secure it with proper encryption SHA512 or any other suitable encryption standard. 
+As we receive receipts with payment details, we need to store those images also in a safe format.  
 
