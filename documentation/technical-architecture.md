@@ -7,9 +7,13 @@ The project will consist of a backend (Express), frontend (React), mobile app (R
 ## Tech Stack:
 
 MySql
+
 MongoDB
+
 Express framework
+
 React Native
+
 Node.js
 
 ## UI DEsign
