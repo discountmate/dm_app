@@ -82,7 +82,10 @@ Github: https://github.com/discountmate/dm_app
 ## Security Aspects need to be considered 
 
 Login and passwords to be hashed I will be using bcrypt for this. 
+
 Using strong certificates and signatures for web application 
+
 If we are storing payments, then we need to secure it with proper encryption SHA512 or any other suitable encryption standard. 
+
 As we receive receipts with payment details, we need to store those images also in a safe format.  
 
