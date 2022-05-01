@@ -6,12 +6,21 @@ import ShopList from './ShopList';
 import { useState } from 'react';
 
 function App() {
+  const axios = require('axios')
   const { TabPane } = Tabs;
   const [login, setlogin] = useState(false)
   const [username, setUsername] = useState('')
   const [pwd, setpwd] = useState('')
   const [message, setMessage] = useState('')
-  const checkLogin = () => {
+  const checkLogin = async () => {
+    
+    const result = await axios.post('http://localhost:3000/login', {
+      username:'admin',
+      password:'test'
+    })
+
+
+    console.log(result)
     if(username !== 'admin01' && pwd !== '111222333'){setMessage('Login Failed'); return ;}
     setlogin(true)
 
