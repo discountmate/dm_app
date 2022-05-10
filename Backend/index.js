@@ -1,23 +1,30 @@
 //use express
 const express = require('express');
 const app = express();
-const bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
 const errorController = require('./controllers/error');
-const session = require('express-session');
-const path = require('path');
-//const db = require('./util/database');
 const config = require('./config/config.json');
 const mysql = require('mysql2');
 const mongoose = require('mongoose');
-const imageModel = require('./models/image')
-const multer = require('multer');
 const bcrypt = require('bcrypt'); // this package is used for hashing. 
-const generateAccessTokens = require("./util/generateAccessToken") //used for login token
-require("dotenv").config() //used to access the .env file easily
+const generateAccessTokens = require("./util/generateAccessToken"); //used for login token
+require("dotenv").config(); //used to access the .env file easily
 
 //routes
 const shopRoute = require('./routes/shop');
 const itemRoute = require('./routes/item');
+const receiptRoute = require('./routes/receipt')
+
+//use body parser and ejs
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
+app.set("view engine", "ejs");
+
+//connect to MongoDB
+mongoose.connect(process.env.MONGO_URL,
+    { useNewUrlParser: true, useUnifiedTopology: true }, err => {
+        console.log('connected to MongoDB')
+    });
 
 //port to listen on
 const ports = process.env.PORT || 3000;
@@ -32,20 +39,6 @@ const db = mysql.createPool({
     database: config.database
 });
 
-//login modules
-app.use(express.json());
-
-//use bodyparser to format into json
-app.use(bodyParser.json());
-
-//allow method types and headers
-app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    next();
-  });
-  
 //CREATE USER
 app.post("/createuser", async (req,res) => {
 	//use the following items to create a new user
@@ -148,62 +141,10 @@ app.post("/login", (req, res)=> {
 	})
 })
 
-	
-  //Multer to store uploaded images 
-const storage =multer.diskStorage({
-	destination:(req, file, cb) =>
-	{
-		cb(null, 'upload')
-	},
-	filename: (req, file, cb) => {
-		cb(null,file.filename + '-'+ Date.now())
-	}
-	}
-);
-const upload = multer({storage: storage});
-// Get images
-app.get('/',(req,res)=>
-{
-	imageModel.find({}, (err,items)=>{
-	if(err)
-	{
-		console.log(err);  // throw error
-		res.status(500).send('There was an error');
-	}
-	else
-	{
-		res.render('image',{items: items});
-	}
-	})
-})
-//upload images
-	app.post('/', upload.single('image'),(req,res,next)=>{
-		const object = {
-			name: req.body.name,
-			description: req.body.description,
-			image: 
-			{
-				data:fstat.readFileSync(path.join(__dirname + '/upload/' + req.file.filename)),
-				contentType:'image/png'
-			}
-		}
-		imageModel.create(object,(err,item)=>
-		{
-			if(err)
-			{
-				console.log(err);// throw error
-			}
-			else{
-				item.save();
-				res.redirect('/home'); // redirect to homepage
-			}
-		}
-		)
-	}
-)
 //endpoints
 app.use('/shop', shopRoute);
 app.use('/item', itemRoute);
+app.use('/receipt', receiptRoute)
 
 //error handling
 app.use(errorController.get404);
@@ -214,9 +155,10 @@ app.use(errorController.get500);
 app.listen(ports, () => console.log('listening...'));
 
 //open browser, uncomment the three lines below for auto open browser
-//const open = require('open');
-//const res = require('express/lib/response');
-//open('http://localhost:3000/');
+const open = require('open');
+const res = require('express/lib/response');
+open('http://localhost:3000/');
+
 // password hashing function
 async function passHash(password){
 	// to use we need to make it async 
