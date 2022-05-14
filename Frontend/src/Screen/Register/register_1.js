@@ -14,33 +14,13 @@ const Register = () =>{
     const dispatch = useDispatch();
     const navigation = useNavigation();
 
-    const[pwd,setpwd] = useState('');
-    const[repwd,setrepwd] = useState('');
-
     const infoCheck = async () => {
-        //api
-        //result = 
-        //if(!result) {return;}
-        if(!pwdcheck()){
-            console.warn("Register False!");
-            return;
-        }
-        console.warn("Register success!");
+        
 
-        navigation.navigate('Login');
+        navigation.navigate('Register2');
         return 0;
     }
 
-    const pwdcheck = () =>{
-        console.log('pw: ', pwd);
-        console.log('repw:', repwd);
-
-        if(pwd != repwd) {
-            return false;
-        }
-    return true;
-
-    }
 
     return(
     <SafeAreaView style={styles.container}>
@@ -55,13 +35,13 @@ const Register = () =>{
             </View>
 
             <Text style={styles.header_txt}> Welcome to DiscountMate</Text>
-            <Text style={styles.header_txt}> Let's get started</Text>
+            <Text style={styles.context_txt}> Let's get started</Text>
 
             <View style={{marginTop:23}}>
                 <Text style={{marginLeft:10}}>First Name </Text>
                     <View style={styles.input_box}>
                         
-                        <TextInput
+                        <TextInput style={{color:'white'}}
                         
                         />
                     </View>
@@ -72,7 +52,7 @@ const Register = () =>{
                 <Text  style={{marginLeft:10}}>Last Name </Text>
                     <View style={styles.input_box}>
                         
-                        <TextInput
+                        <TextInput style={{color:'white'}}
                         
                         />
                     </View>
@@ -117,6 +97,11 @@ const styles = StyleSheet.create({
     header_txt:{
         fontSize:24,
         fontWeight:'bold',
+        color:'black'
+    },
+
+    context_txt:{
+        fontSize:15,
         color:'black'
     },
 

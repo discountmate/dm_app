@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 
@@ -19,17 +19,35 @@ const Login = () =>{
     const axios = require('axios')
     const dispatch = useDispatch();
     const navigation = useNavigation();
+    const [username, SetUsername] = useState("");
+    const [password, SetPassword] = useState("");
 
     const CheckLogin = async () => {
-        // const result = await axios.get("http://localhost:3000/item")
-        // console.log(result)
-        dispatch(setAuth(true));
-        navigation.replace('Main');
-        // console.log("login");
+        const postobj = {
+            username:username,
+            password:password
+        }
+        
+        await axios.post("http://192.168.1.6:3000/login",postobj)
+        .then(function (response) {
+                if (response?.data == "Password incorrect!") {
+                    console.warn('login failed');
+                    return;
+                }
+                dispatch(setAuth(true));
+                navigation.replace('Main');
+              
+            })
+        .catch(function (error) {
+            console.warn('login failed');
+            return;
+        })
+
         return 0;
     }
 
-    return(
+
+    return (
     <SafeAreaView style={styles.container}>
         <View style={styles.title}>
             <Logo/>
@@ -38,11 +56,13 @@ const Login = () =>{
         <View>
             <View style={styles.input_box}>
                 <TextInput
+                onChangeText={SetUsername}
                 />
             </View>
 
             <View style={styles.input_box}>
                 <TextInput
+                onChangeText={SetPassword}
                 />
             </View>
         </View>

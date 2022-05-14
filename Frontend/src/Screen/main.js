@@ -6,7 +6,8 @@ import {
   TouchableOpacity,
   StyleSheet,
   View,
-  Image
+  Image,
+  ScrollView
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { setAuth } from '../redux/actions/common';
@@ -14,7 +15,6 @@ import { setAuth } from '../redux/actions/common';
 //svg
 import RightArrow from '../assets/images/rightarrow.svg';
 import Product from '../assets/images/product.svg';
-import { ScrollView } from 'react-native-gesture-handler';
 
 
 const Main = () =>{
@@ -35,7 +35,7 @@ const Main = () =>{
         <View style={styles.touchContainer}>
           <TouchableOpacity onPress={() => navigation.navigate('DiscountNearby')}>
             <View style={styles.touch} >
-              <Text style={styles.touch_text}>Discount Nearby</Text>
+              <Text style={styles.touch_text}>Browse Items</Text>
               <RightArrow />
             </View>  
           </TouchableOpacity>
@@ -51,13 +51,18 @@ const Main = () =>{
              <Product />
           </ScrollView>
         </View>
+
+        <View style={{paddingVertical:20, alignSelf:'center'}}>
+          <Text>
+            ~~~~~~~~~{'\n'}
+            ~~~~~~~~~~~~~~~~~{'\n'}
+            ~~~~~~~~~~~~~~~~~
+          </Text>
+        </View>
+
+       
         
-        <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate('Setting')}>
-          <Text style={styles.btn_text}>Setting</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.btn} onPress={() => navigation.push('Scan')}>
-          <Text style={styles.btn_text}>Take a Photo</Text>
-        </TouchableOpacity>
+
         <TouchableOpacity style={styles.btn} onPress={Logout}>
           <Text style={styles.btn_text}>Logout</Text>
         </TouchableOpacity>
