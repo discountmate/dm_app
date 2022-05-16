@@ -1,12 +1,12 @@
 //use express
 const express = require('express');
 const app = express();
-const bodyParser = require('body-parser');
-const errorController = require('./controllers/error');
-const mongoose = require('mongoose');
+const bodyParser = require('body-parser'); //middleware used to handle request bodies
+const errorController = require('./controllers/error'); //error handling
+const mongoose = require('mongoose'); //used to access the MongoDB
 require("dotenv").config(); //used to access the .env file easily
 
-//routes
+//routes from /routes/
 const shopRoute = require('./routes/shop');
 const itemRoute = require('./routes/item');
 const receiptRoute = require('./routes/receipt')
@@ -14,7 +14,7 @@ const createUserRoute = require('./routes/createUser');
 const loginRoute = require('./routes/login');
 const ocrRoute = require('./routes/ocrRoute');
 
-//port to listen on
+//port to listen on from .ENV file
 const ports = process.env.PORT || 3000;
 
 //use body parser and ejs
@@ -28,7 +28,7 @@ mongoose.connect(process.env.MONGO_URL,
         console.log('connected to MongoDB')
     });
 
-//endpoints
+//endpoints from routes.
 app.use('/shop', shopRoute);
 app.use('/item', itemRoute);
 app.use('/receipt', receiptRoute);
@@ -36,7 +36,7 @@ app.use('/createuser', createUserRoute);
 app.use('/login', loginRoute);
 app.use('/OCR', ocrRoute);
 
-//error handling
+//error handling if no route is present etc
 app.use(errorController.get404);
 app.use(errorController.get500);
 
