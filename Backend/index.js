@@ -12,6 +12,7 @@ const itemRoute = require('./routes/item');
 const receiptRoute = require('./routes/receipt')
 const createUserRoute = require('./routes/createUser');
 const loginRoute = require('./routes/login');
+const ocrRoute = require('./routes/ocrRoute');
 
 //port to listen on
 const ports = process.env.PORT || 3000;
@@ -33,6 +34,7 @@ app.use('/item', itemRoute);
 app.use('/receipt', receiptRoute);
 app.use('/createuser', createUserRoute);
 app.use('/login', loginRoute);
+app.use('/OCR', ocrRoute);
 
 //error handling
 app.use(errorController.get404);
