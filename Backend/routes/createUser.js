@@ -19,7 +19,8 @@ const db = mysql.createPool({
 router.post('/', async (req,res) => {
 	//use the following items to create a new user
 	const user = req.body.username;
-	const password = await bcrypt.hash(req.body.password,10); //use bcrypt to encrypt the passwords
+	const salt = await bcrypt.genSalt();
+	const password = await bcrypt.hash(req.body.password,10,salt); //use bcrypt to encrypt the passwords
 	const email = req.body.email;
 	const mobile = req.body.mobile;
 	const permission = 0; //admin is 1, user is 0
