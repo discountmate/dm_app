@@ -4,6 +4,12 @@ const router = express.Router();
 const mysql = require('mysql2');
 const config = require('../config/config.json');
 const bcrypt = require('bcrypt'); // this package is used for hashing. 
+// trails 
+
+//const app = require('../../app');
+//const http = require('http').createServer(app).listen(3000);
+
+// trial ends 
 
 //create mysql pool to connect to MySQL db
 const db = mysql.createPool({
@@ -19,8 +25,8 @@ const db = mysql.createPool({
 router.post('/', async (req,res) => {
 	//use the following items to create a new user
 	const user = req.body.username;
-	const salt = await bcrypt.genSalt();
-	const password = await bcrypt.hash(req.body.password,10,salt); //use bcrypt to encrypt the passwords
+	//const salt = await bcrypt.genSalt();
+	const password = await bcrypt.hash(req.body.password,10); //use bcrypt to encrypt the passwords
 	const email = req.body.email;
 	const mobile = req.body.mobile;
 	const permission = 0; //admin is 1, user is 0
