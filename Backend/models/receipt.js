@@ -3,8 +3,7 @@ var mongoose = require('mongoose');
   
 //defince receipt schema
 var receiptSchema = new mongoose.Schema({
-    name: String,
-    desc: String,
+    id: String,
     img:
     {
         data: Buffer,

@@ -3,13 +3,7 @@ const express = require('express');
 const router = express.Router();
 const mysql = require('mysql2');
 const config = require('../config/config.json');
-const bcrypt = require('bcrypt'); // this package is used for hashing. 
-// trails 
-
-//const app = require('../../app');
-//const http = require('http').createServer(app).listen(3000);
-
-// trial ends 
+const bcrypt = require('bcrypt'); // this package is used for hashing.
 
 //create mysql pool to connect to MySQL db
 const db = mysql.createPool({
@@ -25,16 +19,15 @@ const db = mysql.createPool({
 router.post('/', async (req,res) => {
 	//use the following items to create a new user
 	const user = req.body.username;
-	//const salt = await bcrypt.genSalt();
-	const password = await bcrypt.hash(req.body.password,10); //use bcrypt to encrypt the passwords
+	const password = await bcrypt.hash(req.body.password,10); //use bcrypt to encrypt the passwords, can add password salting later for more secure login
 	const email = req.body.email;
 	const mobile = req.body.mobile;
-	const permission = 0; //admin is 1, user is 0
 	const postcode = req.body.postcode;
-	const searchradius = 100; //default search radius
+	const permission = 0; //admin is 1, user is 0
+	const searchradius = 100; //default search radius (km)
 	const active = 1; //user is active (1)
 
-	//establish connection to db, will change to utilize util/database.js instead
+	//establish connection to db
 	db.getConnection( async (err, connection) => 
 	{
 		if (err) throw (err)

@@ -31,6 +31,7 @@ module.exports = class item {
         return db.execute('INSERT INTO items (shopid, name, price, sale, discountend, category, discountpercentage, discountprice) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', [shopid, name, price, sale, discountend, category, discountpercentage, discountprice]);
     }
 
+    //change item
     static put(id, shopid, name, price, sale, discountend, category, discountpercentage, discountprice) {
         return db.execute('UPDATE items SET shopid = ?, name = ?, price = ?, sale = ?, discountend = ?, category = ?, discountpercentage = ?, discountprice = ? WHERE id = ?', [shopid, name, price, sale, discountend, category, discountpercentage, discountprice, id])
     }
