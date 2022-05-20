@@ -6,9 +6,10 @@ const {spawn} = require('child_process');
 router.get('/', (req, res) => {
  
     var dataToSend;
-
+    console.log("Start of OCR script...");
+    
     //call the OCR python script once finished
-    const python = spawn('python', ['./util/OCRScript.py']);
+    const python = spawn('python', ['./util/t1_2022_ocr_final.py']);
 
     // collect data from OCR script
     python.stdout.on('data', function (data) {

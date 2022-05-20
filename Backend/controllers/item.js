@@ -1,4 +1,4 @@
-const Item = require('../models/item');
+const Item = require('../models/item'); //item model
 
 //gets all items, used in item model
 exports.getAllItems = async (req, res, next) => {
@@ -17,6 +17,7 @@ exports.getAllItems = async (req, res, next) => {
 //searches for an item by name, used in item model
 exports.searchItems = async (req, res, next) => {
   try {
+      
       //try and get item by name, could have multiple responses.
       const [searchItem] = await Item.searchItem(req.body.name);
       res.status(200).json(searchItem);

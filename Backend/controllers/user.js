@@ -1,7 +1,7 @@
-const User = require('../models/user');
+const User = require('../models/user'); //user model
 const bcrypt = require('bcrypt'); // this package is used for hashing.
-const mysql = require('mysql2');
-const config = require('../config/config.json');
+const mysql = require('mysql2'); //used for mysql calls
+const config = require('../config/config.json'); //used to get db details
 const generateAccessTokens = require("../util/generateAccessToken"); //used for login token
 
 //create mysql pool to connect to MySQL db
@@ -118,7 +118,7 @@ try {
                  else 
                  {
                      console.log("-> Password Incorrect")
-                     res.status(403).send("Incorrect Password");
+                     res.status(403).send("Password Incorrect!");
                  }
              }
          })
@@ -179,7 +179,7 @@ exports.ResetPassword = async (req, res, next) => {
                             //if no results
                             if (result.length == 0) 
                             {
-                                console.log("-> User does not exist")
+                                console.log("-> Error resetting password")
                                 res.status(404).send("Error resetting password");
                             } 
                             else 
@@ -192,15 +192,11 @@ exports.ResetPassword = async (req, res, next) => {
                     else 
                     {
                         console.log("-> Password Incorrect")
-                        res.status(403).send("Password Incorrect");
+                        res.status(403).send("Password Incorrect!");
                     }
                 }
             })
         })
-        //use password hashing
-        //const newpassword = await bcrypt.hash(req.body.newpassword,10);
-        //const loginResponse = await User.changePassword(req.body.username, req.body.password, newpassword);
-        //res.status(200).json(loginResponse);
     } catch (err) {
         console.log("error:", err);
         if (!err.statusCode) {

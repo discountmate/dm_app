@@ -11,8 +11,6 @@ const bcrypt=require('bcrypt');
 const shopRoute = require('./routes/shop');
 const itemRoute = require('./routes/item');
 const receiptRoute = require('./routes/receipt')
-//const createUserRoute = require('./routes/createUser');
-//const loginRoute = require('./routes/login');
 const ocrRoute = require('./routes/ocrRoute');
 const userRoute = require('./routes/user');
 
@@ -34,8 +32,6 @@ mongoose.connect(process.env.MONGO_URL,
 app.use('/shop', shopRoute);
 app.use('/item', itemRoute);
 app.use('/receipt', receiptRoute);
-//app.use('/createuser', createUserRoute);
-//app.use('/login', loginRoute);
 app.use('/OCR', ocrRoute);
 app.use('/user', userRoute);
 

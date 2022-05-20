@@ -345,3 +345,4 @@ from sqlalchemy import create_engine
 con = create_engine('mysql+pymysql://discountmateuser:DMPassword$@discountmate.ddns.net/discountmate')
 
 df2.to_sql("OCRTable",con=con,index=False,if_exists="append")
+print("Finished OCR script")
