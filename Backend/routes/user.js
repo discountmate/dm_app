@@ -27,8 +27,6 @@ router.post('/create', userController.createUser);
 router.post('/login', userController.Login);
 
 //reset password
-router.put('/reset'), (req, res) => {
-
-}
+router.put('/reset', userController.ResetPassword);
 //export router
 module.exports = router;

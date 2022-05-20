@@ -89,8 +89,8 @@ module.exports = class user {
     //log in
     static login(username, password) {
         //user details
-        username = username
-        password = password
+        username = username;
+        password = password;
         //start db connection
         db.getConnection ( async (err, connection)=> 
         {
@@ -134,4 +134,53 @@ module.exports = class user {
             })
         })
     }
+    
+    //change password
+    static changePassword(username, password, newpassword) {
+                //user details
+                username = username;
+                password = password;
+                newpassword = newpassword;
+                //start db connection
+                db.getConnection ( async (err, connection)=> 
+                {
+                    if (err) throw (err)
+                    //sql search query
+                    const sqlSearch = "Select * from users where username = ?"
+                    const search_query = mysql.format(sqlSearch, [username])
+            
+                    //query db
+                    connection.query (search_query, async (err, result) => 
+                    {
+                        connection.release()
+                        
+                        if (err) throw (err)
+                        //if no results
+                        if (result.length == 0) 
+                        {
+                            console.log("-> User does not exist")
+                            return(res.status(404))
+                        } 
+                        else 
+                        {
+                            //if there is a result
+                            const hashedPassword = result[0].password
+            
+                            //get the hashedPassword from result
+                            if (await bcrypt.compare(password, hashedPassword)) 
+                            {
+                                //generate access token
+                                console.log("--> Password reset")
+                                return db.execute('UPDATE users SET password = ? WHERE username = ?', [newpassword, username]);
+                            } 
+                            else 
+                            {
+                                console.log("-> Password Incorrect")
+                                return(res.status(403))
+                            }
+                        }
+                    })
+                })
+            }
+        
 }

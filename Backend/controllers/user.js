@@ -29,3 +29,19 @@ try {
     next(err);
     }
 }
+
+    //log in
+exports.ResetPassword = async (req, res, next) => {
+    try {
+        //use password hashing
+        const newpassword = await bcrypt.hash(req.body.newpassword,10);
+        const loginResponse = await User.changePassword(req.body.username, req.body.password, newpassword);
+        res.status(200).json(loginResponse);
+    } catch (err) {
+        console.log("error:", err);
+        if (!err.statusCode) {
+            err.statusCode = 500;
+        }
+        next(err);
+        }
+}
