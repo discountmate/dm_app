@@ -28,6 +28,6 @@ module.exports = class shop {
 
     //put shop
     static put(id, name, address, postcode) {
-        return db.execute('UPDATE shops SET name = ?, address = ?, postcode = ? WHERE id = ?', [name, address, postcode, id])
+        return db.execute('UPDATE shops SET name = ?, address = ?, postcode = ? WHERE id = ?', [name, address, postcode, id]);
     }
 }

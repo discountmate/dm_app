@@ -39,6 +39,7 @@ router.post('/', upload.single('image'), (req, res, next) => {
 
     var obj = {
         id: year + "-" + month + "-" + date + "/" + hours + ":" + minutes + ":" + seconds,
+        processed: false,
         img: {
             //image location
             data: fs.readFileSync(path.join(__dirname + '/../uploads/' + req.file.filename)),
@@ -51,7 +52,6 @@ router.post('/', upload.single('image'), (req, res, next) => {
             console.log(err);
         }
         else {
-            item.save();
             //name of image = item
 			console.log("Saved receipt successfully");
             
@@ -70,7 +70,13 @@ router.post('/', upload.single('image'), (req, res, next) => {
             //on close send data back to browser from the OCR script
             python.on('close', (code) => {
                 console.log("Py OCR OUTPUT>> ", dataToSend);
+                
             });
+            //image has been processed by the OCR script
+            item.processed = true;
+            item.save();
+
+            
         
             res.redirect('/receipt');
         }

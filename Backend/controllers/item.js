@@ -32,6 +32,7 @@ exports.searchItems = async (req, res, next) => {
 exports.postItem = async (req, res, next) => {
   try {
       const postResponse = await Item.post(req.body.shopid, req.body.name, req.body.price, req.body.sale, req.body.discountend, req.body.category, req.body.discountprice, req.body.discountpercentage);
+      //set default values if null
       res.status(201).json(postResponse);
   } catch (err) {
       if (!err.statusCode) {

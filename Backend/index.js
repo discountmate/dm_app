@@ -11,9 +11,10 @@ const bcrypt=require('bcrypt');
 const shopRoute = require('./routes/shop');
 const itemRoute = require('./routes/item');
 const receiptRoute = require('./routes/receipt')
-const createUserRoute = require('./routes/createUser');
-const loginRoute = require('./routes/login');
+//const createUserRoute = require('./routes/createUser');
+//const loginRoute = require('./routes/login');
 const ocrRoute = require('./routes/ocrRoute');
+const userRoute = require('./routes/user');
 
 //port to listen on from .ENV file
 const ports = process.env.PORT || 3000;
@@ -33,9 +34,10 @@ mongoose.connect(process.env.MONGO_URL,
 app.use('/shop', shopRoute);
 app.use('/item', itemRoute);
 app.use('/receipt', receiptRoute);
-app.use('/createuser', createUserRoute);
-app.use('/login', loginRoute);
+//app.use('/createuser', createUserRoute);
+//app.use('/login', loginRoute);
 app.use('/OCR', ocrRoute);
+app.use('/user', userRoute);
 
 //error handling if no route is present etc
 app.use(errorController.get404);
@@ -47,7 +49,7 @@ app.listen(ports, () => console.log('listening...'));
 //open browser, uncomment the three lines below for auto open browser
 const open = require('open');
 const res = require('express/lib/response');
-open('http://localhost:3000/');
+//open('http://localhost:3000/');
 
 
 // password hashing function
