@@ -13,6 +13,7 @@ const itemRoute = require('./routes/item');
 const receiptRoute = require('./routes/receipt')
 const ocrRoute = require('./routes/ocrRoute');
 const userRoute = require('./routes/user');
+const viewReceiptRoute = require('./routes/viewReceipt');
 
 //port to listen on from .ENV file
 const ports = process.env.PORT || 3000;
@@ -34,6 +35,7 @@ app.use('/item', itemRoute);
 app.use('/receipt', receiptRoute);
 app.use('/OCR', ocrRoute);
 app.use('/user', userRoute);
+app.use('/view', viewReceiptRoute);
 
 //error handling if no route is present etc
 app.use(errorController.get404);
