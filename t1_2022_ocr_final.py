@@ -19,7 +19,7 @@ from PIL import Image
 ! apt install tesseract-ocr
 ! apt install libtesseract-dev
 
-! pip install Pillow
+!pip install Pillow==9.0.0
 ! pip install pytesseract
 
 import re
@@ -35,8 +35,6 @@ from prettytable import PrettyTable
 
 from google.colab import drive
 drive.mount('/content/drive')
-
-!pip install Pillow==9.0.0
 
 # Sample file out of the dataset
 file_name = '/content/drive/MyDrive/OCR/IMG-1226.jpg'
@@ -210,8 +208,8 @@ def find_between_r( s, first, last ):
         return ""
 
 #Store
-Store = find_between( extracted_text, "Store: ", ";" )
-print(Store)
+StoreN = find_between( extracted_text, "Store: ", ";" )
+print(StoreN)
 
 #Receipt ID
 Receipt_ID = find_between( extracted_text, "Receipt: ", "Date:" )
@@ -219,7 +217,8 @@ print(Receipt_ID)
 
 #Product descriptions and prices
 desc = find_between( extracted_text, "scription ", "EFT" )
-desc = find_between( desc, ";","Total" )
+
+#desc = find_between( desc, ";","Total" )
 print(desc)
 
 #extracting grand total
@@ -308,7 +307,7 @@ for item in only_food_items:
     food.append(res)
 print(food)
 
-unwanted = {"EACH","GRAM","NET"}
+unwanted = {"EACH","GRAM","NET","eer"}
  
 food = [ele for ele in food if ele not in unwanted]
 food = [x for x in food if "BETTER BAG" not in x]
@@ -329,8 +328,11 @@ df2 = pd.concat([df, df1], axis=1)
 df2['Receipt_ID'] = Receipt_ID
 df2['Supermarket'] = Supermarket
 df2['date'] = date
-df2['Store'] = Store
+df2['Store'] = StoreN
+df2['Processed'] = 0
 df2.dropna(inplace=True)
+df2['UserID'] = ''
+df2['StoreID'] = ''
 df2.head(15)
 
 !pip install mysql-connector-python
@@ -344,4 +346,28 @@ from sqlalchemy import create_engine
 #engine = create_engine('mysql+mysqlconnector://{user}:{password}@{host}:{port}/{database}', echo=False)
 con = create_engine('mysql+pymysql://discountmateuser:DMPassword$@discountmate.ddns.net/discountmate')
 
+store = pd.read_sql('SELECT * FROM shops', con=con)
+store.head(10)
+
+StoreID = ''
+if store['address'].str.contains(StoreN).any():
+    StoreID = store.loc[store['address'] == StoreN, 'id'].iloc[0]  
+    
+print(StoreID)
+
+max_value = ''
+if StoreID == '':
+  column = store["id"]
+  max_value = column.max()
+  Store_ID = max_value + 1
+  data = [{'id':Store_ID,'name':Supermarket,'address':StoreN,'postcode':'2000'}]
+  store = store.append(data,ignore_index=True,sort=False)
+
+df2['StoreID'] = Store_ID
+
+store.to_sql("shops",con=con,index=False,if_exists="replace")
+
+df2.head(16)
+
 df2.to_sql("OCRTable",con=con,index=False,if_exists="append")
+
