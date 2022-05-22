@@ -160,7 +160,7 @@ image = bw_scanner(scanned)
 plot_gray(result)
 
 output = Image.fromarray(result)
-#output.save('result.png')
+output.save('result.png')
 
 d = pytesseract.image_to_data(image, output_type=Output.DICT)
 n_boxes = len(d['level'])
@@ -172,17 +172,19 @@ for i in range(n_boxes):
 plot_rgb(boxes)
 
 extracted_text = pytesseract.image_to_string(image)
-print(extracted_text)
-Supermarket = '-'
-listword1 = ['woolworth', 'WOOLWORTH', 'Woolworth']
+print("Extracted_text:", extracted_text)
+#Supermarket = '-'
+listword1 = ['woolworth', 'WOOLWORTH', 'Woolworth', 'Woolworths']
 listword2 = ['coles', 'COLES', 'Coles']
 if any(re.search(r'\b{}\b'.format(re.escape(word)), extracted_text) for word in listword1):
     Supermarket = 'Woolworths'
 elif any(re.search(r'\b{}\b'.format(re.escape(word)), extracted_text) for word in listword2):
     Supermarket = 'Coles'
+else:
+    Supermarket = '-'
+    print("Did not find supermarket")
       
-
-print(Supermarket)
+print("Supermarket:", Supermarket)
 
 from datetime import datetime
 
@@ -190,38 +192,42 @@ match = re.search(r'\d{2}/\d{2}/\d{4}', extracted_text)
 try:
     date = datetime.strptime(match.group(), '%d/%m/%Y').date()
 except:
-    date = 'null'
-
-print(date)
+    date = ''
+    print("Did not find date")
+print("Date:", date)
 
 def find_between( s, first, last ):
     try:
         start = s.index( first ) + len( first )
         end = s.index( last, start )
+        print("find between worked")
         return s[start:end]
     except ValueError:
+        print("Value error")
         return ""
 
 def find_between_r( s, first, last ):
     try:
         start = s.rindex( first ) + len( first )
         end = s.rindex( last, start )
+        print("find between worked")
         return s[start:end]
     except ValueError:
+        print("Value error r")
         return ""
 
 #Store
 Store = find_between( extracted_text, "Store: ", ";" )
-print(Store)
+print("Store:", Store)
 
 #Receipt ID
 Receipt_ID = find_between( extracted_text, "Receipt: ", "Date:" )
-print(Receipt_ID)
+print("Receipt_ID:", Receipt_ID)
 
 #Product descriptions and prices
 desc = find_between( extracted_text, "scription ", "EFT" )
 desc = find_between( desc, ";","Total" )
-print(desc)
+print("desc:", desc)
 
 #extracting grand total
 def find_amounts(text):
@@ -246,7 +252,7 @@ regex_line = []
 for line in desc.splitlines():
     if re.search(r".[0-9]|[0-9]*\.[0-9]|[0-9]*\,[0-9]", line):
         regex_line.append(line)
-print(regex_line)
+print("Regex_line:", regex_line)
 
 #Apply exclusion list
 food_item = []
@@ -258,7 +264,7 @@ for eachLine in regex_line:
         
     if found == False:
         food_item.append(eachLine)
-print(food_item)
+print("food_item:", food_item)
 
 #Word ommit
 new_food_item_list = []
@@ -267,7 +273,7 @@ for item in food_item:
         item = item.replace(subToRemove, "")
         item = item.replace(subToRemove.upper(), "")
     new_food_item_list.append(item)
-print(new_food_item_list)
+print("new_food_item_list:", new_food_item_list)
 
 #Food item cost regex
 food_item_cost = []
@@ -278,7 +284,7 @@ for line in new_food_item_list:
     for possibleCost in cost:
         if "." in possibleCost:
             food_item_cost.append(possibleCost)
-print(new_food_item_list)
+print("new_food_item_list:", new_food_item_list)
 
 #Remove cost price from food item
 count = 0;
@@ -291,7 +297,8 @@ for item in new_food_item_list:
             
     only_alpha = re.sub(r'(?:^| )\w(?:$| )', ' ', only_alpha).strip()
     only_food_items.append(only_alpha)
-print(only_food_items)
+
+print("only_food_items:", only_food_items)
 
 #Removes 2 letter words from food item
 #No core food item has two letters (Most cases)
@@ -307,14 +314,14 @@ for item in only_food_items:
     res = ' '.join(res)
     
     food.append(res)
-print(food)
+print("food:", food)
 
 unwanted = {"EACH","GRAM","NET"}
  
 food = [ele for ele in food if ele not in unwanted]
 food = [x for x in food if "BETTER BAG" not in x]
 
-print(food)
+print("food:", food)
 
 #Tabulate Food Item and Cost
 t = PrettyTable(['Food Item', 'Cost'])
@@ -334,6 +341,18 @@ df2['Store'] = Store
 df2.dropna(inplace=True)
 df2.head(15)
 
+#DUMMY DATA
+d = {'food': ['DAIRY FULL CREAM SLITRE', 'KELLOGGS CORN FLAKES OBGRAM', 'COBS CHEDDAR CHEESE GRAM', 'COBS GLUTTEN ZGRAM', 'OBS POPCORN FOR', 'COLES MWAVE POPCORN GRAM', 'KELLOGGS COCO POPS BGRAM', 'BLACKBER TES GRAM', 'STRAWBERRIES FOR', 'BLACK GRAPES PERKG', 'WILLTAM BARTLT PEARS PERKG'],
+     'Cost': [6.3, 2.85, 0.7, 0.95, 8.5, 9.0, 4.5, 7.8, 0.8, 4.48, 3.36], 
+     'Receipt_ID':  ["0101","0101","0101","0101","0101","0101","0101","0101","0101","0101","0101"], 
+     'Supermarket': ['Coles','Coles','Coles','Coles','Coles','Coles','Coles','Coles','Coles','Coles','Coles'], 
+     'date': ['2022-02-02','2022-02-02','2022-02-02','2022-02-02','2022-02-02','2022-02-02','2022-02-02','2022-02-02','2022-02-02','2022-02-02','2022-02-02',],
+    'Store': ['01-coles','01-coles','01-coles','01-coles','01-coles','01-coles','01-coles','01-coles','01-coles','01-coles','01-coles']}
+testdf = pd.DataFrame(data=d)
+testdf
+print(testdf)
+
+
 import mysql.connector
 import pymysql
 from sqlalchemy import create_engine
@@ -341,5 +360,7 @@ from sqlalchemy import create_engine
 #engine = create_engine('mysql+mysqlconnector://{user}:{password}@{host}:{port}/{database}', echo=False)
 con = create_engine('mysql+pymysql://discountmateuser:DMPassword$@discountmate.ddns.net/discountmate')
 
-df2.to_sql("ocrtable",con=con,index=False,if_exists="append")
+#df2.to_sql("ocrtable",con=con,index=False,if_exists="append")
+testdf.to_sql("ocrtable",con=con,index=False,if_exists="append")
+
 print("Finished OCR script")

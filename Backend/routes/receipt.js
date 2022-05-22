@@ -37,16 +37,21 @@ router.post('/', upload.single('image'), (req, res, next) => {
     let hours = date_object.getHours();
     let minutes = date_object.getMinutes();
     let seconds = date_object.getSeconds();
-
-    var obj = {
-        id: year + "-" + month + "-" + date + "/" + hours + ":" + minutes + ":" + seconds,
-        processed: false,
-        img: {
-            //image location
-            data: fs.readFileSync(path.join(__dirname + '/../uploads/' + req.file.filename)),
-            contentType: 'image/png'
+    
+    try{
+        var obj = {
+            id: year + "-" + month + "-" + date + "/" + hours + ":" + minutes + ":" + seconds,
+            processed: false,
+            img: {
+                //image location
+                data: fs.readFileSync(path.join(__dirname + '/../uploads/' + req.file.filename)),
+                contentType: 'image/png'
+            }
         }
+    } catch{
+        res.status(500).send("Error creating object");
     }
+
     //Test save image as png
 
     // strip off the data: url prefix to get just the base64-encoded bytes
@@ -54,7 +59,7 @@ router.post('/', upload.single('image'), (req, res, next) => {
     //console.log("DATA", Currentdata)
     var buf = Buffer.from(Currentdata, 'base64');
     //file path for temp upload to be processed by the OCR script
-    var WriteFilePath = './tempImage/ImageToBeProcessed.png'
+    var WriteFilePath = './uploads/ImageToBeProcessed.png'
     fs.writeFile(WriteFilePath, buf, function(err) {
         if (err) throw err;
     });
@@ -97,7 +102,7 @@ router.post('/', upload.single('image'), (req, res, next) => {
                   } catch(err) {
                     console.error(err)
                   }
-
+                //send back results to client
                 res.send(results);
                 
             });
