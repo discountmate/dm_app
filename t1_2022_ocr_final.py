@@ -359,11 +359,11 @@ max_value = ''
 if StoreID == '':
   column = store["id"]
   max_value = column.max()
-  Store_ID = max_value + 1
-  data = [{'id':Store_ID,'name':Supermarket,'address':StoreN,'postcode':'2000'}]
+  StoreID = max_value + 1
+  data = [{'id':StoreID,'name':Supermarket,'address':StoreN,'postcode':'2000'}]
   store = store.append(data,ignore_index=True,sort=False)
 
-df2['StoreID'] = Store_ID
+df2['StoreID'] = StoreID
 
 store.to_sql("shops",con=con,index=False,if_exists="replace")
 
