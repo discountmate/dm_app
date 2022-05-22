@@ -48,8 +48,9 @@ router.post('/', upload.single('image'), (req, res, next) => {
                 contentType: 'image/png'
             }
         }
-    } catch{
-        res.status(500).send("Error creating object");
+    } catch {
+        console.log("Error creating obj in receipt.js");
+        res.status(500).send("Error creating obj");
     }
 
     //Test save image as png
