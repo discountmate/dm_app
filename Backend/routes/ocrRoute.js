@@ -2,25 +2,24 @@
 const express = require('express');
 const router = express.Router();
 const {spawn} = require('child_process');
+const { nextTick } = require('process');
+
+const {PythonShell} = require('python-shell');
 
 router.get('/', (req, res) => {
- 
-    var dataToSend;
-    console.log("Start of OCR script...");
+let options = {
+    mode: 'text',
+    pythonOptions: ['-u'], // get print results in real-time
+    args: ['./util/Tesseract-OCR/tesseract.exe', './uploads/wxwg74gj02831.jpg']
+}
+
+PythonShell.run('./util/OCRScript.py', options, function (err, results) {
+    if (err) throw err;
+    // results is an array consisting of messages collected during execution
+    console.log('results: %j', results);
+    res.send(results);
     
-    //call the OCR python script once finished
-    const python = spawn('python', ['./util/t1_2022_ocr_final.py']);
-
-    // collect data from OCR script
-    python.stdout.on('data', function (data) {
-        dataToSend = data.toString();
-    });
-
-    //on close send data back to browser from the OCR script
-    python.on('close', (code) => {
-    res.send(dataToSend)
-    });
-
+});
 })
 
 //export router
