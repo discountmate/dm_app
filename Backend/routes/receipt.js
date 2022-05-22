@@ -48,13 +48,12 @@ router.post('/', upload.single('image'), (req, res, next) => {
                 contentType: 'image/png'
             }
         }
-    } catch{
-        res.status(500).send("Error creating object");
+    } catch {
+        console.log("Error creating obj in receipt.js");
+        res.status(500).send("Error creating obj");
     }
 
-    //Test save image as png
-
-    // strip off the data: url prefix to get just the base64-encoded bytes
+    //Temp image to be processed by the OCR script
     var Currentdata = obj.img.data.toString("base64");
     //console.log("DATA", Currentdata)
     var buf = Buffer.from(Currentdata, 'base64');
@@ -63,47 +62,49 @@ router.post('/', upload.single('image'), (req, res, next) => {
     fs.writeFile(WriteFilePath, buf, function(err) {
         if (err) throw err;
     });
-    //End Test save image as png
 
     //create the object with the model
     receiptModel.create(obj, (err, item) => {
         if (err) {
             console.log(err);
-            res.status(500).send("Erorr occurred:", err.toString());
+            res.status(500).send("Erorr occurred creating the receipt model:", err.toString());
         }
         else {
-            //name of image = item
-			console.log("Saved receipt successfully");
-
             item.processed = true; //call this after ocr script, debugging for now.
 
             item.save();
-
+            console.log("Saved receipt successfully");
             //call ocr script here to use the images saved locally preferably
-            var PathSaved = req.file.filename;
-            console.log("File name: " + PathSaved);
 
+            var PathSaved = req.file.filename;
+            //debug line to see what the temp image was saved as.
+            //console.log("File name: " + PathSaved);
+
+            //use pythonshell library to run python with system args
             const {PythonShell} = require('python-shell');
+
             let options = {
                 mode: 'text',
-                pythonOptions: ['-u'], // get print results in real-time
+                pythonOptions: ['-u'], // get py console output in real time
+
                 //replace this line with your tesseract folder
                 args: ['C:/Users/Joel/Desktop/DiscountMate/Tesseract-OCR/tesseract.exe', WriteFilePath]
             }
             
             PythonShell.run('./util/OCRScript.py', options, function (err, results) {
                 if (err) throw err;
-                // results is an array consisting of messages collected during execution
-                console.log('results: %j', results);
+                // results is an array consisting of messages collected during execution, uncomment to see OCR script output in console log
+                //console.log('results: %j', results);
 
                 try {
                     //unlink image once it's been processed
                     fs.unlinkSync(WriteFilePath)
                   } catch(err) {
                     console.error(err)
+                    res.status(500).send("Error removing temp image");
                   }
                 //send back results to client
-                res.send(results);
+                res.status(200).send("Receipt processed by OCR successfully");
                 
             });
             //image has been processed by the OCR script
