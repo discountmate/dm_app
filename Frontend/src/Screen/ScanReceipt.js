@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import {
   View,
   Text,
   StyleSheet,
   SafeAreaView,
-  TextInput,
   Image,
   TouchableOpacity,
   ScrollView
 } from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
+import axios from 'axios';
+// import RNFetchBlob from 'rn-fetch-blob';
 
 
 const imagelist = []
@@ -42,6 +42,22 @@ const Setting = () => {
           });
     }
 
+    const choosePhoto = async () => {
+        await ImagePicker.openPicker({
+             width: 300,
+             height: 400,
+             cropping: false,
+           }).then(image => {
+             setImage({
+                 uri: image.path,
+                 width: image.width,
+                 height: image.height,
+                 mime: image.mime,
+             })
+            
+           });
+     }
+
     const renderPhoto = (image) => {
         return(
         <Image
@@ -50,17 +66,52 @@ const Setting = () => {
         )
     }
 
-    const submitPhoto = () => {
-        setImage('')
-        imagelist.length = 0
-        navigation.goBack()
+    const submitPhoto = async () => {
+        // const postobj = {
+        //     uri: image.uri,
+        //     type: 'image/png',
+        //     name: 'image.png',}
+
+
+        const bodyFormData = new FormData();
+        bodyFormData.append('image', {
+            uri: image.uri,
+            type: image.mine,
+            name: 'image.png',
+          });
+        //   console.log(bodyFormData)
+        // await axios.post("http://192.168.1.5:3000/receipt",bodyFormData)
+        // .then(function (response) {
+        //     console.warn(response);
+        //     })
+        // .catch(function (error) {   
+        //     console.warn(error);
+        //     return;
+        // })
+       
+        
+        await axios({
+            url:"http://192.168.1.5:3000/receipt",
+            method:'POST',
+            // headers: { 'Content-Type': 'multipart/form-data'},
+            data:bodyFormData
+        })
+        .then(function (response){
+            console.log(response)
+        })
+        .catch(function (error){
+            console.log(error)
+            return;
+        })
+      
+        
+      
     }
 
     return(
     <SafeAreaView style={styles.container}>
         <ScrollView>
             <Text style={styles.header}>Scan Receipt</Text>
-            <TextInput placeholder='title'></TextInput> 
             {image?
             <View>
             {imagelist.map(i => renderPhoto(i))}
@@ -68,6 +119,10 @@ const Setting = () => {
             </View> : null}
             <TouchableOpacity style={styles.btn} onPress={takePhoto}>
                 <Text style={styles.btn_text}>Take a Photo</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.btn} onPress={choosePhoto}>
+                <Text style={styles.btn_text}>Choose from Photos</Text>
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.btn} onPress={submitPhoto}>
@@ -97,6 +152,19 @@ const styles = StyleSheet.create({
         flexDirection:'row',
         marginTop: 28,
         justifyContent:'flex-start'
+    },
+
+    btn:{
+        marginTop:20,
+        backgroundColor: 'black',
+        borderRadius: 50,
+        paddingVertical: 17
+        
+    },
+    btn_text:{
+        textAlign:'center',
+        color:'white',
+        fontSize: 15,
     },
 
     activeTab:{

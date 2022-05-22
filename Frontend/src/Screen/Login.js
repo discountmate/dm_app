@@ -10,7 +10,7 @@ import {
   TextInput,
   TouchableOpacity,
 } from 'react-native';
-import { setAuth } from '../redux/actions/common';
+import { setAuth, SetUsername } from '../redux/actions/common';
 
 //svg
 import Logo from '../assets/images/Logo.svg'
@@ -19,7 +19,7 @@ const Login = () =>{
     const axios = require('axios')
     const dispatch = useDispatch();
     const navigation = useNavigation();
-    const [username, SetUsername] = useState("");
+    const [username, SetUserName] = useState("");
     const [password, SetPassword] = useState("");
 
     const CheckLogin = async () => {
@@ -28,20 +28,22 @@ const Login = () =>{
             password:password
         }
         
-        await axios.post("http://192.168.1.6:3000/login",postobj)
+        await axios.post("http://192.168.1.5:3000/user/login",postobj)
         .then(function (response) {
-                if (response?.data == "Password incorrect!") {
-                    console.warn('login failed');
-                    return;
-                }
+                // if (!response) {
+                //     console.warn('login failed');
+                //     return;
+                // }
                 dispatch(setAuth(true));
-                navigation.replace('Main');
+                dispatch(SetUsername(username))
+                navigation.replace('Profile');
               
             })
         .catch(function (error) {
             console.warn('login failed');
             return;
         })
+    
 
         return 0;
     }
@@ -56,12 +58,14 @@ const Login = () =>{
         <View>
             <View style={styles.input_box}>
                 <TextInput
-                onChangeText={SetUsername}
+                placeholder='Username'
+                onChangeText={SetUserName}
                 />
             </View>
 
             <View style={styles.input_box}>
                 <TextInput
+                placeholder='Password'
                 onChangeText={SetPassword}
                 />
             </View>
@@ -80,7 +84,7 @@ const Login = () =>{
                 <Text style={styles.forgetpw_btn_text}>Forget password</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.forgetpw_btn} onPress={() => navigation.push('ForgetPwd')}>
+            <TouchableOpacity style={styles.forgetpw_btn} >
                 <Text style={styles.forgetpw_btn_text}>Privacy</Text>
             </TouchableOpacity>
         </View>

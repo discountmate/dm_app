@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import {
   SafeAreaView,
@@ -7,6 +8,7 @@ import {
   View
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { setAuth } from '../redux/actions/common';
 
 //svg
 import Cart from '../assets/images/cart.svg' 
@@ -16,6 +18,12 @@ import Cart from '../assets/images/cart.svg'
 const Profile = () =>{
   const auth = useSelector(state => state.auth);
   const dispatch = useDispatch();
+  const navigation = useNavigation();
+
+  const Logout = async() => {
+    await dispatch(setAuth(false))
+    navigation.replace('Login')
+  }
     return(
     <SafeAreaView>
         <Text style={styles.header}>Welcome to Dashboard</Text>
@@ -30,20 +38,20 @@ const Profile = () =>{
        
 
         <View>
-          <TouchableOpacity style={styles.btn}>
+          <TouchableOpacity style={styles.btn} onPress = {()=> navigation.push('Setting')}>
             <Text style={styles.btn_text}>My account</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.btn}>
+          <TouchableOpacity style={styles.btn} onPress = {()=> navigation.push('DiscountNearby')}>
             <Text style={styles.btn_text}>Recommended Items</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.btn}>
+          <TouchableOpacity style={styles.btn} onPress = {()=> navigation.push('Scan')}>
             <Text style={styles.btn_text}>Scan Receipts</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.btn}>
-            <Text style={styles.btn_text}>Browse Items</Text>
           </TouchableOpacity>
         </View>
        
+        <TouchableOpacity style={styles.btn} onPress={Logout}>
+          <Text style={styles.btn_text}>Logout</Text>
+        </TouchableOpacity>
 
 
     </SafeAreaView>

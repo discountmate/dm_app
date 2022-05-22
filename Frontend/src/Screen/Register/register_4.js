@@ -10,10 +10,13 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import axios from 'axios';
+import { SetPhoneNum, SetUsername } from '../../redux/actions/common';
 
 const Register4 = () =>{
-    const dispatch = useDispatch();
+    const phone = useSelector(state => state.app.mobile)
+    const username = useSelector(state => state.app.username)
     const navigation = useNavigation();
+    const dispatch = useDispatch();
 
     const[email, setEmail] = useState('');
     const[pwd,setpwd] = useState('');
@@ -27,25 +30,22 @@ const Register4 = () =>{
         }
 
         const postobj = {
-            username:"123",
+            username:username,
             password:repwd,
             email:email,
-            mobile:'040404',
+            mobile:phone,
             permission:'0',
             postcode:'2020',
             searchradius:'200',
             active:'1'
         }
 
-        await axios.post("http://192.168.1.6:3000/createuser",postobj)
+        await axios.post("http://192.168.1.5:3000/user/create",postobj)
         .then(function (response) {
-            console.warn(response)
-            if(response?.data == "Created"){
                 console.warn("Register success!");
+                dispatch(SetPhoneNum(''))
+                dispatch(SetUsername(''))
                 navigation.navigate('Login');
-            }
-            else return;
-            
             })
         .catch(function (error) {
             console.warn(error);
