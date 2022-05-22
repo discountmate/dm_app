@@ -27,6 +27,7 @@ router.get('/', (req, res) => {
 
 //post request for the uploaded image, using the index.ejs in views for testing purposes at the moment, currently uploads locally to /backend/uploads
 router.post('/', upload.single('image'), (req, res, next) => {
+    try {
     //object to upload, includes a name and description
     let date_object = new Date();
     // get current time
@@ -50,6 +51,7 @@ router.post('/', upload.single('image'), (req, res, next) => {
     receiptModel.create(obj, (err, item) => {
         if (err) {
             console.log(err);
+            res.status(500).send("Erorr occurred:", err.toString());
         }
         else {
             //name of image = item
@@ -81,6 +83,12 @@ router.post('/', upload.single('image'), (req, res, next) => {
             res.redirect('/receipt');
         }
     });
+} catch (err) {
+    if (!err.statusCode) {
+      err.statusCode = 500;
+    }
+    next(err);
+  }
 });
 
 //export router
