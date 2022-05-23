@@ -35,7 +35,7 @@ async function getRecommendedItems(res)
        
        itemList.push(item[0]);
     }
-    console.log(itemList);
+    //console.log(itemList);
     res.status(201).json(itemList);
 
 }

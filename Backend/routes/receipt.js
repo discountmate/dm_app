@@ -110,9 +110,18 @@ async function FillSqLServer()
     //ITEM TABLE
     RawItemTableNames = await db.promise().query("SELECT name FROM items");
     RawItemTableID = await db.promise().query("SELECT id FROM items");
+    RawItemTablePrice = await db.promise().query("SELECT price FROM items");
 
     ItemTableNames = []
     ItemTableID = []
+    ItemTablePrice = []
+
+    //fix names
+    for(i in RawItemTablePrice[0])
+    {
+        ItemTablePrice.push(objToString(RawItemTablePrice[0][i]));
+    }
+    console.log(ItemTablePrice);
 
     //fix names
     for(i in RawOCRStoreBrand[0])
@@ -167,14 +176,12 @@ async function FillSqLServer()
         ItemTableNames.push(objToString(RawItemTableNames[0][i]));
     }
 
-    //set processed to true
+    //set processed to true for all ocr item entries
     for(i in OCRTableID)
     {
         await db.promise().query("UPDATE ocrtable SET Processed = ? WHERE id = ?", [1, OCRTableID[i]]);
     }
     console.log("Updated OCR processed booleans...")
-
-    //console.log("NEW OCR ITEMS LEN (incomming receipt):", OCRTableNames.length, "ITEM LEN:", ItemTableNames.length);
 
     for(i in OCRTableStores)
     {
@@ -187,6 +194,25 @@ async function FillSqLServer()
             console.log("Tried to insert duplicate store...");
         }
         
+    }
+
+    //check all items for a price change
+    for(i in ItemTableNames)
+    {
+        //if item already exists...
+        if(await db.promise().query("SELECT EXISTS(SELECT 1 FROM items WHERE name = ?)", [OCRTableNames[i]]))
+        {
+            //now check if the price is the same...
+            if(await db.promise().query("SELECT EXISTS(SELECT 1 FROM items WHERE price = ?)", [OCRTableCost[i]]))
+            {
+                console.log(OCRTableNames[i], "Already exists at:", OCRTableCost[i]);
+            }
+            else //if a different price is detected then set discount price at that new price!
+            {
+                console.log(OCRTableNames[i], "has a new price at:", OCRTableCost[i]);
+                await db.promise().query("UPDATE items SET discountprice = ? WHERE name = ?)", [OCRTableCost[i], OCRTableNames[i]])
+            }
+        }
     }
 
     //for each item in ocrtable that IS NOT in items table, insert.
