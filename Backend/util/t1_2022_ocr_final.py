@@ -365,7 +365,7 @@ if StoreID == '':
 
 df2['StoreID'] = StoreID
 
-store.to_sql("shops",con=con,index=False,if_exists="replace")
+#store.to_sql("shops",con=con,index=False,if_exists="replace")
 
 df2.head(16)
 

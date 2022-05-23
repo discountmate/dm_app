@@ -85,7 +85,7 @@ async function FillSqLServer()
     0. loop through OCR table
     1.  Update item table from OCR table, look for items with the same details in the same shop, if exists don't add item, otherwise create new item in item table. Then output item id
     2.  Insert item id into transaction table (for all items, which are not processed, then mark as processed)
-    3. once loop finished, update recommendation table with highest (10) qty items
+    3. once loop finished, update recommendation table with highest (5) qty items
     */
     //.con.query("SELECT name, address FROM customers", function (err, result, fields) {
 
@@ -94,6 +94,7 @@ async function FillSqLServer()
     //OCR TABLE
     RawOCRTableNames = await db.promise().query("SELECT food FROM ocrtable WHERE Processed = 0");
     RawOCRStoreNames = await db.promise().query("SELECT Store FROM ocrtable WHERE Processed = 0");
+    RawOCRStoreBrand = await db.promise().query("SELECT Supermarket FROM ocrtable WHERE Processed = 0");
     RawOCRStorePrice = await db.promise().query("SELECT Cost FROM ocrtable WHERE Processed = 0");
     RawOCRTable = await db.promise().query("SELECT * FROM ocrtable WHERE Processed = 0");
     RawOCRTableID = await db.promise().query("SELECT id FROM ocrtable WHERE Processed = 0");
@@ -104,6 +105,7 @@ async function FillSqLServer()
     OCRTableCost = []
     OCRTableID = []
     OCRTableDate = []
+    OCRTableBrand = []
 
     //ITEM TABLE
     RawItemTableNames = await db.promise().query("SELECT name FROM items");
@@ -111,6 +113,12 @@ async function FillSqLServer()
 
     ItemTableNames = []
     ItemTableID = []
+
+    //fix names
+    for(i in RawOCRStoreBrand[0])
+    {
+        OCRTableBrand.push(objToString(RawOCRStoreBrand[0][i]));
+    }
 
     //fix names
     for(i in RawItemTableID[0])
@@ -168,6 +176,18 @@ async function FillSqLServer()
 
     //console.log("NEW OCR ITEMS LEN (incomming receipt):", OCRTableNames.length, "ITEM LEN:", ItemTableNames.length);
 
+    for(i in OCRTableStores)
+    {
+        try
+        {
+            await db.promise().query("INSERT INTO shops (name, address, postcode) VALUES (?, ?, ?)", [OCRTableBrand[i], OCRTableStores[i], 3000]);
+        }
+        catch
+        {
+            console.log("Tried to insert duplicate store...");
+        }
+        
+    }
 
     //for each item in ocrtable that IS NOT in items table, insert.
     let difference = OCRTableNames.filter(x => !ItemTableNames.includes(x));
@@ -203,26 +223,78 @@ async function FillSqLServer()
     }
 
 
-    //populate transactions table
+    qtyList = []
+
     for(i in OCRTableID)
     {
-        await db.promise().query("INSERT INTO transactions (userid, itemid, price, qty, discount, transactiondate, lastupdate) VALUES (?, ?, ?, ?, ?, ?, ?)", [userID, GET_PROPER_ID[i], OCRTableCost[i], 1, 1, OCRTableDate[i], (year + "/" + month + "/" + date)]);
+        try
+        {
+            qty = Math.floor(Math.random() * (5 - 1 + 1) + 1); //use the OCR python script to calculate quantity in the future, for now using a random value between 1 and 5
+            qtyList.push(qty);
+            await db.promise().query("INSERT INTO transactions (userid, itemid, price, qty, discount, transactiondate, lastupdate) VALUES (?, ?, ?, ?, ?, ?, ?)", [userID, GET_PROPER_ID[i], OCRTableCost[i], qty, 0, OCRTableDate[i], (year + "/" + month + "/" + date)]);
+        }
+        catch
+        {
+            console.log("User not logged in!");
+        }
+        
     }
 
     console.log("Transaction Table Populated");
 
-    
+    //recommended items
+    RecoList = [] 
+    OrigList = [...qtyList]; //original list before altering to find max
+    recoItems = []
+    //add the top 5 qty items to the recommended table
+    for(i = 0; i < 5; i++)
+    {
+        max = Math.max(...qtyList);
+        
+        RecoList.push(max);
+        var index = qtyList.indexOf(max);
+        if (index !== -1) {
+            qtyList.splice(index, 1); //remove index with the highest qty
+            //console.log("Index position of max:", index); //debug position of highest qty
+            recoItems.push(GET_PROPER_ID[index]); //find item it correlates to
+        }
+    }
+    console.log("Calculated highest quantity items...")
 
+    //console.log(recoItems);
+    //populate recommend table with (5) items with highest quantity
+    for(i in recoItems)
+    {
+        try
+        {
+            await db.promise().query("REPLACE INTO recommendation (itemid, userid, RecType, Status, LastUpdate) VALUES (?, ?, ?, ?, ?)", [recoItems[i], userID, 'HistoryBased', 1, (year + "/" + month + "/" + date)]);
+        } catch (err)
+        {
+            console.log("Recommendation was duplicate, ignoring...")
+        }
+        
+    }
+    console.log("Inserted recommended items to table");
+    console.log("Finished SQL Logic");
 }
 
 async function GetUserID()
 {
-    var userIDRaw = await db.promise().query("SELECT id FROM users WHERE username = ?", [process.env.user]);
-    //console.log(RawOCRTableDate[0][i]);
-    var s = JSON.stringify(userIDRaw[0][0]); //stringify the raw output
-    GetID = JSON.parse(s).id;
-    console.log("User ID:", GetID);
-    userID = GetID;
+    try
+    {
+        var userIDRaw = await db.promise().query("SELECT id FROM users WHERE username = ?", [process.env.user]);
+        //console.log(RawOCRTableDate[0][i]);
+        var s = JSON.stringify(userIDRaw[0][0]); //stringify the raw output
+        GetID = JSON.parse(s).id;
+        console.log("User ID:", GetID);
+        userID = GetID;
+    }
+    catch
+    {
+        console.log("User not logged in! using debug user for inserts");
+        userID = 1;
+    }
+
 }
 
 //post request for the uploaded image, using the index.ejs in views for testing purposes at the moment, currently uploads locally to /backend/uploads
@@ -296,7 +368,7 @@ router.post('/', upload.single('image'), (req, res, next) => {
                 pythonPath: 'python',
 
                 //replace this line with your tesseract folder
-                args: ['C:/Users/Joel/Desktop/DiscountMate/Tesseract-OCR/tesseract.exe', WriteFilePath, '1']
+                args: ['C:/Users/Joel/Desktop/DiscountMate/Tesseract-OCR/tesseract.exe', WriteFilePath, userID]
             }
             
             PythonShell.run('./util/t1_2022_ocr_final.py', options, function (err, results) {
@@ -307,7 +379,7 @@ router.post('/', upload.single('image'), (req, res, next) => {
                 item.processed = true; //call this after ocr script, debugging for now.
                 item.save();
 
-                //complete sql server logic
+                //call sql server logic function
                 FillSqLServer();
                 try {
                     //unlink image once it's been processed
