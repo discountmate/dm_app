@@ -163,7 +163,7 @@ image = bw_scanner(scanned)
 plot_gray(result)
 
 output = Image.fromarray(result)
-output.save('result.png')
+#output.save('result.png')
 
 d = pytesseract.image_to_data(image, output_type=Output.DICT)
 n_boxes = len(d['level'])
@@ -183,6 +183,8 @@ if any(re.search(r'\b{}\b'.format(re.escape(word)), extracted_text) for word in 
     Supermarket = 'Woolworths'
 elif any(re.search(r'\b{}\b'.format(re.escape(word)), extracted_text) for word in listword2):
     Supermarket = 'Coles'
+else:
+    Supermarket = ''
       
 
 print(Supermarket)

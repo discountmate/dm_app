@@ -111,8 +111,10 @@ try {
                      //generate access token
                      console.log("--> Login Successful")
                      console.log("--> Generating accessToken")
+                     process.env.USER = username;
                      const accessToken =  generateAccessTokens({username: username})
                      console.log({accessToken: accessToken})
+                     //used for /routes/receipt.js
                      res.status(200).send("Login successful, token: " + accessToken.toString());
                  } 
                  else 

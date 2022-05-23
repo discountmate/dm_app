@@ -9,11 +9,11 @@ var fs = require('fs');
 const path = require('path');
 const mysql = require('mysql2'); //used for mysql calls
 const config = require('../config/config.json'); //used to get db details
+require("dotenv").config(); //used to access the .env file easily
 
 //spawn the python process
 const {spawn} = require('child_process');
-
-
+var userID;
 
 //create mysql pool to connect to MySQL db
 const db = mysql.createPool({
@@ -39,9 +39,196 @@ router.get('/', (req, res) => {
     });
 });
 
+function objToString (obj) {
+    let str = '';
+    for (const [p, val] of Object.entries(obj)) {
+        str += `${val}`;
+    }
+    return str;
+}
+
+async function FillSqLServer()
+{
+    //date logic
+    let date_ob = new Date();
+
+    // current date
+    // adjust 0 before single digit date
+    let date = ("0" + date_ob.getDate()).slice(-2);
+
+    // current month
+    let month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
+
+    // current year
+    let year = date_ob.getFullYear();
+
+    // current hours
+    let hours = date_ob.getHours();
+
+    // current minutes
+    let minutes = date_ob.getMinutes();
+
+    // current seconds
+    let seconds = date_ob.getSeconds();
+
+    // // prints date in YYYY-MM-DD format
+    // console.log(year + "-" + month + "-" + date);
+
+    // // prints date & time in YYYY-MM-DD HH:MM:SS format
+    // console.log(year + "-" + month + "-" + date + " " + hours + ":" + minutes + ":" + seconds);
+
+    // // prints time in HH:MM format
+    // console.log(hours + ":" + minutes);
+
+    //logic for MySQL server here
+    /* 
+    0. loop through OCR table
+    1.  Update item table from OCR table, look for items with the same details in the same shop, if exists don't add item, otherwise create new item in item table. Then output item id
+    2.  Insert item id into transaction table (for all items, which are not processed, then mark as processed)
+    3. once loop finished, update recommendation table with highest (10) qty items
+    */
+    //.con.query("SELECT name, address FROM customers", function (err, result, fields) {
+
+    //gives raw objects as results, convert to string using the obj to string function.
+
+    //OCR TABLE
+    RawOCRTableNames = await db.promise().query("SELECT food FROM ocrtable WHERE Processed = 0");
+    RawOCRStoreNames = await db.promise().query("SELECT Store FROM ocrtable WHERE Processed = 0");
+    RawOCRStorePrice = await db.promise().query("SELECT Cost FROM ocrtable WHERE Processed = 0");
+    RawOCRTable = await db.promise().query("SELECT * FROM ocrtable WHERE Processed = 0");
+    RawOCRTableID = await db.promise().query("SELECT id FROM ocrtable WHERE Processed = 0");
+    RawOCRTableDate = await db.promise().query("SELECT date FROM ocrtable WHERE Processed = 0");
+
+    OCRTableNames = []
+    OCRTableStores = []
+    OCRTableCost = []
+    OCRTableID = []
+    OCRTableDate = []
+
+    //ITEM TABLE
+    RawItemTableNames = await db.promise().query("SELECT name FROM items");
+    RawItemTableID = await db.promise().query("SELECT id FROM items");
+
+    ItemTableNames = []
+    ItemTableID = []
+
+    //fix names
+    for(i in RawItemTableID[0])
+    {
+        ItemTableID.push(objToString(RawItemTableID[0][i]));
+    }
+
+    //fix dates
+    for(i in RawOCRTableDate[0])
+    {
+        //console.log(RawOCRTableDate[0][i]);
+        var s = JSON.stringify(RawOCRTableDate[0][i]); //stringify the raw output
+        Fix = JSON.parse(s).date; //get the date part
+        Fix2 = Fix.split('T'); //spit it at the T - start of the time
+        //console.log(Fix2);
+        OCRTableDate.push(Fix2[0]); //add the first split to the Fixed date list
+    }
+    
+    //fix names
+    for(i in RawOCRTableID[0])
+    {
+        OCRTableID.push(objToString(RawOCRTableID[0][i]));
+    }
+
+    //fix names
+    for(i in RawOCRTableNames[0])
+    {
+        OCRTableNames.push(objToString(RawOCRTableNames[0][i]));
+    }
+
+    //fix names
+    for(i in RawOCRStoreNames[0])
+    {
+        OCRTableStores.push(objToString(RawOCRStoreNames[0][i]));
+    }
+
+    //fix names
+    for(i in RawOCRStorePrice[0])
+    {
+        OCRTableCost.push(objToString(RawOCRStorePrice[0][i]));
+    }
+
+    //fix names
+    for(i in RawItemTableNames[0])
+    {
+        ItemTableNames.push(objToString(RawItemTableNames[0][i]));
+    }
+
+    //set processed to true
+    for(i in OCRTableID)
+    {
+        await db.promise().query("UPDATE ocrtable SET Processed = ? WHERE id = ?", [1, OCRTableID[i]]);
+    }
+    console.log("Updated OCR processed booleans...")
+
+    //console.log("NEW OCR ITEMS LEN (incomming receipt):", OCRTableNames.length, "ITEM LEN:", ItemTableNames.length);
+
+
+    //for each item in ocrtable that IS NOT in items table, insert.
+    let difference = OCRTableNames.filter(x => !ItemTableNames.includes(x));
+    for(i in difference)
+    {
+        await db.promise().query("INSERT INTO items (shopid, Store, name, price, sale) VALUES (?, ?, ?, ?, ?)", [1, OCRTableStores[i], difference[i], OCRTableCost[i], 0]);
+    }
+
+    console.log("Added new items into the items table...")
+
+    //get ITEM ID's ascociated with the OCR Table
+    GET_IDS = []; //first fix
+    GET_FIX_ID = []; //second fix
+    GET_PROPER_ID = []; //complete fix
+
+    for(i in OCRTableNames)
+    {
+        GET_IDS.push(await db.promise().query("SELECT id FROM items WHERE name = ?", [OCRTableNames[i]]));
+    }
+
+    //second fix
+    for(i in GET_IDS)
+    {
+        GET_FIX_ID.push(GET_IDS[i][0]);
+    }
+
+    //complete fix with string
+    for(i in GET_FIX_ID)
+    {
+        var s = JSON.stringify(GET_FIX_ID[i]);
+        GetID = JSON.parse(s)[0].id;
+        GET_PROPER_ID.push(GetID)
+    }
+
+
+    //populate transactions table
+    for(i in OCRTableID)
+    {
+        await db.promise().query("INSERT INTO transactions (userid, itemid, price, qty, discount, transactiondate, lastupdate) VALUES (?, ?, ?, ?, ?, ?, ?)", [userID, GET_PROPER_ID[i], OCRTableCost[i], 1, 1, OCRTableDate[i], (year + "/" + month + "/" + date)]);
+    }
+
+    console.log("Transaction Table Populated");
+
+    
+
+}
+
+async function GetUserID()
+{
+    var userIDRaw = await db.promise().query("SELECT id FROM users WHERE username = ?", [process.env.user]);
+    //console.log(RawOCRTableDate[0][i]);
+    var s = JSON.stringify(userIDRaw[0][0]); //stringify the raw output
+    GetID = JSON.parse(s).id;
+    console.log("User ID:", GetID);
+    userID = GetID;
+}
+
 //post request for the uploaded image, using the index.ejs in views for testing purposes at the moment, currently uploads locally to /backend/uploads
 router.post('/', upload.single('image'), (req, res, next) => {
     try {
+    GetUserID();
     //object to upload, includes a name and description
     let date_object = new Date();
     // get current time
@@ -106,123 +293,22 @@ router.post('/', upload.single('image'), (req, res, next) => {
             let options = {
                 mode: 'text',
                 pythonOptions: ['-u'], // get py console output in real time
+                pythonPath: 'python',
 
                 //replace this line with your tesseract folder
                 args: ['C:/Users/Joel/Desktop/DiscountMate/Tesseract-OCR/tesseract.exe', WriteFilePath, '1']
             }
             
             PythonShell.run('./util/t1_2022_ocr_final.py', options, function (err, results) {
-                if (err) throw err;
+                if (err) res.status(500).send("Error processing OCR script");
                 // results is an array consisting of messages collected during execution, uncomment to see OCR script output in console log
                 //console.log('results: %j', results);
                 
-                //logic for MySQL server here
-                /* 
-                0. loop through OCR table
-                1.  Update item table from OCR table, look for items with the same details in the same shop, if exists don't add item, otherwise create new item in item table. Then output item id
-                2.  Insert item id into transaction table (for all items, which are not processed, then mark as processed)
-                3. once loop finished, update recommendation table with highest (10) qty items
-                */
-                //.con.query("SELECT name, address FROM customers", function (err, result, fields) {
-                    
-                console.log("Finished processing OCR script");
                 item.processed = true; //call this after ocr script, debugging for now.
                 item.save();
 
-                //item table information required
-                var itemsTableName = []
-                var itemsTable = []
-
-                //ocr table information required
-                var ocrTableName = []
-                var ocrTable = []
-
-                var shopTableName = []
-
-                //get ocr table
-                db.query('SELECT * FROM ocrtable WHERE Processed = 0', function (err, result, fields) {
-                    if (err) throw err;
-                    
-                    //for each result, add the food name to the ocrtablename
-                    for(i in result)
-                    {
-                        ocrTableName.push(result[i].food);
-                    }
-                    ocrTable = [...result];
-
-                    //now query item table
-                    db.query('SELECT * FROM items', function (err, result, fields) {
-                        if (err) throw err;
-
-                        for(i in result)
-                        {
-                            itemsTableName.push(result[i].name);
-                        }
-                        itemsTable = [...result];
-
-                        //now query shop table to get names
-                        db.query('SELECT * FROM shops', function (err, result, fields) {
-                            if (err) throw err;
-                            
-                            for(i in result)
-                            {
-                                shopTableName.push(result[i].name);
-                            }
-
-
-                            //third proimse complete, continue here...
-
-                            
-                            console.log("OCR:", ocrTableName.length, " - ITEMS:", itemsTableName.length, " - Shops:", shopTableName.length);
-                            console.log("Test", ocrTable.length, "2:", itemsTable.length);
-
-
-                            let OCRItemsNotInItemsTable = ocrTableName.filter(x => !itemsTableName.includes(x));
-
-                            console.log("OCRItemsNotInItemsTable:", OCRItemsNotInItemsTable.length)
-                            for(i in OCRItemsNotInItemsTable)
-                            {
-                                //console.log(ocrTableName.indexOf(OCRItemsNotInItemsTable[i]));
-                                //console.log(ocrTable[ocrTableName.indexOf(OCRItemsNotInItemsTable[i])]);
-
-                                //insert items that are in OCR table but NOT in ITEMS table
-                                db.query('INSERT INTO items (shopid, Store, name, price, sale) VALUES (?, ?, ?, ?, ?)', [1, ocrTable[ocrTableName.indexOf(OCRItemsNotInItemsTable[i])].Store, ocrTable[ocrTableName.indexOf(OCRItemsNotInItemsTable[i])].food, ocrTable[ocrTableName.indexOf(OCRItemsNotInItemsTable[i])].Cost, 0], function (err, result) {
-                                    if (err) throw err;
-
-                                    console.log(result);
-                            
-                                });
-                            }
-
-                            
-                            
-
-
-
-                            //console.log("items added:", count);
-
-                            
-                            
-                           
-
-                            //for each item that IS NOT in the items table FROM the OCR Table, add to the ITEMS table.
-                            // for(i in OCRItemsNotInItemsTable)
-                            // {
-                            //    // var sql = "INSERT INTO items (shopid, name, price, sale) VALUES ?";
-                            //     db.query('INSERT INTO items (shopid, name, price, sale) VALUES (?, ?, ?, ?)', [1, OCRItemsNotInItemsTable[i], 1, 0], function (err, result) {
-                            //         if (err) throw err;
-                            //         console.log(result);
-                            
-                            //     });
-                            // }
-                        });
-                    });
-                });
-
-
-
-                console.log("Finished populating tables");
-
+                //complete sql server logic
+                FillSqLServer();
                 try {
                     //unlink image once it's been processed
                     fs.unlinkSync(WriteFilePath)
