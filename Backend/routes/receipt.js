@@ -13,6 +13,8 @@ const config = require('../config/config.json'); //used to get db details
 //spawn the python process
 const {spawn} = require('child_process');
 
+
+
 //create mysql pool to connect to MySQL db
 const db = mysql.createPool({
     connectionLimit: config.connectionLimit,
@@ -82,10 +84,10 @@ router.post('/', upload.single('image'), (req, res, next) => {
             res.status(500).send("Error occurred creating the receipt model:", err.toString());
         }
         else {
-            item.processed = true; //call this after ocr script, debugging for now.
+            
             
             //save item with receipt model
-            item.save();
+            //item.save();
 
             console.log("Saved receipt locally successfully");
 
@@ -122,41 +124,104 @@ router.post('/', upload.single('image'), (req, res, next) => {
                 3. once loop finished, update recommendation table with highest (10) qty items
                 */
                 //.con.query("SELECT name, address FROM customers", function (err, result, fields) {
+                    
                 console.log("Finished processing OCR script");
+                item.processed = true; //call this after ocr script, debugging for now.
+                item.save();
 
+                //item table information required
+                var itemsTableName = []
                 var itemsTable = []
+
+                //ocr table information required
+                var ocrTableName = []
                 var ocrTable = []
 
-                //get ocr table
-                db.query('SELECT * FROM ocrtable', function (err, result, fields) {
-                    if (err) throw err;
-                    ocrTable = [...result];
-                    //console.log(result);
-                });
+                var shopTableName = []
 
-                //get items table
-                db.query('SELECT * FROM items', function (err, result, fields) {
+                //get ocr table
+                db.query('SELECT * FROM ocrtable WHERE Processed = 0', function (err, result, fields) {
                     if (err) throw err;
+                    
+                    //for each result, add the food name to the ocrtablename
                     for(i in result)
                     {
-                        console.log(result[i]);
-                        itemsTable.push(result[i].name);
+                        ocrTableName.push(result[i].food);
                     }
+                    ocrTable = [...result];
+
+                    //now query item table
+                    db.query('SELECT * FROM items', function (err, result, fields) {
+                        if (err) throw err;
+
+                        for(i in result)
+                        {
+                            itemsTableName.push(result[i].name);
+                        }
+                        itemsTable = [...result];
+
+                        //now query shop table to get names
+                        db.query('SELECT * FROM shops', function (err, result, fields) {
+                            if (err) throw err;
+                            
+                            for(i in result)
+                            {
+                                shopTableName.push(result[i].name);
+                            }
+
+
+                            //third proimse complete, continue here...
+
+                            
+                            console.log("OCR:", ocrTableName.length, " - ITEMS:", itemsTableName.length, " - Shops:", shopTableName.length);
+                            console.log("Test", ocrTable.length, "2:", itemsTable.length);
+
+
+                            let OCRItemsNotInItemsTable = ocrTableName.filter(x => !itemsTableName.includes(x));
+
+                            console.log("OCRItemsNotInItemsTable:", OCRItemsNotInItemsTable.length)
+                            for(i in OCRItemsNotInItemsTable)
+                            {
+                                //console.log(ocrTableName.indexOf(OCRItemsNotInItemsTable[i]));
+                                //console.log(ocrTable[ocrTableName.indexOf(OCRItemsNotInItemsTable[i])]);
+
+                                //insert items that are in OCR table but NOT in ITEMS table
+                                db.query('INSERT INTO items (shopid, Store, name, price, sale) VALUES (?, ?, ?, ?, ?)', [1, ocrTable[ocrTableName.indexOf(OCRItemsNotInItemsTable[i])].Store, ocrTable[ocrTableName.indexOf(OCRItemsNotInItemsTable[i])].food, ocrTable[ocrTableName.indexOf(OCRItemsNotInItemsTable[i])].Cost, 0], function (err, result) {
+                                    if (err) throw err;
+
+                                    console.log(result);
+                            
+                                });
+                            }
+
+                            
+                            
+
+
+
+                            //console.log("items added:", count);
+
+                            
+                            
+                           
+
+                            //for each item that IS NOT in the items table FROM the OCR Table, add to the ITEMS table.
+                            // for(i in OCRItemsNotInItemsTable)
+                            // {
+                            //    // var sql = "INSERT INTO items (shopid, name, price, sale) VALUES ?";
+                            //     db.query('INSERT INTO items (shopid, name, price, sale) VALUES (?, ?, ?, ?)', [1, OCRItemsNotInItemsTable[i], 1, 0], function (err, result) {
+                            //         if (err) throw err;
+                            //         console.log(result);
+                            
+                            //     });
+                            // }
+                        });
+                    });
                 });
+
+
+
                 console.log("Finished populating tables");
-                //check tables against eachother
-                console.log(itemsTable.length);
-
-                for(i in itemsTable)
-                {
-                    console.log(itemsTable[i]);
-                }
-
-                for(i in ocrTable)
-                {
-                    console.log(ocrTable[i]);
-                }
-
 
                 try {
                     //unlink image once it's been processed

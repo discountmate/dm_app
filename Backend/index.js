@@ -48,12 +48,3 @@ app.listen(ports, () => console.log('listening...'));
 const open = require('open');
 const res = require('express/lib/response');
 //open('http://localhost:3000/');
-
-
-// password hashing function
-async function passHash(password){
-	// to use we need to make it async 
-	const salt = await bcrypt.genSalt();  // as we are using await we need to make it async and it should be used under async functions only
-	// the hash needs two args password adn the salt
-	password = await bcrypt.hash(password, salt); 
-}
