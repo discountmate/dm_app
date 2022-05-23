@@ -121,7 +121,6 @@ async function FillSqLServer()
     {
         ItemTablePrice.push(objToString(RawItemTablePrice[0][i]));
     }
-    console.log(ItemTablePrice);
 
     //fix names
     for(i in RawOCRStoreBrand[0])
@@ -219,7 +218,7 @@ async function FillSqLServer()
     let difference = OCRTableNames.filter(x => !ItemTableNames.includes(x));
     for(i in difference)
     {
-        await db.promise().query("INSERT INTO items (shopid, Store, name, price, sale) VALUES (?, ?, ?, ?, ?)", [1, OCRTableStores[i], difference[i], OCRTableCost[i], 0]);
+        await db.promise().query("INSERT INTO items (shopid, Store, name, price, sale) VALUES (?, ?, ?, ?, ?)", [1, OCRTableBrand[i], difference[i], OCRTableCost[i], 0]);
     }
 
     console.log("Added new items into the items table...")
