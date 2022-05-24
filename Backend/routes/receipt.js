@@ -71,15 +71,6 @@ async function FillSqLServer()
     // current seconds
     let seconds = date_ob.getSeconds();
 
-    // // prints date in YYYY-MM-DD format
-    // console.log(year + "-" + month + "-" + date);
-
-    // // prints date & time in YYYY-MM-DD HH:MM:SS format
-    // console.log(year + "-" + month + "-" + date + " " + hours + ":" + minutes + ":" + seconds);
-
-    // // prints time in HH:MM format
-    // console.log(hours + ":" + minutes);
-
     //logic for MySQL server here
     /* 
     0. loop through OCR table

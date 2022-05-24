@@ -28,7 +28,7 @@ async function getRecommendedItems(res)
 {
     itemList = [];
     RecoList = await db.promise().query("SELECT * FROM recommendation WHERE userid = ?", [process.env.USERID]);
-    console.log(RecoList[0]);
+    //console.log(RecoList[0]);
     for(i in RecoList[0])
     {
        var item = await db.promise().query("SELECT * FROM items WHERE id = ?", [RecoList[0][i].itemid]);
