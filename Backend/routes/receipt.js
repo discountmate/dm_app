@@ -173,6 +173,7 @@ async function FillSqLServer()
     }
     console.log("Updated OCR processed booleans...")
 
+    //for each item in stores, insert a new store, this will error for most as stores are unique, sets postcode to 3000 for now.
     for(i in OCRTableStores)
     {
         try
@@ -313,7 +314,7 @@ async function GetUserID()
 
 }
 
-//post request for the uploaded image, using the index.ejs in views for testing purposes at the moment, currently uploads locally to /backend/uploads
+//post request for the uploaded image, using the index.ejs in views for testing purposes at the moment, currently uploads locally to /backend/uploads this also handles MySQL insertion code
 router.post('/', upload.single('image'), (req, res, next) => {
     try {
     GetUserID();
@@ -359,19 +360,15 @@ router.post('/', upload.single('image'), (req, res, next) => {
             res.status(500).send("Error occurred creating the receipt model:", err.toString());
         }
         else {
-            
-            
-            //save item with receipt model
-            //item.save();
-
             console.log("Saved receipt locally successfully");
 
-            //send back results to client
+            //send back results to client so they don't have to wait for the MySQL logic to finish to keep using the application
             res.status(200).send("Receipt saved.. OCR running in background");
 
             //call ocr script here to use the images saved locally preferably
 
             var PathSaved = req.file.filename;
+            
             //debug line to see what the temp image was saved as.
             //console.log("File name: " + PathSaved);
 

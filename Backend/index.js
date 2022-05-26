@@ -5,7 +5,6 @@ const bodyParser = require('body-parser'); //middleware used to handle request b
 const errorController = require('./controllers/error'); //error handling
 const mongoose = require('mongoose'); //used to access the MongoDB
 require("dotenv").config(); //used to access the .env file easily
-const bcrypt=require('bcrypt');
 
 //routes from /routes/
 const shopRoute = require('./routes/shop');
@@ -45,6 +44,6 @@ app.use(errorController.get500);
 app.listen(ports, () => console.log('listening...'));
 
 //open browser, uncomment the three lines below for auto open browser
-const open = require('open');
-const res = require('express/lib/response');
+//const open = require('open');
+//const res = require('express/lib/response');
 //open('http://localhost:3000/');
