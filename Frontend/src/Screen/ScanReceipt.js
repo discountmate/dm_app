@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
 import axios from 'axios';
-// import RNFetchBlob from 'rn-fetch-blob';
+import api from '../core/Service';
 
 
 const imagelist = []
@@ -57,55 +57,49 @@ const Setting = () => {
             
            });
      }
+    const cancelPhoto = (image) => {
+        setImage('')
+        imagelist.length = 0
+        console.log(imagelist)
+    
+    }
 
     const renderPhoto = (image) => {
         return(
-        <Image
-        style={styles.photo}
-        source={{uri:image.uri}}/>
+            <Image
+            style={styles.photo}
+            source={{uri:image.uri}}/>
         )
     }
 
     const submitPhoto = async () => {
-        // const postobj = {
-        //     uri: image.uri,
-        //     type: 'image/png',
-        //     name: 'image.png',}
-
-
         const bodyFormData = new FormData();
         bodyFormData.append('image', {
             uri: image.uri,
-            type: image.mine,
+            type: 'image/jpeg',
             name: 'image.png',
           });
-        //   console.log(bodyFormData)
-        // await axios.post("http://192.168.1.5:3000/receipt",bodyFormData)
-        // .then(function (response) {
-        //     console.warn(response);
-        //     })
-        // .catch(function (error) {   
-        //     console.warn(error);
-        //     return;
-        // })
+ 
+          
        
-        
         await axios({
-            url:"http://192.168.1.5:3000/receipt",
+            url:`${api}/receipt`,
             method:'POST',
-            // headers: { 'Content-Type': 'multipart/form-data'},
+            headers: { 'Content-Type': 'multipart/form-data'},
             data:bodyFormData
         })
         .then(function (response){
-            console.log(response)
+            console.warn('Upload successful')
+            setImage('')
+            imagelist.length = 0
+            navigation.goBack()
         })
         .catch(function (error){
-            console.log(error)
+            console.warn('Upload failed, Please try again')
+            setImage('')
+            imagelist.length = 0
             return;
         })
-      
-        
-      
     }
 
     return(
@@ -116,6 +110,9 @@ const Setting = () => {
             <View>
             {imagelist.map(i => renderPhoto(i))}
             {renderPhoto(image)}
+            <TouchableOpacity style={styles.cancelbtn} onPress={cancelPhoto}>
+                <Text style={styles.btn_text}>Cancel</Text>
+            </TouchableOpacity>
             </View> : null}
             <TouchableOpacity style={styles.btn} onPress={takePhoto}>
                 <Text style={styles.btn_text}>Take a Photo</Text>
@@ -159,6 +156,13 @@ const styles = StyleSheet.create({
         backgroundColor: 'black',
         borderRadius: 50,
         paddingVertical: 17
+        
+    },
+    cancelbtn:{
+        marginTop:20,
+        backgroundColor: 'black',
+        paddingVertical: 10,
+        marginHorizontal: 30
         
     },
     btn_text:{

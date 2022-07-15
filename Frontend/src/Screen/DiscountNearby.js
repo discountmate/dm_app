@@ -10,7 +10,7 @@ import {
     FlatList,
     TextInput
 } from 'react-native';
-import { filter } from "lodash";
+import api from '../core/Service';
 
 //svg
 import Classification from '../assets/images/Classification.svg'
@@ -30,8 +30,8 @@ const DiscountNearby = () => {
         console.log(itemList)
     },[itemList])
 
-    const getItem = async() => {
-        await axios.get("http://localhost:3000/item")
+    const getItem = async () => {
+        await axios.get(`${api}/item`)
         .then(function (response){
             if (response){
                 setItemList(response?.data)
@@ -44,9 +44,15 @@ const DiscountNearby = () => {
     }
 
     const renderItem = ({item}) => (
+        
             <TouchableOpacity style={styles.item}>
                 <Text>Product Name: {item.name}</Text>
+                <Text>Category: {item.category}</Text>
+                <View style={{flexDirection:"row"}}>
                 <Text>Price: {item.price}</Text>
+                <Text style={{marginLeft:10}}>Discounted Price: {item.discountprice ? item.discountprice : 'No Discount'}</Text>
+                </View>
+                <Text>Shop: {item.Store}</Text>
             </TouchableOpacity>
        
       );
@@ -122,7 +128,7 @@ const DiscountNearby = () => {
                     <FlatList
                         data={filtereditemList ? filtereditemList : itemList}
                         renderItem={renderItem}
-                        keyExtractor={item => item.id}
+                        keyExtractor={item => item?.id}
                         showsVerticalScrollIndicator={false}
                     /> 
      
@@ -178,7 +184,9 @@ const styles = StyleSheet.create({
         borderRadius:5,
         marginVertical:5,
         padding:5,
-        borderWidth:1
+        borderWidth:1,
+
+
     }
 }) 
 export default DiscountNearby;

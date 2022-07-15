@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import axios from 'axios';
 import { SetPhoneNum, SetUsername } from '../../redux/actions/common';
+import api from '../../core/Service';
 
 const Register4 = () =>{
     const phone = useSelector(state => state.app.mobile)
@@ -40,7 +41,7 @@ const Register4 = () =>{
             active:'1'
         }
 
-        await axios.post("http://192.168.1.5:3000/user/create",postobj)
+        await axios.post(`${api}/user/create`,postobj)
         .then(function (response) {
                 console.warn("Register success!");
                 dispatch(SetPhoneNum(''))

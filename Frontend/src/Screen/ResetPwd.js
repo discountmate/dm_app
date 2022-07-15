@@ -10,6 +10,7 @@ import {
     TouchableOpacity
 } from "react-native";
 import { useSelector } from "react-redux";
+import api from '../core/Service';
 
 
 const ResetPwd = () => {
@@ -27,12 +28,14 @@ const ResetPwd = () => {
 
 
 
-        await axios.put("http://192.168.1.5:3000/user/reset",
+        await axios.put(`${api}/user/reset`,
         {username:username,
         password:pwd,
         newpassword:repwd} )
         .then(function (response){
-            console.log(response)
+            console.warn('Reset successful')
+            navigation.goBack()
+            
 
         })
         .catch(function (error){

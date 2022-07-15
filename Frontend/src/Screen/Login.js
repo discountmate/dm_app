@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
+import env from '../core/Service'
 
 import {
   View,
@@ -11,6 +12,8 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { setAuth, SetUsername } from '../redux/actions/common';
+import * as Service from '../core/Service';
+
 
 //svg
 import Logo from '../assets/images/Logo.svg'
@@ -21,6 +24,8 @@ const Login = () =>{
     const navigation = useNavigation();
     const [username, SetUserName] = useState("");
     const [password, SetPassword] = useState("");
+    const api = Service.default;
+
 
     const CheckLogin = async () => {
         const postobj = {
@@ -28,12 +33,9 @@ const Login = () =>{
             password:password
         }
         
-        await axios.post("http://192.168.1.5:3000/user/login",postobj)
+        
+        await axios.post(`${api}/user/login`, postobj)
         .then(function (response) {
-                // if (!response) {
-                //     console.warn('login failed');
-                //     return;
-                // }
                 dispatch(setAuth(true));
                 dispatch(SetUsername(username))
                 navigation.replace('Profile');
@@ -43,8 +45,6 @@ const Login = () =>{
             console.warn('login failed');
             return;
         })
-    
-
         return 0;
     }
 
