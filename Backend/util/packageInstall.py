@@ -1,8 +1,5 @@
 # these are the packages we need to install for OCRScript to work 
 # just python packageInstall.py to start the installation 
-
-
-
 import sys
 import subprocess
 subprocess.check_call([sys.executable, '-m', 'pip', 'install', 
