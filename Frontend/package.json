@@ -16,9 +16,11 @@
     "@react-navigation/native-stack": "^6.6.1",
     "axios": "^0.27.2",
     "install": "^0.13.0",
+    "lodash": "^4.17.21",
     "npm": "^8.6.0",
     "react": "17.0.2",
     "react-native": "0.68.0",
+    "react-native-dotenv": "^3.3.1",
     "react-native-gesture-handler": "^2.3.2",
     "react-native-image-crop-picker": "^0.37.3",
     "react-native-reanimated": "^2.6.0",
@@ -28,6 +30,7 @@
     "react-native-svg": "^12.3.0",
     "react-redux": "^7.2.8",
     "redux": "^4.1.2",
+    "rn-fetch-blob": "^0.12.0",
     "seamless-immutable": "^7.1.4"
   },
   "devDependencies": {

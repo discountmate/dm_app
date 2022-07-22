@@ -1,7 +1,6 @@
 //get MySQL db
 const db = require('../util/database');
 
-
 //model for the item table
 module.exports = class item {
     constructor(id, shopid, name, price, sale, discountend, category, discountprice, discountpercentage) {

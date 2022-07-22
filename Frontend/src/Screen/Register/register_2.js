@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import {
   View,
@@ -9,20 +9,16 @@ import {
   TextInput,
   TouchableOpacity,
 } from 'react-native';
+import { SetPhoneNum } from '../../redux/actions/common';
 
 const Register2 = () =>{
     const dispatch = useDispatch();
     const navigation = useNavigation();
+    const [phone, SetPhone] = useState();
 
-    const[pwd,setpwd] = useState('');
-    const[repwd,setrepwd] = useState('');
 
-    const infoCheck = async () => {
-        //api
-        //result = 
-        //if(!result) {return;}
-    
-
+    const infoCheck = () => {
+        dispatch(SetPhoneNum(phone));
         navigation.navigate('Register3');
         return 0;
     }
@@ -47,7 +43,10 @@ const Register2 = () =>{
                 <Text style={{marginLeft:10}}>Mobile number </Text>
                     <View style={styles.input_box}>
                         
-                        <TextInput style={{color:'white'}}
+                        <TextInput 
+                        style={{color:'white'}}
+                        onChangeText = {SetPhone}
+
                         
                         />
                     </View>

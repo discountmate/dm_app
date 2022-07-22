@@ -1,58 +1,31 @@
 import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import {
   View,
   Text,
   StyleSheet,
   SafeAreaView,
-  TextInput,
   TouchableOpacity,
 } from 'react-native';
-import { setAuth } from '../redux/actions/common';
+
 
 const Setting = () =>{
-    const dispatch = useDispatch();
     const navigation = useNavigation();
-    const [btnClick, setbtnClick] = useState('')
-
-    const CheckLogin = async () => {
-        ImagePicker.openCamera({
-            width: 300,
-            height: 400,
-            cropping: false
-          }).then(image =>{
-            console.log(image.path)
-            setImage({
-              uri: image.path,
-              width: image.width,
-              height: image.height,
-              mime: image.mime,
-          })
-          });
-    }
+    const username = useSelector(state => state.app.username)
+   
 
     return(
     <SafeAreaView style={styles.container}>
+        <Text style={styles.header}>My Profile</Text>
+        <Text style={styles.info}>username: {username}</Text>
         <View>
-            <Text style={styles.header}>Setting</Text>
-            <View style={styles.tab}>
-                <TouchableOpacity onPress={()=>setbtnClick('History')}>
-                    <Text style={btnClick == 'History' && styles.activeTab}>
-                        History
-                    </Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={{marginLeft:10}} onPress={()=>setbtnClick('Account')}>
-                    <Text style={btnClick == 'Account' && styles.activeTab}>
-                        Account
-                        </Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={{marginLeft:10}} onPress={()=>setbtnClick('Other')}>
-                    <Text style={btnClick == 'Other' && styles.activeTab}>
-                        Other
-                    </Text>
-                </TouchableOpacity>
-            </View>
+        <TouchableOpacity style={styles.btn} >
+            <Text style={styles.btn_text}>Reset detail</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.btn} onPress = { () => navigation.push('Reset')}>
+            <Text style={styles.btn_text}>Reset password</Text>
+          </TouchableOpacity>
 
 
         </View>
@@ -73,13 +46,22 @@ const styles = StyleSheet.create({
         fontWeight:'bold',
         color:'black',
     },
-    tab:{
-        flexDirection:'row',
-        marginTop: 28,
-        justifyContent:'flex-start'
-    },
-    activeTab:{
+
+    info:{
+      fontSize: 15,
+        fontWeight:'bold',
         color:'black',
-    }
+    },
+
+    btn:{
+        marginTop:20,
+        backgroundColor: '#C4C4C4',
+        paddingVertical: 10
+        
+    },
+    btn_text:{
+        textAlign:'center',
+        fontSize: 20,
+    },
 }) 
 export default Setting;

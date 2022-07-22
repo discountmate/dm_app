@@ -9,14 +9,16 @@ import {
   TextInput,
   TouchableOpacity,
 } from 'react-native';
+import { SetUsername } from '../../redux/actions/common';
 
 const Register = () =>{
     const dispatch = useDispatch();
     const navigation = useNavigation();
+    const [username, SetUserName] = useState('');
 
     const infoCheck = async () => {
+        dispatch(SetUsername(username))
         
-
         navigation.navigate('Register2');
         return 0;
     }
@@ -38,29 +40,19 @@ const Register = () =>{
             <Text style={styles.context_txt}> Let's get started</Text>
 
             <View style={{marginTop:23}}>
-                <Text style={{marginLeft:10}}>First Name </Text>
+                <Text style={{marginLeft:10}}>Username</Text>
                     <View style={styles.input_box}>
                         
-                        <TextInput style={{color:'white'}}
+                        <TextInput
+                        style={{color:'white'}}
+                        onChangeText={SetUserName}
                         
                         />
                     </View>
             </View>
-            
-
-            <View style={{marginTop:23}}>
-                <Text  style={{marginLeft:10}}>Last Name </Text>
-                    <View style={styles.input_box}>
-                        
-                        <TextInput style={{color:'white'}}
-                        
-                        />
-                    </View>
-            </View>
-
         </View>
 
-        <View style={{padding: 75}}>
+        <View style={{padding: 75, marginTop:20}}>
             <TouchableOpacity style={styles.btn} onPress={infoCheck}>
                 <Text style={styles.btn_text}>Next</Text>
             </TouchableOpacity>

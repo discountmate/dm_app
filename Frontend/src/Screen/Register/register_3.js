@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import {
   View,
@@ -11,17 +11,10 @@ import {
 } from 'react-native';
 
 const Register3 = () =>{
-    const dispatch = useDispatch();
     const navigation = useNavigation();
 
-    const[pwd,setpwd] = useState('');
-    const[repwd,setrepwd] = useState('');
 
     const infoCheck = async () => {
-        //api
-        //result = 
-        //if(!result) {return;}
-
         navigation.navigate('Register4');
         return 0;
     }

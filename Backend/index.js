@@ -5,7 +5,6 @@ const bodyParser = require('body-parser'); //middleware used to handle request b
 const errorController = require('./controllers/error'); //error handling
 const mongoose = require('mongoose'); //used to access the MongoDB
 require("dotenv").config(); //used to access the .env file easily
-const bcrypt=require('bcrypt');
 
 //routes from /routes/
 const shopRoute = require('./routes/shop');
@@ -45,15 +44,6 @@ app.use(errorController.get500);
 app.listen(ports, () => console.log('listening...'));
 
 //open browser, uncomment the three lines below for auto open browser
-const open = require('open');
-const res = require('express/lib/response');
+//const open = require('open');
+//const res = require('express/lib/response');
 //open('http://localhost:3000/');
-
-
-// password hashing function
-async function passHash(password){
-	// to use we need to make it async 
-	const salt = await bcrypt.genSalt();  // as we are using await we need to make it async and it should be used under async functions only
-	// the hash needs two args password adn the salt
-	password = await bcrypt.hash(password, salt); 
-}

@@ -26,7 +26,7 @@ router.post('/', (req, res) => {
             res.status(404).send("Not found");
         }
         else{
-            console.log("Result : ", docs);
+            //console.log("Result : ", docs);
             //convert to base64 image
             const imgBase64 = docs.img.data.toString("base64");
             //send html to web client

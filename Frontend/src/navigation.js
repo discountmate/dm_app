@@ -15,10 +15,14 @@ import Register from './Screen/Register/register_1'
 import Register2 from './Screen/Register/register_2'
 import Register3 from './Screen/Register/register_3'
 import Register4 from './Screen/Register/register_4'
-import ForgetPwd from './Screen/ForgetPwd';
+import ForgetPwd from './Screen/ForgetPwd/ForgetPwd';
+import ForgetPwd1 from './Screen/ForgetPwd/ForgetPwd1';
+import ForgetPwd2 from './Screen/ForgetPwd/ForgetPwd2';
 import DiscountNearby from './Screen/DiscountNearby';
 import Setting from './Screen/Setting';
 import ScanReceipt from './Screen/ScanReceipt';
+import ResetPwd from './Screen/ResetPwd';
+
 
 
 //svg
@@ -70,14 +74,6 @@ const Navigation = () => {
                 component={Profile}
                 options={{
                     title:"Dashboard",
-                    headerLeft: () => (
-                        <TouchableOpacity
-                        style={styles.ProflieIcon}
-                        onPress={() => navigation.goBack()}>
-                            <LeftArrow />
-                        </TouchableOpacity>
-                        
-                    ),
                 
                 }}
             />
@@ -119,6 +115,25 @@ const Navigation = () => {
                 name='ForgetPwd'
                 component={ForgetPwd}
                 options={{
+                    title:''
+            
+                }}
+            />
+
+            <Stack.Screen
+                name='ForgetPwd1'
+                component={ForgetPwd1}
+                options={{
+                    title:''
+            
+                }}
+            />
+
+            <Stack.Screen
+                name='ForgetPwd2'
+                component={ForgetPwd2}
+                options={{
+                    title:''
             
                 }}
             />
@@ -180,7 +195,24 @@ const Navigation = () => {
 
                 }}
             />
-        </Stack.Navigator>
+
+            <Stack.Screen
+                name='Reset'
+                component={ResetPwd}
+                options={{
+                    title:'',
+                    headerLeft: () => (
+                        <TouchableOpacity
+                        style={styles.ProflieIcon}
+                        onPress={() => navigation.goBack()}>
+                            <LeftArrow />
+                        </TouchableOpacity>
+                        
+                    ),
+
+                }}
+            />
+         </Stack.Navigator>
        
     );
 }

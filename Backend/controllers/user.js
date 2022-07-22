@@ -93,6 +93,7 @@ try {
          {
              connection.release()
              
+             
              if (err) throw (err)
              //if no results
              if (result.length == 0) 
@@ -111,8 +112,12 @@ try {
                      //generate access token
                      console.log("--> Login Successful")
                      console.log("--> Generating accessToken")
+                     //console.log(result[0].id);
+                     process.env.USERID = result[0].id;
+                     process.env.USER = username;
                      const accessToken =  generateAccessTokens({username: username})
                      console.log({accessToken: accessToken})
+                     //used for /routes/receipt.js
                      res.status(200).send("Login successful, token: " + accessToken.toString());
                  } 
                  else 
