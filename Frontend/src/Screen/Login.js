@@ -16,7 +16,7 @@ import * as Service from '../core/Service';
 
 
 //svg
-import Logo from '../assets/images/Logo.svg'
+import Logo from '../assets/images/New_Logo.svg'
 
 const Login = () =>{
     const axios = require('axios')
@@ -52,10 +52,10 @@ const Login = () =>{
     return (
     <SafeAreaView style={styles.container}>
         <View style={styles.title}>
-            <Logo/>
+            <Logo />
         </View>
 
-        <View>
+        <View style={{marginTop: 20}}>
             <View style={styles.input_box}>
                 <TextInput
                 placeholder='Username'
@@ -71,7 +71,7 @@ const Login = () =>{
             </View>
         </View>
 
-        <View style={{paddingHorizontal: 75}}>
+        <View style={{paddingHorizontal: 40, marginTop: 16}}>
             <TouchableOpacity style={styles.btn} onPress={CheckLogin}>
                 <Text style={styles.btn_text}>Log in</Text>
             </TouchableOpacity>
@@ -98,12 +98,12 @@ const Login = () =>{
 
 const styles = StyleSheet.create({
     container:{
-        padding: 30,
+        paddingHorizontal: 30,
         marginVertical: 50,
     },
 
     input_box:{
-        borderWidth: 1,
+        borderWidth: 2,
         borderRadius: 50,
         marginTop: 20
     },
@@ -118,8 +118,8 @@ const styles = StyleSheet.create({
     },
 
     btn:{
-        marginTop:20,
-        backgroundColor: 'black',
+        marginTop:16,
+        backgroundColor: '#4F44D0',
         borderRadius: 50,
         paddingVertical: 17
         
