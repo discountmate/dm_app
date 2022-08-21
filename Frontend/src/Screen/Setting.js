@@ -20,11 +20,11 @@ const Setting = () =>{
         <Text style={styles.header}>My Profile</Text>
         <Text style={styles.info}>username: {username}</Text>
         <View>
-        <TouchableOpacity style={styles.btn} >
-            <Text style={styles.btn_text}>Reset detail</Text>
+        <TouchableOpacity style={styles.btn} onPress = { () => navigation.push('UpdateUserProfile')}>
+            <Text style={styles.btn_text}>Update Profile</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.btn} onPress = { () => navigation.push('Reset')}>
-            <Text style={styles.btn_text}>Reset password</Text>
+            <Text style={styles.btn_text}>Reset Password</Text>
           </TouchableOpacity>
 
 

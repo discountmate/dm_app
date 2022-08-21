@@ -13,64 +13,75 @@ import { useSelector } from "react-redux";
 import api from '../core/Service';
 
 
-const ResetPwd = () => {
-    const navigation = useNavigation()
-    const[pwd,setpwd] = useState('');
-    const[repwd,setrepwd] = useState('');
-    const username = useSelector(state => state.app.username)
+const UpdateUserProfile = () => {
+    const navigation = useNavigation()    
+    const username = useSelector(state => state.app.username);
+    const[password,setpassword] = useState('');
+    const[mobile,setmobile] = useState('');
+    const[email,setemail] = useState('');
+    const[postcode,setpostcode] = useState('');
 
     // useEffect(()=>{
     //     console.log(pwd)
     //     console.log(repwd)
     // })
 
-    const infoCheck = async () => { 
+    const UpdateProfile = async () => { 
 
-        await axios.put(`${api}/user/reset`,
-        {username:username,
-        password:pwd,
-        newpassword:repwd} )
+        const postobj = {
+            username:username,
+            password:password,
+            mobile:mobile,
+            email:email,
+            postcode:postcode
+        }
+
+        await axios.put(`${api}/user/update`,postobj)
         .then(function (response){
-            console.warn('Reset successful')
-            navigation.goBack()
-            
+            console.warn('Update profile successful')
+            navigation.goBack()           
 
         })
         .catch(function (error){
             console.log(error)
         })
     }
-
-
     return (
         <SafeAreaView style={styles.container}>
             <View>
                 <View style={styles.title}>
                     <Text style={styles.title_txt}>
-                       Reset Password
+                       Update Details 
                     </Text>
                     
-                </View>
-    
-                {/* <Text style={styles.header_txt}> New Password</Text>
-                <Text style={styles.context_txt}> Please submit password</Text> */}
+                </View> 
     
                 <View style={styles.view_row}>
-                    <Text style={{marginLeft:5, color:'black'}}>Old Password</Text>
+                    <Text style={{marginLeft:5, color:'black'}}>Password</Text>
                         <View style={styles.input_box}>
-                            <TextInput style={{color:'white'}} onChangeText={setpwd}/>
-                        </View>
+                            <TextInput style={{color:'white'}} onChangeText={setpassword}/>
+                        </View> 
+                    
+                      <Text style={{marginLeft:5, color:'black'}}>Email</Text>
+                        <View style={styles.input_box}>
+                            <TextInput style={{color:'white'}} onChangeText={setemail}/>
+                        </View> 
 
-                    <Text style={{marginLeft:5, color:'black', marginTop:20}}>New Password</Text>
-                        <View style={styles.input_box} >
-                            <TextInput style={{color:'white'}} onChangeText={setrepwd}/>
-                        </View>
+                     <Text style={{marginLeft:5, color:'black'}}>Mobile</Text>
+                        <View style={styles.input_box}>
+                            <TextInput style={{color:'white'}} onChangeText={setmobile}/>
+                        </View> 
+
+                     <Text style={{marginLeft:5, color:'black'}}>Postcode</Text>
+                        <View style={styles.input_box}>
+                            <TextInput style={{color:'white'}} onChangeText={setpostcode}/>
+                        </View>  
                 </View>
             </View>
     
             <View style={styles.view_row}>
-                <TouchableOpacity style={styles.btn} onPress={infoCheck}>
-                    <Text style={styles.btn_text}>Reset Password</Text>
+                <TouchableOpacity style={styles.btn} onPress={UpdateProfile}>
+                    <Text style={styles.btn_text}>Update Details</Text>
                 </TouchableOpacity>
             </View> 
         </SafeAreaView>
@@ -149,4 +160,4 @@ const ResetPwd = () => {
             marginTop:20
         }
     }) 
-export default ResetPwd;
+export default UpdateUserProfile;
