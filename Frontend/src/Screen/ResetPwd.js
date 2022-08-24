@@ -26,8 +26,6 @@ const ResetPwd = () => {
 
     const infoCheck = async () => {
 
-
-
         await axios.put(`${api}/user/reset`,
         {username:username,
         password:pwd,

@@ -15,6 +15,8 @@ import { setAuth } from '../redux/actions/common';
 //svg
 import RightArrow from '../assets/images/rightarrow.svg';
 import Product from '../assets/images/product.svg';
+import Itemswiper from './Itemswiper';
+
 
 
 const Main = () =>{
@@ -35,37 +37,15 @@ const Main = () =>{
         <View style={styles.touchContainer}>
           <TouchableOpacity onPress={() => navigation.navigate('DiscountNearby')}>
             <View style={styles.touch} >
-              <Text style={styles.touch_text}>Discount Nearby</Text>
+              <Text style={styles.touch_text}>Recommended items</Text>
               <RightArrow />
             </View>  
           </TouchableOpacity>
         </View>
 
-        <View style={{backgroundColor:'grey'}}>
-          <ScrollView 
-          horizontal={true} 
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={{paddingHorizontal: '10%'}}>
-             <Product />
-             <Product />
-             <Product />
-          </ScrollView>
-        </View>
+        <Itemswiper/>
 
-        <View style={{paddingVertical:20, alignSelf:'center'}}>
-          <Text>
-            ~~~~~~~~~{'\n'}
-            ~~~~~~~~~~~~~~~~~{'\n'}
-            ~~~~~~~~~~~~~~~~~
-          </Text>
-        </View>
-
-       
-        
-
-        <TouchableOpacity style={styles.btn} onPress={Logout}>
-          <Text style={styles.btn_text}>Logout</Text>
-        </TouchableOpacity>
+     
       </View>
    
     </SafeAreaView>
@@ -74,6 +54,11 @@ const Main = () =>{
 }
 
 const styles = StyleSheet.create({
+  container: {
+    paddingLeft:56,
+    paddingRight:"5%"
+
+  },
   btn:{
       marginTop:10,
       backgroundColor: 'grey',
@@ -83,23 +68,32 @@ const styles = StyleSheet.create({
   },
   btn_text:{
       textAlign:'center',
-      color:'white',
+      color:'black',
       fontSize: 20,
   },
   touchContainer:{
-    padding:20
+    paddingTop:32
   },
   touch:{
     flexDirection:'row',
-    justifyContent:'space-between',
+    // justifyContent:'center',
     alignItems:'center',
-
   },
   touch_text:{
     fontSize:24,
     fontWeight:'bold',
-    color:'black'
+    color:'#555555'
   },
+  slide: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItem: 'center',
+    backgroundColor: 'red',
+    paddingVertical:20
+  },
+ 
+
+
 
 }) 
 export default Main;

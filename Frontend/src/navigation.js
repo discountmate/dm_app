@@ -19,7 +19,7 @@ import ForgetPwd from './Screen/ForgetPwd/ForgetPwd';
 import ForgetPwd1 from './Screen/ForgetPwd/ForgetPwd1';
 import ForgetPwd2 from './Screen/ForgetPwd/ForgetPwd2';
 import DiscountNearby from './Screen/DiscountNearby';
-import Setting from './Screen/Setting';
+import Setting from './Screen/Setting/Setting';
 import ScanReceipt from './Screen/ScanReceipt';
 import ResetPwd from './Screen/ResetPwd';
 
@@ -49,8 +49,8 @@ const Navigation = () => {
                 name='Main'
                 component={Main}
                 options={{
-                    title:"Welcome",
-                    headerTitleStyle: {fontSize:30,},
+                    title:"DiscountMate",
+                    headerTitleStyle: {fontSize:30, color:'#4F44D0'},
                     headerRight: () => (
                         <>
                            <TouchableOpacity
@@ -166,7 +166,7 @@ const Navigation = () => {
                 name='Setting'
                 component={Setting}
                 options={{
-                    title:'',
+                    title:'Setting',
                     headerLeft: () => (
                         <TouchableOpacity
                         style={styles.ProflieIcon}
