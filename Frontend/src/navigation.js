@@ -1,5 +1,5 @@
 import React from 'react';
-import {TouchableOpacity, StyleSheet} from 'react-native';
+import {TouchableOpacity, StyleSheet, Text} from 'react-native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 
@@ -19,7 +19,7 @@ import ForgetPwd from './Screen/ForgetPwd/ForgetPwd';
 import ForgetPwd1 from './Screen/ForgetPwd/ForgetPwd1';
 import ForgetPwd2 from './Screen/ForgetPwd/ForgetPwd2';
 import DiscountNearby from './Screen/DiscountNearby';
-import Setting from './Screen/Setting/Setting';
+import Setting from './Screen/Setting';
 import ScanReceipt from './Screen/ScanReceipt';
 import ResetPwd from './Screen/ResetPwd';
 
@@ -56,13 +56,13 @@ const Navigation = () => {
                            <TouchableOpacity
                            style={styles.ProflieIcon}
                            onPress={() => navigation.navigate('Profile')}>
-                                <ProflieIcon />
+                                {/* <ProflieIcon /> */}
                             </TouchableOpacity>
 
                             <TouchableOpacity
                             style={styles.ProflieIcon}
                             onPress={() => navigation.navigate('Scan')}>
-                                <Scan />
+                                {/* <Scan /> */}
                             </TouchableOpacity>
                         </>
                     ),
