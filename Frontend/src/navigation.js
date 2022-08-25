@@ -1,5 +1,5 @@
 import React from 'react';
-import {TouchableOpacity, StyleSheet, Text} from 'react-native';
+import {TouchableOpacity, StyleSheet, Text, View} from 'react-native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 
@@ -50,19 +50,15 @@ const Navigation = () => {
                 component={Main}
                 options={{
                     title:"DiscountMate",
-                    headerTitleStyle: {fontSize:30, color:'#4F44D0'},
+                    headerTitleAlign:'center',
+                    headerTitleStyle: {fontSize:22,fontWeight:'700', color:'#4F44D0'},
+                    
                     headerRight: () => (
                         <>
                            <TouchableOpacity
-                           style={styles.ProflieIcon}
+                           style={Platform.OS === 'ios' ? styles.ProflieIcon : ''}
                            onPress={() => navigation.navigate('Profile')}>
-                                {/* <ProflieIcon /> */}
-                            </TouchableOpacity>
-
-                            <TouchableOpacity
-                            style={styles.ProflieIcon}
-                            onPress={() => navigation.navigate('Scan')}>
-                                {/* <Scan /> */}
+                                <ProflieIcon/>
                             </TouchableOpacity>
                         </>
                     ),
@@ -142,7 +138,9 @@ const Navigation = () => {
                 name='DiscountNearby'
                 component={DiscountNearby}
                 options={{
-                    title:'',
+                    title:'Nearby Offerts',
+                    headerTitleAlign:'center',
+                    headerTitleStyle: {fontSize:22,fontWeight:'700', color:'#4F44D0'},
                     headerLeft: () => (
                         <TouchableOpacity
                         style={styles.ProflieIcon}
@@ -219,8 +217,7 @@ const Navigation = () => {
 
 const styles = StyleSheet.create({
     ProflieIcon:{
-        marginRight:15,
-        paddingVertical:20,
+        // marginBottom:30
     }
 })
     

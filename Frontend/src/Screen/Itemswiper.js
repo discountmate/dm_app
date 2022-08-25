@@ -16,9 +16,9 @@ const {height} = Dimensions.get('screen')
 const Itemswiper = () => {
  
     return(
-        <View style={{height:'90%'}}>
-          {/* <Text>Recom</Text> */}
+        <View style={{height:'90%', marginTop:20}}>
         <Swiper 
+        style={{overflow:'visible'}}
         horizontal={false}
         dotColor='#000000'
         dotStyle={{top:'50%'}}
@@ -35,96 +35,44 @@ const Itemswiper = () => {
         }
         paginationStyle={{bottom:'50%'}}
         >
-          {/* <View>
-          </View> */}
+         
             <View style={styles.slide}>
-            <View style={styles.imgbox}/>
-            <View style={{padding:16}}>
-                <Text style={styles.product_name}>Product Name</Text>
-                <Text style={styles.btn_text}>
-                Rearade nibälingar at, 
-                megahemåt för att krot och 
-                anasat räniplagon. 
-                </Text>
+              <View style={styles.imgbox}/>
+              <View style={{padding:16}}>
+                  <Text style={styles.product_name}>Product Name1</Text>
+                  <Text style={styles.btn_text}>
+                  Rearade nibälingar at, 
+                  megahemåt för att krot och 
+                  anasat räniplagon. 
+                  </Text>
+              </View>
             </View>
-          </View>
-          <View style={styles.slide}>
-            <View style={styles.imgbox}/>
-            <View style={{padding:16}}>
-                <Text style={styles.product_name}>Product Name</Text>
-                <Text style={styles.btn_text}>
-                Rearade nibälingar at, 
-                megahemåt för att krot och 
-                anasat räniplagon. 
-                </Text>
-            </View>
-          </View> 
-          <View style={styles.slide}>
-            <View style={styles.imgbox}/>
-            <View style={{padding:16}}>
-                <Text style={styles.product_name}>Product Name</Text>
-                <Text style={styles.btn_text}>
-                Rearade nibälingar at, 
-                megahemåt för att krot och 
-                anasat räniplagon. 
-                </Text>
-            </View>
-          </View> 
-          <View style={styles.slide}>
-            <View style={styles.imgbox}/>
-            <View style={{padding:16}}>
-                <Text style={styles.product_name}>Product Name</Text>
-                <Text style={styles.btn_text}>
-                Rearade nibälingar at, 
-                megahemåt för att krot och 
-                anasat räniplagon. 
-                </Text>
-            </View>
-          </View> 
-          <View style={styles.slide}>
-            <View style={styles.imgbox}/>
-            <View style={{padding:16}}>
-                <Text style={styles.product_name}>Product Name</Text>
-                <Text style={styles.btn_text}>
-                Rearade nibälingar at, 
-                megahemåt för att krot och 
-                anasat räniplagon. 
-                </Text>
-            </View>
-          </View> 
-          <View style={styles.slide}>
-            <View style={styles.imgbox}/>
-            <View style={{padding:16}}>
-                <Text style={styles.product_name}>Product Name</Text>
-                <Text style={styles.btn_text}>
-                Rearade nibälingar at, 
-                megahemåt för att krot och 
-                anasat räniplagon. 
-                </Text>
-            </View>
-          </View> 
-          <View style={styles.slide}>
-            <View style={styles.imgbox}/>
-            <View style={{padding:16}}>
-                <Text style={styles.product_name}>Product Name</Text>
-                <Text style={styles.btn_text}>
-                Rearade nibälingar at, 
-                megahemåt för att krot och 
-                anasat räniplagon. 
-                </Text>
-            </View>
-          </View> 
-          <View style={styles.slide}>
-            <View style={styles.imgbox}/>
-            <View style={{padding:16}}>
-                <Text style={styles.product_name}>Product Name</Text>
-                <Text style={styles.btn_text}>
-                Rearade nibälingar at, 
-                megahemåt för att krot och 
-                anasat räniplagon. 
-                </Text>
-            </View>
-          </View> 
+            <View style={styles.slide}>
+              <View style={styles.imgbox}/>
+              <View style={{padding:16}}>
+                  <Text style={styles.product_name}>Product Name2</Text>
+                  <Text style={styles.btn_text}>
+                  Rearade nibälingar at, 
+                  megahemåt för att krot och 
+                  anasat räniplagon. 
+                  </Text>
+              </View>
+            </View> 
+            <View style={styles.slide}>
+              <View style={styles.imgbox}/>
+              <View style={{padding:16}}>
+                  <Text style={styles.product_name}>Product Name3</Text>
+                  <Text style={styles.btn_text}>
+                  Rearade nibälingar at, 
+                  megahemåt för att krot och 
+                  anasat räniplagon. 
+                  </Text>
+              </View>
+            </View> 
+  
+          
+        
+         
           
         </Swiper>
       </View>      
@@ -137,10 +85,7 @@ const styles = StyleSheet.create({
     backgroundColor:'black',
   },
     slide: {
-        // flex: 1,
         alignItem: 'center',
-        // paddingVertical:20
-        // backgroundColor:"red",
       },
     product_name: {
         color:'black',

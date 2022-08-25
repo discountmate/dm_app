@@ -15,6 +15,7 @@ import api from '../core/Service';
 //svg
 import Classification from '../assets/images/Classification.svg'
 import Filter from '../assets/images/filter.svg'
+import Productimg from '../assets/images/newIcon.svg'
 
 const DiscountNearby = () => {
     const[clickedTab, setclickedTab] = useState('Food');
@@ -78,32 +79,29 @@ const DiscountNearby = () => {
 
     return(
         <SafeAreaView style={styles.container}>
-            <ScrollView 
-            showsVerticalScrollIndicator={false}>
-                <View>
-                    <Text style={styles.header}>Nearby Offerts</Text>
+            <View>
                     <View style={styles.Navbar}>
                         <ScrollView 
                         horizontal={true}
                         showsHorizontalScrollIndicator={false}
                         style={styles.tab}>
                             <TouchableOpacity onPress={()=>setclickedTab('Food')}>
-                                <Text style={clickedTab == 'Food' ? styles.activeTab : styles.inactiveTab}>
+                                <Text style={clickedTab === 'Food' ? styles.activeTab : styles.inactiveTab}>
                                     Food/Drink
                                 </Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={{marginLeft:16}} onPress={()=>setclickedTab('Elect')}>
-                                <Text style={clickedTab == 'Elect' ? styles.activeTab: styles.inactiveTab}>
+                                <Text style={clickedTab === 'Elect' ? styles.activeTab: styles.inactiveTab}>
                                     Electronics
                                     </Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={{marginLeft:16}} onPress={()=>setclickedTab('Closing')}>
-                                <Text style={clickedTab == 'Closing' ? styles.activeTab: styles.inactiveTab}>
+                                <Text style={clickedTab === 'Closing' ? styles.activeTab: styles.inactiveTab}>
                                     Closing/Shoes
                                     </Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={{marginLeft:16}} onPress={()=>setclickedTab('Closing')}>
-                                <Text style={clickedTab == 'Closing' ? styles.activeTab: styles.inactiveTab}>
+                                <Text style={clickedTab === 'Closing' ? styles.activeTab: styles.inactiveTab}>
                                     Closing/Shoes
                                     </Text>
                             </TouchableOpacity>
@@ -124,14 +122,89 @@ const DiscountNearby = () => {
                     /> 
                     : null}
                 </View>
+            <ScrollView 
+            showsVerticalScrollIndicator={false}>
+                
                
-                    <FlatList
+                    {/* <FlatList
                         data={filtereditemList ? filtereditemList : itemList}
                         renderItem={renderItem}
                         keyExtractor={item => item?.id}
                         showsVerticalScrollIndicator={false}
-                    /> 
-     
+                    />  */}
+                       <TouchableOpacity style={styles.item}>
+                            <View style={styles.imgbox}/>
+                            <View style={{marginLeft: 8}}>
+                                <Text>Product Name: </Text>
+                                <Text>Category: </Text>
+                                <View style={{flexDirection:"row"}}>
+                                <Text>Price: </Text>
+                                <Text style={{marginLeft:10}}>Discounted Price: </Text>
+                                </View>
+                                <Text>Shop: </Text>
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.item}>
+                            <View style={styles.imgbox}/>
+                            <View style={{marginLeft: 8}}>
+                                <Text>Product Name: </Text>
+                                <Text>Category: </Text>
+                                <View style={{flexDirection:"row"}}>
+                                <Text>Price: </Text>
+                                <Text style={{marginLeft:10}}>Discounted Price: </Text>
+                                </View>
+                                <Text>Shop: </Text>
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.item}>
+                            <View style={styles.imgbox}/>
+                            <View style={{marginLeft: 8}}>
+                                <Text>Product Name: </Text>
+                                <Text>Category: </Text>
+                                <View style={{flexDirection:"row"}}>
+                                <Text>Price: </Text>
+                                <Text style={{marginLeft:10}}>Discounted Price: </Text>
+                                </View>
+                                <Text>Shop: </Text>
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.item}>
+                            <View style={styles.imgbox}/>
+                            <View style={{marginLeft: 8}}>
+                                <Text>Product Name: </Text>
+                                <Text>Category: </Text>
+                                <View style={{flexDirection:"row"}}>
+                                <Text>Price: </Text>
+                                <Text style={{marginLeft:10}}>Discounted Price: </Text>
+                                </View>
+                                <Text>Shop: </Text>
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.item}>
+                            <View style={styles.imgbox}/>
+                            <View style={{marginLeft: 8}}>
+                                <Text>Product Name: </Text>
+                                <Text>Category: </Text>
+                                <View style={{flexDirection:"row"}}>
+                                <Text>Price: </Text>
+                                <Text style={{marginLeft:10}}>Discounted Price: </Text>
+                                </View>
+                                <Text>Shop: </Text>
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.item}>
+                            <View style={styles.imgbox}/>
+                            <View style={{marginLeft: 8}}>
+                                <Text>Product Name: </Text>
+                                <Text>Category: </Text>
+                                <View style={{flexDirection:"row"}}>
+                                <Text>Price: </Text>
+                                <Text style={{marginLeft:10}}>Discounted Price: </Text>
+                                </View>
+                                <Text>Shop: </Text>
+                            </View>
+                        </TouchableOpacity>
+                    
             </ScrollView>
         </SafeAreaView>
     )
@@ -160,7 +233,8 @@ const styles = StyleSheet.create({
         borderLeftWidth: 1,
         zIndex:1,
         paddingLeft:5,
-        marginLeft:5
+        marginLeft:5,
+        borderLeftColor:'grey'
 
     },
 
@@ -170,23 +244,35 @@ const styles = StyleSheet.create({
     },
 
     activeTab:{
-        color:'black',
+        color:'#4F44D0',
         fontSize:13,
         
     },
 
     inactiveTab:{
         fontSize:13,
+        color:'grey',
 
     },
 
     item:{
-        borderRadius:5,
         marginVertical:5,
         padding:5,
-        borderWidth:1,
+        flexDirection:'row',
+        alignItems:'center',
+        // borderWidth:1,
+        shadowOpacity:0.27,
+        shadowColor:'black',
+        shadowOffset:{width:0,height:3},
+        shadowRadius:4.65,
+        elevation: 3,
+    },
+    imgbox:{
+        width:72,
+        height:72,
+        backgroundColor:'#6B7DDA',
+    },
 
-
-    }
+      
 }) 
 export default DiscountNearby;
