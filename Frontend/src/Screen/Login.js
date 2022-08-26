@@ -50,43 +50,47 @@ const Login = () =>{
 
 
     return (
-    <SafeAreaView style={styles.container}>
-        <View style={styles.title}>
-            <Logo />
-        </View>
-
-        <View style={{marginTop: 20}}>
-            <View style={styles.input_box}>
-                <TextInput
-                placeholder='Username'
-                onChangeText={SetUserName}
-                />
+    <SafeAreaView>
+        <View  style={styles.container}>
+            <View style={styles.title}>
+                <Logo />
             </View>
 
-            <View style={styles.input_box}>
-                <TextInput
-                placeholder='Password'
-                onChangeText={SetPassword}
-                />
+            <View style={{marginTop: 20}}>
+                <View style={styles.input_box}>
+                    <TextInput
+                    placeholder='Username'
+                    onChangeText={SetUserName}
+                    />
+                </View>
+
+                <View style={styles.input_box}>
+                    <TextInput
+                    placeholder='Password'
+                    onChangeText={SetPassword}
+                    />
+                </View>
             </View>
-        </View>
 
-        <View style={{paddingHorizontal: 40, marginTop: 16}}>
-            <TouchableOpacity style={styles.btn} onPress={() => navigation.replace('Main')}>
-                <Text style={styles.btn_text}>Log in</Text>
-            </TouchableOpacity>
+            <View style={{paddingHorizontal: 40, marginTop: 16}}>
+                <TouchableOpacity style={styles.btn} onPress={() => navigation.replace('Main')}>
+                    <Text style={styles.btn_text}>Log in</Text>
+                </TouchableOpacity>
 
-            <TouchableOpacity style={styles.btn} onPress={() => navigation.push('Register')}>
-                <Text style={styles.btn_text}>Sign Up</Text>
-            </TouchableOpacity>
+                <TouchableOpacity style={styles.btn} onPress={() => navigation.push('Register')}>
+                    <Text style={styles.btn_text}>Sign Up</Text>
+                </TouchableOpacity>
 
-            <TouchableOpacity style={styles.forgetpw_btn} onPress={() => navigation.push('ForgetPwd')}>
-                <Text style={styles.forgetpw_btn_text}>Forget password</Text>
-            </TouchableOpacity>
+                <TouchableOpacity style={[styles.forgetpw_btn, {paddingHorizontal:71}]} onPress={() => navigation.push('ForgetPwd')}>
+                    <Text style={styles.forgetpw_btn_text}>Forget password</Text>
+                    <View style={styles.border} />
+                </TouchableOpacity>
 
-            <TouchableOpacity style={styles.forgetpw_btn} >
-                <Text style={styles.forgetpw_btn_text}>Privacy</Text>
-            </TouchableOpacity>
+                <TouchableOpacity style={styles.forgetpw_btn} >
+                    <Text style={styles.forgetpw_btn_text}>Privacy</Text>
+                </TouchableOpacity>
+                
+            </View>
         </View>
 
 
@@ -105,7 +109,11 @@ const styles = StyleSheet.create({
     input_box:{
         borderWidth: 2,
         borderRadius: 50,
-        marginTop: 20
+        marginTop: 20,
+        fontSize:20,
+        height:56,
+        justifyContent:'center',
+        paddingHorizontal:10
     },
     forgetpw_btn:{
         marginTop:20,
@@ -114,7 +122,9 @@ const styles = StyleSheet.create({
     forgetpw_btn_text:{
         marginTop:20,
         textAlign:'center',
-        color:'black'
+        color:'black',
+        borderColor: 'black',
+
     },
 
     btn:{
@@ -137,6 +147,11 @@ const styles = StyleSheet.create({
         fontWeight:'bold',
         color:'black'
        
-    }
+    },
+    border:{
+        flex:0.28,
+        borderBottomWidth: 1,
+    
+      },
 }) 
 export default Login;
