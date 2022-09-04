@@ -25,6 +25,24 @@ const Main = () =>{
   const dispatch = useDispatch();
   const [image, setImage] = useState('');
 
+  const renderItem = ({item, index}) => {
+    <>
+    <View style={styles.slide}>
+              <View style={styles.imgbox}/>
+              <View style={{padding:16}}>
+                  <Text style={styles.product_name}>Product Name1</Text>
+                  <Text style={styles.btn_text}>
+                  Rearade nibälingar at, 
+                  megahemåt för att krot och 
+                  anasat räniplagon. 
+                  </Text>
+              </View>
+            </View>
+       
+    </>
+   
+  }
+
   const Logout = async () => {
     await dispatch(setAuth(false))
     navigation.replace('Login')
@@ -44,8 +62,7 @@ const Main = () =>{
         </View>
 
         <Itemswiper/>
-
-     
+   
       </View>
    
     </SafeAreaView>

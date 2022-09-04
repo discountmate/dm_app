@@ -11,71 +11,89 @@ import {
 } from 'react-native';
 import Swiper from 'react-native-swiper';
 const {height} = Dimensions.get('screen')
+import Carousel, { Pagination } from 'react-native-snap-carousel';
+
+const carouselItem = [
+  {
+      title:"Item 1",
+      text: "This is text area for Item 1",
+  },
+  {
+      title:"Item 2",
+      text: "This is text area for Item 2",
+  },
+  {
+      title:"Item 3",
+      text: "This is text area for Item 3",
+  },
+  {
+      title:"Item 4",
+      text: "This is text area for Item 4",
+  },
+  {
+      title:"Item 5",
+      text: "This is text area for Item 5",
+  },
+]
 
 
 const Itemswiper = () => {
+
+  const renderItem = ({item}) => {
+    return (
+      <View style={{borderWidth:0}}>
+        <View style={styles.imgbox}/>
+        <View style={{padding:16}}>
+          <Text style={styles.product_name}>{item.title}</Text>
+            <Text style={styles.btn_text}>
+              Rearade nibälingar at, 
+              megahemåt för att krot och 
+              anasat räniplagon. 
+            </Text>
+        </View>
+      </View>
+
+    )
+  }
+
+  const pagination = () => {
+    return (
+      <Pagination
+      dotsLength={5}
+      activeDotIndex={activeSlide}
+      containerStyle={{backgroundColor:'red'}}
+      dotStyle={{
+        width: 10,
+        height: 10,
+        borderRadius: 5,
+        marginHorizontal: 8,
+        backgroundColor: 'white'
+
+      }}
+
+      inactiveDotOpacity={0.4}
+      inactiveDotScale={0.6}
+      />
+    )
+  }
  
     return(
-        <View style={{height:'90%', marginTop:20}}>
-        <Swiper 
-        style={{overflow:'visible'}}
-        horizontal={false}
-        dotColor='#000000'
-        dotStyle={{top:'50%'}}
-        activeDot={
-          <View 
-          style={{
-            width:13,
-            height:13, 
-            backgroundColor:'#4F44D0', 
-            borderRadius: 7,
-            marginVertical:8,
-            top:'50%'
-          }}/>
-        }
-        paginationStyle={{bottom:'50%'}}
-        >
-         
-            <View style={styles.slide}>
-              <View style={styles.imgbox}/>
-              <View style={{padding:16}}>
-                  <Text style={styles.product_name}>Product Name1</Text>
-                  <Text style={styles.btn_text}>
-                  Rearade nibälingar at, 
-                  megahemåt för att krot och 
-                  anasat räniplagon. 
-                  </Text>
-              </View>
-            </View>
-            <View style={styles.slide}>
-              <View style={styles.imgbox}/>
-              <View style={{padding:16}}>
-                  <Text style={styles.product_name}>Product Name2</Text>
-                  <Text style={styles.btn_text}>
-                  Rearade nibälingar at, 
-                  megahemåt för att krot och 
-                  anasat räniplagon. 
-                  </Text>
-              </View>
-            </View> 
-            <View style={styles.slide}>
-              <View style={styles.imgbox}/>
-              <View style={{padding:16}}>
-                  <Text style={styles.product_name}>Product Name3</Text>
-                  <Text style={styles.btn_text}>
-                  Rearade nibälingar at, 
-                  megahemåt för att krot och 
-                  anasat räniplagon. 
-                  </Text>
-              </View>
-            </View> 
-  
-          
+      <SafeAreaView>
+        {pagination}
+        <View style={{}}>
+        <Carousel
+        vertical={true}
+        itemHeight={350}
+        sliderHeight={800}
+        slideStyle={{bottom:"60%"}}
+        data={carouselItem}
+        sliderWidth={300}
+        itemWidth={300}
+        renderItem={renderItem}
+        />
+        </View>
         
-         
-          
-        </Swiper>
-      </View>      
+      </SafeAreaView>
     )
 
 }
@@ -89,7 +107,7 @@ const styles = StyleSheet.create({
       },
     product_name: {
         color:'black',
-        fontSize: 15,
+        fontSize: 20,
     },
 
     imgbox: {

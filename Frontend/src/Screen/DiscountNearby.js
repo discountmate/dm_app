@@ -78,8 +78,8 @@ const DiscountNearby = () => {
     }
 
     return(
-        <SafeAreaView style={styles.container}>
-            <View>
+        <>
+         <View>
                     <View style={styles.Navbar}>
                         <ScrollView 
                         horizontal={true}
@@ -122,8 +122,9 @@ const DiscountNearby = () => {
                     /> 
                     : null}
                 </View>
+        <SafeAreaView style={styles.container}>
             <ScrollView 
-            showsVerticalScrollIndicator={false}>
+            showsVerticalScrollIndicator={true}>
                 
                
                     {/* <FlatList
@@ -132,6 +133,7 @@ const DiscountNearby = () => {
                         keyExtractor={item => item?.id}
                         showsVerticalScrollIndicator={false}
                     />  */}
+                    <View style={{paddingHorizontal:32, marginTop:16}}>
                        <TouchableOpacity style={styles.item}>
                             <View style={styles.imgbox}/>
                             <View style={{marginLeft: 8}}>
@@ -204,16 +206,44 @@ const DiscountNearby = () => {
                                 <Text>Shop: </Text>
                             </View>
                         </TouchableOpacity>
+                        <TouchableOpacity style={styles.item}>
+                            <View style={styles.imgbox}/>
+                            <View style={{marginLeft: 8}}>
+                                <Text>Product Name: </Text>
+                                <Text>Category: </Text>
+                                <View style={{flexDirection:"row"}}>
+                                <Text>Price: </Text>
+                                <Text style={{marginLeft:10}}>Discounted Price: </Text>
+                                </View>
+                                <Text>Shop: </Text>
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.item}>
+                            <View style={styles.imgbox}/>
+                            <View style={{marginLeft: 8}}>
+                                <Text>Product Name: </Text>
+                                <Text>Category: </Text>
+                                <View style={{flexDirection:"row"}}>
+                                <Text>Price: </Text>
+                                <Text style={{marginLeft:10}}>Discounted Price: </Text>
+                                </View>
+                                <Text>Shop: </Text>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+                     
                     
             </ScrollView>
         </SafeAreaView>
+        </>
     )
 }
 
 const styles = StyleSheet.create({
     container:{
-        paddingHorizontal: 32,
         justifyContent:"center",
+        backgroundColor:'#E5E5E5',
+        height:'100%'
     },
 
     header:{
@@ -225,6 +255,9 @@ const styles = StyleSheet.create({
     Navbar:{
         flexDirection:'row',
         marginTop: 10,
+        backgroundColor:'white',
+        paddingHorizontal: 32,
+        paddingVertical:10
         
     },
     
@@ -260,12 +293,14 @@ const styles = StyleSheet.create({
         padding:5,
         flexDirection:'row',
         alignItems:'center',
-        // borderWidth:1,
+        borderRadius:4,
         shadowOpacity:0.27,
         shadowColor:'black',
         shadowOffset:{width:0,height:3},
         shadowRadius:4.65,
         elevation: 3,
+        backgroundColor:'white'
+   
     },
     imgbox:{
         width:72,
