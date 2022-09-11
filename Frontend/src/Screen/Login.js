@@ -81,7 +81,7 @@ const Login = () =>{
                     <Text style={styles.btn_text}>Sign Up</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={[styles.forgetpw_btn, {paddingHorizontal:71}]} onPress={() => navigation.push('ForgetPwd')}>
+                <TouchableOpacity style={[styles.forgetpw_btn, {paddingHorizontal:71}]} onPress={() => navigation.replace('ForgetPwd')}>
                     <Text style={styles.forgetpw_btn_text}>Forget password</Text>
                     <View style={styles.border} />
                 </TouchableOpacity>

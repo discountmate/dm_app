@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import {
@@ -38,6 +38,11 @@ const carouselItem = [
 
 
 const Itemswiper = () => {
+  const [activeSlide, setactiveSlide] = useState(0)
+
+  useEffect(()=>{
+    console.log(activeSlide)
+  },[activeSlide])
 
   const renderItem = ({item}) => {
     return (
@@ -55,32 +60,11 @@ const Itemswiper = () => {
 
     )
   }
-
-  const pagination = () => {
-    return (
-      <Pagination
-      dotsLength={5}
-      activeDotIndex={activeSlide}
-      containerStyle={{backgroundColor:'red'}}
-      dotStyle={{
-        width: 10,
-        height: 10,
-        borderRadius: 5,
-        marginHorizontal: 8,
-        backgroundColor: 'white'
-
-      }}
-
-      inactiveDotOpacity={0.4}
-      inactiveDotScale={0.6}
-      />
-    )
-  }
  
     return(
       <SafeAreaView>
-        {pagination}
-        <View style={{}}>
+        <View style={{flexDirection:'row'}}>
+        <View style= {{width:250}}>
         <Carousel
         vertical={true}
         itemHeight={350}
@@ -90,9 +74,23 @@ const Itemswiper = () => {
         sliderWidth={300}
         itemWidth={300}
         renderItem={renderItem}
+        onSnapToItem = {(index) => setactiveSlide(index)}
         />
         </View>
-        
+       
+
+        <View style= {{top:'50%'}}>
+        <Pagination
+        vertical={true}
+        dotsLength={carouselItem.length}
+        activeDotIndex={activeSlide}
+        dotColor='#4F44D0'
+        dotStyle={{width:16, height:16, borderRadius:15,marginTop:8}}
+        inactiveDotColor='black'
+       
+        />
+        </View>
+        </View>
       </SafeAreaView>
     )
 
