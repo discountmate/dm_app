@@ -22,9 +22,9 @@ import DiscountNearby from './Screen/DiscountNearby';
 import Setting from './Screen/Setting';
 import ScanReceipt from './Screen/ScanReceipt';
 import ResetPwd from './Screen/ResetPwd';
-
-
-
+import UpdateUserProfile from './Screen/UpdateUserProfile'  
+import SettingOther from './Screen/SettingOther';
+import SettingHistory from './Screen/SettingHistory';
 //svg
 import ProflieIcon from './assets/images/icon.svg';
 import LeftArrow from './assets/images/leftArrow.svg';
@@ -73,16 +73,14 @@ const Navigation = () => {
                 name='Profile'
                 component={Profile}
                 options={{
-                    title:"Dashboard",
-                
+                    title:"Dashboard",                
                 }}
             />
 
             <Stack.Screen
                 name='Register'
                 component={Register}
-                options={{
-                    
+                options={{ 
                 }}
 
             />
@@ -115,7 +113,7 @@ const Navigation = () => {
                 name='ForgetPwd'
                 component={ForgetPwd}
                 options={{
-                    title:''
+                    title:"Forget Password",
             
                 }}
             />
@@ -124,7 +122,7 @@ const Navigation = () => {
                 name='ForgetPwd1'
                 component={ForgetPwd1}
                 options={{
-                    title:''
+                    title:"Forget Password",
             
                 }}
             />
@@ -133,7 +131,7 @@ const Navigation = () => {
                 name='ForgetPwd2'
                 component={ForgetPwd2}
                 options={{
-                    title:''
+                    title:"New Password",
             
                 }}
             />
@@ -166,7 +164,7 @@ const Navigation = () => {
                 name='Setting'
                 component={Setting}
                 options={{
-                    title:'',
+                    title:'Setting',
                     headerLeft: () => (
                         <TouchableOpacity
                         style={styles.ProflieIcon}
@@ -178,6 +176,56 @@ const Navigation = () => {
 
                 }}
             />
+
+                <Stack.Screen
+                name='SettingOther'
+                component={SettingOther}
+                options={{
+                    title:'Setting',
+                    headerLeft: () => (
+                        <TouchableOpacity
+                        style={styles.ProflieIcon}
+                        onPress={() => navigation.goBack()}>
+                            <LeftArrow />
+                        </TouchableOpacity>
+                        
+                    ),
+
+                }}
+            />
+
+<Stack.Screen
+                name='SettingHistory'
+                component={SettingHistory}
+                options={{
+                    title:'Setting',
+                    headerLeft: () => (
+                        <TouchableOpacity
+                        style={styles.ProflieIcon}
+                        onPress={() => navigation.goBack()}>
+                            <LeftArrow />
+                        </TouchableOpacity>
+                        
+                    ),
+
+                }}
+            />
+                <Stack.Screen
+                name='ResetPwd'
+                component={ResetPwd}
+                options={{
+                    title:'Reset Password',
+                    headerLeft: () => (
+                        <TouchableOpacity
+                        style={styles.ProflieIcon}
+                        onPress={() => navigation.goBack()}>
+                            <LeftArrow />
+                        </TouchableOpacity>
+                        
+                    ),
+
+                }}
+            /> 
 
             <Stack.Screen
                 name='Scan'
@@ -201,6 +249,23 @@ const Navigation = () => {
                 component={ResetPwd}
                 options={{
                     title:'',
+                    headerLeft: () => (
+                        <TouchableOpacity
+                        style={styles.ProflieIcon}
+                        onPress={() => navigation.goBack()}>
+                            <LeftArrow />
+                        </TouchableOpacity>
+                        
+                    ),
+
+                }}
+            />
+
+             <Stack.Screen
+                name='UpdateUserProfile'
+                component={UpdateUserProfile}
+                options={{
+                    title:'Update User Profile',
                     headerLeft: () => (
                         <TouchableOpacity
                         style={styles.ProflieIcon}
