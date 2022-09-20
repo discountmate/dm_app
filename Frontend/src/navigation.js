@@ -22,6 +22,9 @@ import DiscountNearby from './Screen/DiscountNearby';
 import Setting from './Screen/Setting';
 import ScanReceipt from './Screen/ScanReceipt';
 import ResetPwd from './Screen/ResetPwd';
+import Other from './Screen/Other';
+import Account from './Screen/Account';
+import History from './Screen/History';
 
 
 
@@ -57,7 +60,7 @@ const Navigation = () => {
                         <>
                            <TouchableOpacity
                            style={Platform.OS === 'ios' ? styles.ProflieIcon : ''}
-                           onPress={() => navigation.navigate('Profile')}>
+                           onPress={() => navigation.navigate('Setting')}>
                                 <ProflieIcon/>
                             </TouchableOpacity>
                         </>
@@ -111,9 +114,17 @@ const Navigation = () => {
                 name='ForgetPwd'
                 component={ForgetPwd}
                 options={{
-                    title:''
-            
+                    title:'Forgot Password?',
+
+                    headerLeft: () => (
+                        <>
+                        <TouchableOpacity onPress={() => navigation.replace('Login')}>
+                            <LeftArrow/>
+                        </TouchableOpacity>
+                        </>
+                    ),
                 }}
+              
             />
 
             <Stack.Screen

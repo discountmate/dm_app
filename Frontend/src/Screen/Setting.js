@@ -9,26 +9,29 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
+import History from './History.js'
+import Account from './Account.js'
+import Other from './Other.js'
 
 const Setting = () =>{
     const navigation = useNavigation();
     const username = useSelector(state => state.app.username)
-   
+    const [activebtn, Isactivebtn] = useState(0)
 
     return(
     <SafeAreaView style={styles.container}>
-        <Text style={styles.header}>My Profile</Text>
-        <Text style={styles.info}>username: {username}</Text>
-        <View>
-        <TouchableOpacity style={styles.btn} onPress = { () => navigation.push('UpdateUserProfile')}>
-            <Text style={styles.btn_text}>Update Profile</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.btn} onPress = { () => navigation.push('Reset')}>
-            <Text style={styles.btn_text}>Reset Password</Text>
-          </TouchableOpacity>
-
-
+        <View style={{flexDirection:"row"}}>
+          <TouchableOpacity style={{marginRight:16}} onPress={() => {Isactivebtn(0)}}>
+            <Text style={{color: activebtn === 0 ? "#4F44D0" : "grey"}}>History</Text>
+          </TouchableOpacity>  
+          <TouchableOpacity style={{marginRight:16}} onPress={() => {Isactivebtn(1)}}>
+              <Text style={{color: activebtn === 1 ? "#4F44D0" : "grey"}}>Account</Text>
+              </TouchableOpacity> 
+          <TouchableOpacity style={{marginRight:16}} onPress={() => {Isactivebtn(2)}}>
+              <Text style={{color: activebtn === 2 ? "#4F44D0" : "grey"}}>Other</Text>
+              </TouchableOpacity>
         </View>
+              {activebtn === 0 ? <History/> : activebtn === 1? <Account/> : <Other/>}
     </SafeAreaView>
     )
 
@@ -56,7 +59,7 @@ const styles = StyleSheet.create({
     btn:{
         marginTop:20,
         backgroundColor: '#C4C4C4',
-        paddingVertical: 10
+        paddingVertical: 10,
         
     },
     btn_text:{
