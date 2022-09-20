@@ -44,6 +44,6 @@ app.use(errorController.get500);
 app.listen(ports, () => console.log('listening...'));
 
 //open browser, uncomment the three lines below for auto open browser
-//const open = require('open');
-//const res = require('express/lib/response');
-//open('http://localhost:3000/');
+const open = require('open');
+const res = require('express/lib/response');
+open('http://localhost:3000/');
