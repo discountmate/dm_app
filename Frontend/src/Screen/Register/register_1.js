@@ -19,30 +19,31 @@ const Register = () =>{
     const infoCheck = async () => {
         dispatch(SetUsername(username))
         
-        navigation.navigate('Register2');
+        navigation.navigate('Register3');
         return 0;
     }
 
 
     return(
-    <SafeAreaView style={styles.container}>
-        <View>
+    <SafeAreaView>
+        <View style={styles.container}>
             <View style={styles.title}>
                 <Text style={styles.title_txt}>
                     Join DiscountMate 
                 </Text>
                 <Text style={styles.title_txt}>
-                    Step 1 of 4
+                    Step 1 of 3
                 </Text>
             </View>
 
-            <Text style={styles.header_txt}> Welcome to DiscountMate</Text>
-            <Text style={styles.context_txt}> Let's get started</Text>
+            <Text style={styles.header_txt}>Enter Email Address</Text>
+            <Text style={styles.context_txt}>
+                Your Email Address helps us keep your
+                account secure. See our privacy policu for more info</Text>
 
-            <View style={{marginTop:23}}>
-                <Text style={{marginLeft:10}}>Username</Text>
+            <View style={{marginTop:75}}>
+                <Text style={styles.email_input_txt}>Email Address</Text>
                     <View style={styles.input_box}>
-                        
                         <TextInput
                         style={{color:'white'}}
                         onChangeText={SetUserName}
@@ -52,15 +53,15 @@ const Register = () =>{
             </View>
         </View>
 
-        <View style={{padding: 75, marginTop:20}}>
+        <View style={{paddingHorizontal:58, marginTop:62}}>
             <TouchableOpacity style={styles.btn} onPress={infoCheck}>
-                <Text style={styles.btn_text}>Next</Text>
+                <Text style={styles.btn_text}>Send Verification Code</Text>
             </TouchableOpacity>
         </View>
 
-        <View style={{flexDirection:'row', alignItems:'center'}}>
+        <View style={styles.orline}>
             <View style={styles.line}/>
-            <Text style={styles.or_txt}>or</Text>
+            <Text style={styles.or}>or</Text>
             <View style={styles.line}/>
         </View>
 
@@ -74,56 +75,55 @@ const Register = () =>{
 
 const styles = StyleSheet.create({
     container:{
-        justifyContent:"center",
+        paddingHorizontal:20
     },
     
     title:{
-        backgroundColor:'grey',
-        alignItems:'center'
+        alignItems:'center',
     },
 
     title_txt:{
-        fontWeight:'bold'
+        fontWeight:'bold',
+        marginTop:10
     },
 
     header_txt:{
         fontSize:24,
-        fontWeight:'bold',
-        color:'black'
+        fontWeight:'800',
+        color:'#4F44D0',
+        marginTop:10,
+        textAlign:'center'
     },
 
     context_txt:{
-        fontSize:15,
-        color:'black'
+        fontSize:13,
+        color:'#555555',
+        textAlign:'center',
+        marginTop:10
     },
 
     input_box:{
-        backgroundColor:'black'
+        borderWidth:1,
+        borderRadius:20,
+        height:40,
+        justifyContent:'center',
+        paddingHorizontal:10,
+        marginTop:10
     },
 
     btn:{
         marginTop:20,
-        backgroundColor: 'black',
-        borderRadius: 20,
-        paddingVertical: 10
-        
+        backgroundColor: '#4F44D0',
+        borderRadius: 50,
+        height:62,
+        justifyContent:'center'        
     },
+
     btn_text:{
         textAlign:'center',
         color:'white',
-        fontSize: 20,
-    },
-
-    line:{
-        flex:1,
-        height:1,
-        backgroundColor:'black'
-    },
-    
-    or_txt:{
-        color:'black',
-        width:20,
-        textAlign:'center'
+        fontSize: 16,
+        fontWeight:'700',
     },
 
     signin_btn:{
@@ -135,6 +135,31 @@ const styles = StyleSheet.create({
         color:'black',
         fontSize:16,
         fontWeight:'bold'
-    }
+    },
+
+    email_input_txt:{
+        marginLeft:10,
+        textAlign:'center',
+        fontSize:17,
+        fontWeight:'700',
+        
+    },
+       
+    or:{
+        fontSize:15,
+        fontWeight:'700',
+        bottom:10
+    },
+
+    line:{
+        width:175,
+        borderTopWidth:1
+    },
+
+    orline:{
+        flexDirection:"row",
+        marginTop:124,
+        justifyContent:'space-between'
+    },
 }) 
 export default Register;

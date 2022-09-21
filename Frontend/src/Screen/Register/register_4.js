@@ -69,14 +69,14 @@ const Register4 = () =>{
     }
 
     return(
-    <SafeAreaView style={styles.container}>
-        <View>
+    <SafeAreaView>
+        <View style={styles.container}>
             <View style={styles.title}>
                 <Text style={styles.title_txt}>
                     Join DiscountMate 
                 </Text>
                 <Text style={styles.title_txt}>
-                    Step 1 of 4
+                    Step 3 of 3
                 </Text>
             </View>
 
@@ -116,15 +116,15 @@ const Register4 = () =>{
 
         </View>
 
-        <View style={{paddingHorizontal:75, marginTop:40, marginBottom:75}}>
+        <View style={{paddingHorizontal:75, marginTop:40}}>
             <TouchableOpacity style={styles.btn} onPress={infoCheck}>
                 <Text style={styles.btn_text}>Login</Text>
             </TouchableOpacity>
         </View>
 
-        <View style={{flexDirection:'row', alignItems:'center'}}>
+        <View style={styles.orline}>
             <View style={styles.line}/>
-            <Text style={styles.or_txt}>or</Text>
+            <Text style={styles.or}>or</Text>
             <View style={styles.line}/>
         </View>
 
@@ -138,51 +138,65 @@ const Register4 = () =>{
 
 const styles = StyleSheet.create({
     container:{
-        justifyContent:"center",
+        paddingHorizontal:20
     },
     
     title:{
-        backgroundColor:'grey',
         alignItems:'center'
     },
 
     title_txt:{
-        fontWeight:'bold'
+        fontWeight:'bold',
+        marginTop:10
     },
 
     header_txt:{
         fontSize:24,
-        fontWeight:'bold',
-        color:'black'
+        fontWeight:'800',
+        color:'#4F44D0',
+        marginTop:10,
+        textAlign:'center'
     },
 
     input_box:{
-        backgroundColor:'black'
+        borderWidth:1,
+        borderRadius:20,
+        height:40,
+        justifyContent:'center',
+        paddingHorizontal:10,
+        marginTop:10
     },
 
     btn:{
         marginTop:20,
-        backgroundColor: 'black',
-        borderRadius: 20,
-        paddingVertical: 10
-        
+        backgroundColor: '#4F44D0',
+        borderRadius: 50,
+        height:62,
+        justifyContent:'center'        
     },
+
     btn_text:{
         textAlign:'center',
         color:'white',
-        fontSize: 20,
+        fontSize: 16,
+        fontWeight:'700',
+    },
+
+    or:{
+        fontSize:15,
+        fontWeight:'700',
+        bottom:10
     },
 
     line:{
-        flex:1,
-        height:1,
-        backgroundColor:'black'
+        width:175,
+        borderTopWidth:1
     },
-    
-    or_txt:{
-        color:'black',
-        width:20,
-        textAlign:'center'
+
+    orline:{
+        flexDirection:"row",
+        marginTop:78,
+        justifyContent:'space-between'
     },
 
     signin_btn:{

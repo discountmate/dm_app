@@ -12,7 +12,6 @@ import Main from './Screen/main';
 import Login from './Screen/Login';
 import Profile from './Screen/Profile';
 import Register from './Screen/Register/register_1'
-import Register2 from './Screen/Register/register_2'
 import Register3 from './Screen/Register/register_3'
 import Register4 from './Screen/Register/register_4'
 import ForgetPwd from './Screen/ForgetPwd/ForgetPwd';
@@ -83,14 +82,7 @@ const Navigation = () => {
                 }}
 
             />
-            <Stack.Screen
-                name='Register2'
-                component={Register2}
-                options={{
-                    title:"Register",
-                }}
-            />
-
+    
             <Stack.Screen
                 name='Register3'
                 component={Register3}

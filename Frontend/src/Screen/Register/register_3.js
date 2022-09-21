@@ -30,7 +30,7 @@ const Register3 = () =>{
                     Join DiscountMate 
                 </Text>
                 <Text style={styles.title_txt}>
-                    Step 3 of 4
+                    Step 2 of 3
                 </Text>
             </View>
 
@@ -38,8 +38,8 @@ const Register3 = () =>{
             <Text style={styles.context_txt}> Please Submit the 5 digit Verification code sent to {'\n'}
              your phone number</Text>
 
-            <View style={{marginTop:23}}>
-                <Text style={{alignSelf:'center', fontWeight:'bold', color:'black'}}>Verification Code </Text>
+            <View style={{marginTop:73}}>
+                <Text style={styles.ver_input_txt}>Verification Code </Text>
                     <View style={styles.input_box_container}>
                         
                         <TextInput style={styles.input_box}
@@ -62,15 +62,15 @@ const Register3 = () =>{
 
         </View>
 
-        <View style={{padding: 75}}>
+        <View style={{paddingHorizontal:58, marginTop:89}}>
             <TouchableOpacity style={styles.btn} onPress={infoCheck}>
                 <Text style={styles.btn_text}>Verify Code</Text>
             </TouchableOpacity>
         </View>
 
-        <View style={{flexDirection:'row', alignItems:'center', marginTop:23}}>
+        <View style={styles.orline}>
             <View style={styles.line}/>
-            <Text style={styles.or_txt}>or</Text>
+            <Text style={styles.or}>or</Text>
             <View style={styles.line}/>
         </View>
 
@@ -88,42 +88,47 @@ const styles = StyleSheet.create({
     },
     
     title:{
-        backgroundColor:'grey',
         alignItems:'center'
     },
 
     title_txt:{
-        fontWeight:'bold'
+        fontWeight:'bold',
+        marginTop:10
     },
 
     header_txt:{
         fontSize:24,
-        fontWeight:'bold',
-        color:'black'
+        fontWeight:'800',
+        color:'#4F44D0',
+        marginTop:10,
+        textAlign:'center'
     },
 
     context_txt:{
-        fontSize:15,
-        color:'black'
+        fontSize:13,
+        color:'#555555',
+        textAlign:'center',
+        marginTop:10
     },
 
     input_box_container:{
         flexDirection:'row',
-        justifyContent:'space-evenly'
+        justifyContent:'space-evenly',
+        marginTop:29
     },
 
     input_box:{
-        backgroundColor:'black',
-        width:'10%',
-        color:'white'
+        width:36,
+        height:35,
+        borderWidth:1
     },
 
     btn:{
         marginTop:20,
-        backgroundColor: 'black',
-        borderRadius: 20,
-        paddingVertical: 10
-        
+        backgroundColor: '#4F44D0',
+        borderRadius: 50,
+        height:62,
+        justifyContent:'center'        
     },
     btn_text:{
         textAlign:'center',
@@ -131,16 +136,21 @@ const styles = StyleSheet.create({
         fontSize: 18,
     },
 
-    line:{
-        flex:1,
-        height:1,
-        backgroundColor:'black'
+    or:{
+        fontSize:15,
+        fontWeight:'700',
+        bottom:10
     },
-    
-    or_txt:{
-        color:'black',
-        width:20,
-        textAlign:'center'
+
+    line:{
+        width:175,
+        borderTopWidth:1
+    },
+
+    orline:{
+        flexDirection:"row",
+        marginTop:85,
+        justifyContent:'space-between'
     },
 
     signin_btn:{
@@ -152,6 +162,13 @@ const styles = StyleSheet.create({
         color:'black',
         fontSize:16,
         fontWeight:'bold'
-    }
+    },
+
+    ver_input_txt:{
+        alignSelf:'center',
+        fontWeight:'700',
+        fontSize:17,
+        color:'black'
+    }, 
 }) 
 export default Register3;
