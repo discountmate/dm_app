@@ -9,7 +9,6 @@ import {
   TouchableOpacity,
   Dimensions,
 } from 'react-native';
-import Swiper from 'react-native-swiper';
 const {height} = Dimensions.get('screen')
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import api from '../core/Service';

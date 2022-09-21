@@ -130,6 +130,7 @@ const styles = StyleSheet.create({
         height:62,
         justifyContent:'center'        
     },
+    
     btn_text:{
         textAlign:'center',
         color:'white',
