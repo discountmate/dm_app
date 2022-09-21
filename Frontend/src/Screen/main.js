@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import {
   SafeAreaView,
   Text,
@@ -15,7 +15,10 @@ import { setAuth } from '../redux/actions/common';
 //svg
 import RightArrow from '../assets/images/rightarrow.svg';
 import Product from '../assets/images/product.svg';
+
+//components
 import Itemswiper from './Itemswiper';
+// import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
 
 
 
@@ -23,6 +26,8 @@ const Main = () =>{
   const auth = useSelector(state => state.app.auth);
   const navigation = useNavigation()
   const dispatch = useDispatch();
+  // const sheetRef = useRef<BottomSheet>(null);
+  // const snapPoints = ["40%"]
   const [image, setImage] = useState('');
 
   const renderItem = ({item, index}) => {
@@ -38,7 +43,6 @@ const Main = () =>{
                   </Text>
               </View>
             </View>
-       
     </>
    
   }
@@ -51,7 +55,6 @@ const Main = () =>{
     return(
     <SafeAreaView>
       <View style={styles.container}>
-
         <View style={styles.touchContainer}>
           <TouchableOpacity onPress={() => navigation.navigate('DiscountNearby')}>
             <View style={styles.touch} >
@@ -62,6 +65,16 @@ const Main = () =>{
         </View>
 
         <Itemswiper/>
+
+       {/* <BottomSheet
+       ref={sheetRef}
+       snapPoints={snapPoints}
+       >
+        <BottomSheetView>
+          <Text>Hello</Text>
+        </BottomSheetView>
+
+       </BottomSheet> */}
    
       </View>
    
@@ -109,8 +122,5 @@ const styles = StyleSheet.create({
     paddingVertical:20
   },
  
-
-
-
 }) 
 export default Main;

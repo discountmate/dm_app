@@ -22,14 +22,12 @@ import DiscountNearby from './Screen/DiscountNearby';
 import Setting from './Screen/Setting';
 import ScanReceipt from './Screen/ScanReceipt';
 import ResetPwd from './Screen/ResetPwd';
-import Other from './Screen/Other';
-import Account from './Screen/Account';
-import History from './Screen/History';
-
-
+import Other from './Screen/Account/Other';
+import Account from './Screen/Account/Account';
+import History from './Screen/Account/History';
 
 //svg
-import ProflieIcon from './assets/images/icon.svg';
+import ProflieIcon from './assets/images/smallicon.svg';
 import LeftArrow from './assets/images/leftArrow.svg';
 import Scan from './assets/images/scan.svg';
 
@@ -54,7 +52,7 @@ const Navigation = () => {
                 options={{
                     title:"DiscountMate",
                     headerTitleAlign:'center',
-                    headerTitleStyle: {fontSize:22,fontWeight:'700', color:'#4F44D0'},
+                    headerTitleStyle: styles.headerStyle,
                     
                     headerRight: () => (
                         <>
@@ -151,7 +149,7 @@ const Navigation = () => {
                 options={{
                     title:'Nearby Offerts',
                     headerTitleAlign:'center',
-                    headerTitleStyle: {fontSize:22,fontWeight:'700', color:'#4F44D0'},
+                    headerTitleStyle: styles.headerStyle,
                     headerLeft: () => (
                         <TouchableOpacity
                         style={styles.ProflieIcon}
@@ -163,7 +161,7 @@ const Navigation = () => {
                     headerRight: () => (
                         <TouchableOpacity
                         style={styles.ProflieIcon}
-                        onPress={() => navigation.navigate('Profile')}>
+                        onPress={() => navigation.navigate('Setting')}>
                             <ProflieIcon />
                         </TouchableOpacity>
                         
@@ -229,7 +227,12 @@ const Navigation = () => {
 const styles = StyleSheet.create({
     ProflieIcon:{
         // marginBottom:30
-    }
+    },
+    headerStyle:{
+        fontSize:22,
+        fontWeight:'700',
+        color:'#4F44D0'
+    },
 })
     
 export default Navigation;

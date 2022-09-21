@@ -12,6 +12,7 @@ import {
 import Swiper from 'react-native-swiper';
 const {height} = Dimensions.get('screen')
 import Carousel, { Pagination } from 'react-native-snap-carousel';
+import api from '../core/Service';
 
 const carouselItem = [
   {
@@ -39,10 +40,31 @@ const carouselItem = [
 
 const Itemswiper = () => {
   const [activeSlide, setactiveSlide] = useState(0)
+  const[itemList, setItemList] = useState();
 
-  useEffect(()=>{
-    console.log(activeSlide)
-  },[activeSlide])
+
+
+  useEffect(() => {
+    getItem()
+  },[])
+
+useEffect(() => {
+    console.log(itemList)
+},[itemList])
+
+const getItem = async () => {
+    await axios.get(`${api}/item/abc`)
+    .then(function (response){
+        if (response){
+            setItemList(response?.data)
+        }
+    })
+    .catch(function (error){
+        console.warn('Get data failed, please reopen the app')
+    })
+    
+}
+
 
   const renderItem = ({item}) => {
     return (

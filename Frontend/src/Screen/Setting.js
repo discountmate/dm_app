@@ -9,9 +9,9 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-import History from './History.js'
-import Account from './Account.js'
-import Other from './Other.js'
+import History from './Account/History.js'
+import Account from './Account/Account.js'
+import Other from './Account/Other.js'
 
 const Setting = () =>{
     const navigation = useNavigation();
@@ -20,7 +20,7 @@ const Setting = () =>{
 
     return(
     <SafeAreaView style={styles.container}>
-        <View style={{flexDirection:"row"}}>
+        <View style={{flexDirection:"row", paddingHorizontal: 32, paddingVertical:17}}>
           <TouchableOpacity style={{marginRight:16}} onPress={() => {Isactivebtn(0)}}>
             <Text style={{color: activebtn === 0 ? "#4F44D0" : "grey"}}>History</Text>
           </TouchableOpacity>  
@@ -39,9 +39,9 @@ const Setting = () =>{
 
 const styles = StyleSheet.create({
     container:{
-        marginTop: 17,
-        paddingHorizontal: 32,
-        justifyContent:"center",
+        // marginTop: 17,
+        // paddingHorizontal: 32,
+        // justifyContent:"center",
     },
 
     header:{

@@ -32,7 +32,7 @@ const DiscountNearby = () => {
     },[itemList])
 
     const getItem = async () => {
-        await axios.get(`${api}/item`)
+        await axios.get(`${api}/item/abc`)
         .then(function (response){
             if (response){
                 setItemList(response?.data)
@@ -47,13 +47,17 @@ const DiscountNearby = () => {
     const renderItem = ({item}) => (
         
             <TouchableOpacity style={styles.item}>
-                <Text>Product Name: {item.name}</Text>
-                <Text>Category: {item.category}</Text>
-                <View style={{flexDirection:"row"}}>
-                <Text>Price: {item.price}</Text>
-                <Text style={{marginLeft:10}}>Discounted Price: {item.discountprice ? item.discountprice : 'No Discount'}</Text>
+                <View style={styles.imgbox}/>
+                <View>
+                    <Text style={{fontWeight:'bold'}}>{item.name}</Text>
+                    <Text>Category: {item.category}</Text>
+                    <View style={{flexDirection:"row"}}>
+                    <Text>Price: {item.price}</Text>
+                    <Text style={{marginLeft:10}}>Discounted Price: {item.discountprice ? item.discountprice : 'N/A'}</Text>
+                    </View>
+                    <Text>Shop: {item.Store}</Text>
                 </View>
-                <Text>Shop: {item.Store}</Text>
+               
             </TouchableOpacity>
        
       );
@@ -126,113 +130,15 @@ const DiscountNearby = () => {
             <ScrollView 
             showsVerticalScrollIndicator={true}>
                 
-               
-                    {/* <FlatList
+                <View style={{padding:20}}>
+                    <FlatList
                         data={filtereditemList ? filtereditemList : itemList}
                         renderItem={renderItem}
                         keyExtractor={item => item?.id}
                         showsVerticalScrollIndicator={false}
-                    />  */}
-                    <View style={{paddingHorizontal:32, marginTop:16}}>
-                       <TouchableOpacity style={styles.item}>
-                            <View style={styles.imgbox}/>
-                            <View style={{marginLeft: 8}}>
-                                <Text>Product Name: </Text>
-                                <Text>Category: </Text>
-                                <View style={{flexDirection:"row"}}>
-                                <Text>Price: </Text>
-                                <Text style={{marginLeft:10}}>Discounted Price: </Text>
-                                </View>
-                                <Text>Shop: </Text>
-                            </View>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.item}>
-                            <View style={styles.imgbox}/>
-                            <View style={{marginLeft: 8}}>
-                                <Text>Product Name: </Text>
-                                <Text>Category: </Text>
-                                <View style={{flexDirection:"row"}}>
-                                <Text>Price: </Text>
-                                <Text style={{marginLeft:10}}>Discounted Price: </Text>
-                                </View>
-                                <Text>Shop: </Text>
-                            </View>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.item}>
-                            <View style={styles.imgbox}/>
-                            <View style={{marginLeft: 8}}>
-                                <Text>Product Name: </Text>
-                                <Text>Category: </Text>
-                                <View style={{flexDirection:"row"}}>
-                                <Text>Price: </Text>
-                                <Text style={{marginLeft:10}}>Discounted Price: </Text>
-                                </View>
-                                <Text>Shop: </Text>
-                            </View>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.item}>
-                            <View style={styles.imgbox}/>
-                            <View style={{marginLeft: 8}}>
-                                <Text>Product Name: </Text>
-                                <Text>Category: </Text>
-                                <View style={{flexDirection:"row"}}>
-                                <Text>Price: </Text>
-                                <Text style={{marginLeft:10}}>Discounted Price: </Text>
-                                </View>
-                                <Text>Shop: </Text>
-                            </View>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.item}>
-                            <View style={styles.imgbox}/>
-                            <View style={{marginLeft: 8}}>
-                                <Text>Product Name: </Text>
-                                <Text>Category: </Text>
-                                <View style={{flexDirection:"row"}}>
-                                <Text>Price: </Text>
-                                <Text style={{marginLeft:10}}>Discounted Price: </Text>
-                                </View>
-                                <Text>Shop: </Text>
-                            </View>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.item}>
-                            <View style={styles.imgbox}/>
-                            <View style={{marginLeft: 8}}>
-                                <Text>Product Name: </Text>
-                                <Text>Category: </Text>
-                                <View style={{flexDirection:"row"}}>
-                                <Text>Price: </Text>
-                                <Text style={{marginLeft:10}}>Discounted Price: </Text>
-                                </View>
-                                <Text>Shop: </Text>
-                            </View>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.item}>
-                            <View style={styles.imgbox}/>
-                            <View style={{marginLeft: 8}}>
-                                <Text>Product Name: </Text>
-                                <Text>Category: </Text>
-                                <View style={{flexDirection:"row"}}>
-                                <Text>Price: </Text>
-                                <Text style={{marginLeft:10}}>Discounted Price: </Text>
-                                </View>
-                                <Text>Shop: </Text>
-                            </View>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.item}>
-                            <View style={styles.imgbox}/>
-                            <View style={{marginLeft: 8}}>
-                                <Text>Product Name: </Text>
-                                <Text>Category: </Text>
-                                <View style={{flexDirection:"row"}}>
-                                <Text>Price: </Text>
-                                <Text style={{marginLeft:10}}>Discounted Price: </Text>
-                                </View>
-                                <Text>Shop: </Text>
-                            </View>
-                        </TouchableOpacity>
-                    </View>
-                     
-                    
+                    /> 
+                </View>
+              
             </ScrollView>
         </SafeAreaView>
         </>
@@ -243,7 +149,12 @@ const styles = StyleSheet.create({
     container:{
         justifyContent:"center",
         backgroundColor:'#E5E5E5',
-        height:'100%'
+        height:'100%',
+    },
+
+    listcontainer:{
+        paddingHorizontal:32,
+        marginTop:16
     },
 
     header:{
@@ -291,9 +202,9 @@ const styles = StyleSheet.create({
     item:{
         marginVertical:5,
         padding:5,
-        flexDirection:'row',
         alignItems:'center',
         borderRadius:4,
+        flexDirection:'row',
         shadowOpacity:0.27,
         shadowColor:'black',
         shadowOffset:{width:0,height:3},
@@ -306,6 +217,8 @@ const styles = StyleSheet.create({
         width:72,
         height:72,
         backgroundColor:'#6B7DDA',
+        borderRadius:4,
+        marginRight:5
     },
 
       

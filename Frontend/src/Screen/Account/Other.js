@@ -9,14 +9,14 @@ import {
   TouchableOpacity,
   Switch,
 } from 'react-native';
-import Arrow from '../assets/images/rightarrow.svg'
+import Arrow from '../../assets/images/rightarrow.svg'
 
 const Other = () =>{
     const [isEnabled, setIsEnabled] = useState(false);
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
 
     return(
-    <SafeAreaView style={{}}>
+    <SafeAreaView style={styles.container}>
               
         <View>
         <View style={styles.mode_btn}>
@@ -36,6 +36,7 @@ const Other = () =>{
             <Text style={styles.btn_text}>Notifications</Text>
             <Arrow/>
           </TouchableOpacity>
+
           <TouchableOpacity style={styles.btn} >
             <Text style={styles.btn_text}>Clear History</Text>
           </TouchableOpacity>
@@ -54,6 +55,9 @@ const Other = () =>{
 }
 
 const styles = StyleSheet.create({
+  container:{
+    paddingHorizontal:32
+  },
     header:{
         fontSize: 24,
         fontWeight:'bold',
@@ -69,7 +73,7 @@ const styles = StyleSheet.create({
     btn:{
         marginTop:20,
         backgroundColor: '#FFFFFF',
-        paddingVertical: 10,
+        padding: 12,
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
