@@ -1,3 +1,4 @@
+
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { 
@@ -6,114 +7,129 @@ import {
     StyleSheet,
     SafeAreaView,
     TextInput,
-    TouchableOpacity
+    TouchableOpacity,
+    Linking
 } from "react-native";
 
 
 const ForgetPwd2 = () => {
     const navigation = useNavigation()
     return (
-        <SafeAreaView style={styles.container}>
-            <View>
-                <View style={styles.title}>
-                    <Text style={styles.title_txt}>
-                       Forgot Password
-                    </Text>
+        <SafeAreaView> 
+            <View style={styles.container}>
+                <Text style={styles.context_txt_msg}>Please submit password</Text> 
+                
+                <Text style={[styles.input_header,{marginTop:56}]}>Password</Text>
+                        <View style={styles.input_box}>
+                            <TextInput />
+                        </View> 
                     
-                </View>
-    
-                <Text style={styles.header_txt}> New Password</Text>
-                <Text style={styles.context_txt}> Please submit password</Text>
-    
-                <View style={{marginTop:23}}>
-                    <Text style={{marginLeft:5, color:'black'}}>Password</Text>
+                    <Text style={styles.input_header}>Confirm Password</Text>
                         <View style={styles.input_box}>
-                            <TextInput style={{color:'white'}}/>
-                        </View>
-
-                    <Text style={{marginLeft:5, color:'black', marginTop:20}}>Confirm Password</Text>
-                        <View style={styles.input_box}>
-                            <TextInput style={{color:'white'}}/>
-                        </View>
-                </View>
+                            <TextInput />
+                        </View> 
+                    
+                    
+                    <TouchableOpacity style={styles.btn_continue} onPress={() => navigation.replace('Login')}>
+                        <Text style={styles.btn_text}>Continue</Text>
+                    </TouchableOpacity>
+ 
             </View>
-    
-            <View style={{padding: 75, marginTop:20}}>
-                <TouchableOpacity style={styles.btn} onPress={() => navigation.replace('Login')}>
-                    <Text style={styles.btn_text}>Next</Text>
-                </TouchableOpacity>
-            </View> 
+
+            <View style={styles.orline}>
+                <View style={styles.line}/>
+                <Text style={styles.or}>or</Text>
+                <View style={styles.line}/>
+            </View>
+                    
+            <Text style={styles.context_txt_msg2}> Already a member</Text>  
+                <TouchableOpacity onPress={() => navigation.replace('Login')}>  
+                    <Text style={styles.context_txt_msg3}> Sign in </Text>
+                    <View style={styles.signin_line}/>
+                </TouchableOpacity>    
         </SafeAreaView>
     )
     
 }
     
-    const styles = StyleSheet.create({
-        container:{
-            justifyContent:"center",
+const styles = StyleSheet.create({
+    container:{
+        paddingHorizontal:48
         },
-        
-        title:{
-            backgroundColor:'grey',
-            alignItems:'center',
-            paddingVertical:13
-        },
-    
-        title_txt:{
-            fontWeight:'bold',
-            color:'black'
+
+    input_box: {
+        borderWidth:1,
+        borderRadius:50,
+        height:40,
+        marginTop:8,
+        justifyContent:'center',
+        paddingHorizontal:10
+    },
+
+    input_header:{
+        fontWeight:'700',
+        fontSize:15,
+        marginTop:16,
+        paddingHorizontal:10,
+    },
+
+    context_txt_msg:{
+        fontWeight:'400',
+        fontSize:13,
+        marginTop:56
+    },
+
+    btn_continue:{
+        backgroundColor:'#4F44D0',
+        borderRadius:50,
+        height:62,
+        justifyContent:'center',
+        alignItems:'center',
+        marginTop:145
+    },
+
+    btn_text:{
+        color:'white',
+        fontSize:16,
+        fontWeight:'700'
+    },
+
+    or:{
+        fontSize:15,
+        fontWeight:'700',
+        bottom:10
+    },
+
+    line:{
+        width:175,
+        borderTopWidth:1
+    },
+
+    orline:{
+        flexDirection:"row",
+        marginTop:82,
+        justifyContent:'space-between'
+    },
+
+    context_txt_msg2:{
+        textAlign:'center',
+        marginTop:56,
+        fontSize:15,
+        fontWeight:'700'
+    },
+
+    context_txt_msg3:{
+        textAlign:'center',
+        marginTop:30,
+        fontSize:15,
+        fontWeight:'700',
+    },
+    signin_line:{
+        borderBottomWidth:2,
+        width:50,
+        left:2,
+        alignSelf:'center'
+    }
+})  
        
-        },
-    
-        header_txt:{
-            fontSize:24,
-            fontWeight:'bold',
-            color:'black'
-        },
-    
-        context_txt:{
-            fontSize:15,
-            color:'black'
-        },
-    
-        input_box:{
-            backgroundColor:'black'
-        },
-    
-        btn:{
-            marginTop:20,
-            backgroundColor: 'black',
-            borderRadius: 20,
-            paddingVertical: 10
-            
-        },
-        btn_text:{
-            textAlign:'center',
-            color:'white',
-            fontSize: 20,
-        },
-    
-        line:{
-            flex:1,
-            height:1,
-            backgroundColor:'black'
-        },
-        
-        or_txt:{
-            color:'black',
-            width:20,
-            textAlign:'center'
-        },
-    
-        signin_btn:{
-            marginTop:55,
-            alignSelf:'center'
-        },
-    
-        signin_txt:{
-            color:'black',
-            fontSize:16,
-            fontWeight:'bold'
-        }
-    }) 
 export default ForgetPwd2;

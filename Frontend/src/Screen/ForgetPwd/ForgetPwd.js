@@ -90,8 +90,10 @@ const ForgetPwd = () => {
             borderWidth:2,
             borderRadius:50,
             marginTop:8,
-            padding:10,
-            marginRight:4
+            marginRight:4,
+            height:40,
+            justifyContent:'center',
+            paddingHorizontal:10
             
         },
     
