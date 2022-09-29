@@ -38,11 +38,12 @@ const Login = () =>{
         .then(function (response) {
                 dispatch(setAuth(true));
                 dispatch(SetUsername(username))
-                navigation.replace('Profile');
+                navigation.replace('Main');
               
             })
         .catch(function (error) {
-            console.warn('login failed');
+            
+            console.warn(error);
             return;
         })
         return 0;
@@ -73,7 +74,7 @@ const Login = () =>{
             </View>
 
             <View style={{paddingHorizontal: 40, marginTop: 16}}>
-                <TouchableOpacity style={styles.btn} onPress={() => navigation.replace('Main')}>
+                <TouchableOpacity style={styles.btn} onPress={() => CheckLogin()}>
                     <Text style={styles.btn_text}>Log in</Text>
                 </TouchableOpacity>
 

@@ -15,6 +15,7 @@
     "@react-navigation/native": "^6.0.10",
     "@react-navigation/native-stack": "^6.6.1",
     "axios": "^0.27.2",
+    "deprecated-react-native-prop-types": "^2.3.0",
     "install": "^0.13.0",
     "lodash": "^4.17.21",
     "npm": "^8.6.0",

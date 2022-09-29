@@ -10,6 +10,7 @@ import {
   ScrollView
 } from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
+
 import axios from 'axios';
 import api from '../core/Service';
 
@@ -66,9 +67,12 @@ const Setting = () => {
 
     const renderPhoto = (image) => {
         return(
-            <Image
-            style={styles.photo}
-            source={{uri:image.uri}}/>
+            <View style={styles.photo_container}>
+                <Image
+                style={styles.photo}
+                source={{uri:image.uri}}/>
+            </View>
+            
         )
     }
 
@@ -79,9 +83,6 @@ const Setting = () => {
             type: 'image/jpeg',
             name: 'image.png',
           });
- 
-          
-       
         await axios({
             url:`${api}/receipt`,
             method:'POST',
@@ -92,7 +93,7 @@ const Setting = () => {
             console.warn('Upload successful')
             setImage('')
             imagelist.length = 0
-            navigation.goBack()
+            navigation.navigate('ReceiptResult')
         })
         .catch(function (error){
             console.warn('Upload failed, Please try again')
@@ -103,7 +104,8 @@ const Setting = () => {
     }
 
     return(
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView>
+        <View style={styles.container}>
         <ScrollView>
             <Text style={styles.header}>Scan Receipt</Text>
             {image?
@@ -127,6 +129,8 @@ const Setting = () => {
             </TouchableOpacity>
            
         </ScrollView>
+        </View>
+      
     </SafeAreaView>
     )
 
@@ -153,14 +157,14 @@ const styles = StyleSheet.create({
 
     btn:{
         marginTop:20,
-        backgroundColor: 'black',
+        backgroundColor: '#4F44D0',
         borderRadius: 50,
-        paddingVertical: 17
+        paddingVertical: 21,
         
     },
     cancelbtn:{
         marginTop:20,
-        backgroundColor: 'black',
+        backgroundColor: '#4F44D0',
         paddingVertical: 10,
         marginHorizontal: 30
         
@@ -175,10 +179,15 @@ const styles = StyleSheet.create({
         color:'black',
     },
 
-    photo: {
-        width: 200,
-        height: 200,
+    photo:{
+        width: 430,
+        height: 430,
         resizeMode: 'contain'
       },
+
+    photo_container:{
+        alignItems:'center'
+
+    }
 }) 
 export default Setting;

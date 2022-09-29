@@ -1,5 +1,5 @@
 import React from 'react';
-import {TouchableOpacity, StyleSheet, Text, View} from 'react-native';
+import {TouchableOpacity, StyleSheet, Image} from 'react-native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 
@@ -21,12 +21,10 @@ import DiscountNearby from './Screen/DiscountNearby';
 import Setting from './Screen/Setting';
 import ScanReceipt from './Screen/ScanReceipt';
 import ResetPwd from './Screen/ResetPwd';
-import Other from './Screen/Account/Other';
-import Account from './Screen/Account/Account';
-import History from './Screen/Account/History';
+import ReceiptResult from './Screen/receiptResult';
 
 //svg
-import ProflieIcon from './assets/images/smallicon.svg';
+import ProflieIcon from './assets/images/manIcon.png';
 import LeftArrow from './assets/images/leftArrow.svg';
 import Scan from './assets/images/scan.svg';
 
@@ -58,8 +56,12 @@ const Navigation = () => {
                            <TouchableOpacity
                            style={Platform.OS === 'ios' ? styles.ProflieIcon : ''}
                            onPress={() => navigation.navigate('Setting')}>
-                                <ProflieIcon/>
+                                <Image style={styles.ProflieIcon} source={ProflieIcon}/>
+                        
                             </TouchableOpacity>
+                            <TouchableOpacity on onPress={() => navigation.navigate('Scan')}>
+                                <Scan/>
+                                </TouchableOpacity>
                         </>
                     ),
                 }}
@@ -139,7 +141,7 @@ const Navigation = () => {
                 name='DiscountNearby'
                 component={DiscountNearby}
                 options={{
-                    title:'Nearby Offerts',
+                    title:'Nearby Offers',
                     headerTitleAlign:'center',
                     headerTitleStyle: styles.headerStyle,
                     headerLeft: () => (
@@ -154,7 +156,7 @@ const Navigation = () => {
                         <TouchableOpacity
                         style={styles.ProflieIcon}
                         onPress={() => navigation.navigate('Setting')}>
-                            <ProflieIcon />
+                            <Image style={styles.ProflieIcon} source={ProflieIcon}/>
                         </TouchableOpacity>
                         
                     ),
@@ -211,6 +213,16 @@ const Navigation = () => {
 
                 }}
             />
+
+            <Stack.Screen
+                name='ReceiptResult'
+                component={ReceiptResult}
+                options={{
+                    title:'Scan Result',
+                  
+
+                }}
+            />
          </Stack.Navigator>
        
     );
@@ -218,7 +230,9 @@ const Navigation = () => {
 
 const styles = StyleSheet.create({
     ProflieIcon:{
-        // marginBottom:30
+        width:30,
+        height:30,
+        marginRight:5
     },
     headerStyle:{
         fontSize:22,

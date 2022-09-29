@@ -4,7 +4,6 @@ import Navigation from './src/navigation';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import { createStore, combineReducers } from 'redux';
 import appReducer from './src/redux/reducers/AppReducers';
-import logo from './src/assets/images/AppLogo.png';
 
 
 import { Provider as ReduxProvider } from 'react-redux';

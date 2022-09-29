@@ -1,80 +1,96 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { useNavigation } from '@react-navigation/native';
 import {
   View,
   Text,
   StyleSheet,
   SafeAreaView,
   TouchableOpacity,
-  Dimensions,
+  Image
 } from 'react-native';
-const {height} = Dimensions.get('screen')
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import api from '../core/Service';
+import axios from "axios";
 
-const carouselItem = [
+import Avo from '../assets/images/test/avo.jpeg'
+import Milk from '../assets/images/test/milk.jpeg'
+import cornfla from '../assets/images/test/cornfla.jpeg'
+import Cheesepopcorn from '../assets/images/test/popcorn.jpeg'
+import GFpopcorn from '../assets/images/test/GFpopcorn.jpeg'
+
+
+const ItemPhoto = [
   {
-      title:"Item 1",
-      text: "This is text area for Item 1",
+     
+      image:Avo,
+      context:'Almost pear shaped, with a green to black shiny skin and a delicate yellow flesh with a green outer hue.'
   },
   {
-      title:"Item 2",
-      text: "This is text area for Item 2",
+      image: Milk,
+      context:'Complete Dairy brings you a fresh, all natural milk, 70% higher in protein and 25% lower in lactose'
+
   },
   {
-      title:"Item 3",
-      text: "This is text area for Item 3",
+      image: cornfla,
+      context:'Kelloggs Corn Flakes with fresh milk is the perfect breakfast cereal to start your day.'
+
   },
   {
-      title:"Item 4",
-      text: "This is text area for Item 4",
+      image: Cheesepopcorn,
+      context:'Creating fluffy and crunchy popcorn, to which we add the perfect amount of natural cheddar cheese seasoning.'
+
   },
   {
-      title:"Item 5",
-      text: "This is text area for Item 5",
+      image: GFpopcorn,
+      context:'Creating fluffy & crunchy popcorn, to which we sea salt for an irresistible combination.'
+
   },
+ 
 ]
+
 
 
 const Itemswiper = () => {
   const [activeSlide, setactiveSlide] = useState(0)
   const[itemList, setItemList] = useState();
+  const[filterlist, setfilterlist] = useState();
 
-
+    useEffect(() => {
+      getItem()
+  },[!itemList])
 
   useEffect(() => {
-    getItem()
-  },[])
+      console.log(itemList)
+  },[itemList])
 
-useEffect(() => {
-    console.log(itemList)
-},[itemList])
 
-const getItem = async () => {
-    await axios.get(`${api}/item/abc`)
-    .then(function (response){
-        if (response){
-            setItemList(response?.data)
-        }
-    })
-    .catch(function (error){
-        console.warn('Get data failed, please reopen the app')
-    })
-    
-}
-
+  
+    const getItem = async () => {
+      // /item/recommended`
+      await axios.get(`${api}/item`)
+      .then(function (response){
+          if (response){
+              setItemList(response?.data)
+              setfilterlist(itemList.slice(0,5))
+              
+          }
+      })
+      .catch(function (error){
+          console.warn('Get data failed, please reopen the app')
+      })
+      
+     }
 
   const renderItem = ({item}) => {
     return (
-      <View style={{borderWidth:0}}>
-        <View style={styles.imgbox}/>
-        <View style={{padding:16}}>
-          <Text style={styles.product_name}>{item.title}</Text>
+      <View>
+        <View style={styles.imgbox}>
+         <Image source={ItemPhoto[filterlist.indexOf(item)].image} />
+          </View>
+        
+        <View style={{padding:16, marginTop:10}}>
+          <Text style={styles.product_name}>{item.name}</Text>
             <Text style={styles.btn_text}>
-              Rearade nibälingar at, 
-              megahemåt för att krot och 
-              anasat räniplagon. 
+              {ItemPhoto[filterlist.indexOf(item)].context}
             </Text>
         </View>
       </View>
@@ -84,26 +100,27 @@ const getItem = async () => {
  
     return(
       <SafeAreaView>
-        <View style={{flexDirection:'row'}}>
+      
+      <View style={{flexDirection:'row'}}>
         <View style= {{width:250}}>
         <Carousel
         vertical={true}
-        itemHeight={350}
+        itemHeight={400}
         sliderHeight={800}
-        slideStyle={{bottom:"60%"}}
-        data={carouselItem}
+        slideStyle={{bottom:"45%"}}
+        data={filterlist}
         sliderWidth={300}
         itemWidth={300}
         renderItem={renderItem}
         onSnapToItem = {(index) => setactiveSlide(index)}
         />
         </View>
-       
+
 
         <View style= {{top:'50%'}}>
         <Pagination
         vertical={true}
-        dotsLength={carouselItem.length}
+        dotsLength={5}
         activeDotIndex={activeSlide}
         dotColor='#4F44D0'
         dotStyle={{width:16, height:16, borderRadius:15,marginTop:8}}

@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import {
   SafeAreaView,
   Text,
@@ -26,31 +26,6 @@ const Main = () =>{
   const auth = useSelector(state => state.app.auth);
   const navigation = useNavigation()
   const dispatch = useDispatch();
-  // const sheetRef = useRef<BottomSheet>(null);
-  // const snapPoints = ["40%"]
-  const [image, setImage] = useState('');
-
-  const renderItem = ({item, index}) => {
-    <>
-    <View style={styles.slide}>
-              <View style={styles.imgbox}/>
-              <View style={{padding:16}}>
-                  <Text style={styles.product_name}>Product Name1</Text>
-                  <Text style={styles.btn_text}>
-                  Rearade nibälingar at, 
-                  megahemåt för att krot och 
-                  anasat räniplagon. 
-                  </Text>
-              </View>
-            </View>
-    </>
-   
-  }
-
-  const Logout = async () => {
-    await dispatch(setAuth(false))
-    navigation.replace('Login')
-  }
 
     return(
     <SafeAreaView>
@@ -85,9 +60,7 @@ const Main = () =>{
 
 const styles = StyleSheet.create({
   container: {
-    paddingLeft:56,
-    paddingRight:"5%"
-
+    marginLeft:'18%'
   },
   btn:{
       marginTop:10,

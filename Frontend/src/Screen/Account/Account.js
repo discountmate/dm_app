@@ -7,9 +7,10 @@ import {
   StyleSheet,
   SafeAreaView,
   TouchableOpacity,
+  Image
 } from 'react-native';
 
-import Icon from '../../assets/images/newIcon.svg';
+import Icon from '../../assets/images/manIcon.png';
 import Arrow from  '../../assets/images/rightarrow.svg'
 
 const Account = () =>{
@@ -20,7 +21,7 @@ const Account = () =>{
     return(
     <SafeAreaView style={styles.container}>
       <View style={{flexDirection:'row', justifyContent:'space-between'}}>
-      <Icon style={{marginTop:40, marginBottom:32}}/>
+      <Image style={styles.icon} source={Icon}/>
         <TouchableOpacity style={styles.edit_btn}>
             <Text style={styles.edit_text}>Edit</Text>
           </TouchableOpacity> 
@@ -127,6 +128,13 @@ const Account = () =>{
       textDecorationLine: 'underline',
       fontWeight:'bold'
     },
+
+    icon:{
+      width:120,
+      height:120,
+      borderRadius:60,
+      borderWidth:1
+    }
 
 }) 
 export default Account;

@@ -8,14 +8,67 @@ import {
     TouchableOpacity,
     ScrollView,
     FlatList,
-    TextInput
+    TextInput,
+    Image
 } from 'react-native';
 import api from '../core/Service';
 
 //svg
 import Classification from '../assets/images/Classification.svg'
 import Filter from '../assets/images/filter.svg'
-import Productimg from '../assets/images/newIcon.svg'
+
+import Avo from '../assets/images/test/avo.jpeg'
+import Milk from '../assets/images/test/milk.jpeg'
+import cornfla from '../assets/images/test/cornfla.jpeg'
+import Cheesepopcorn from '../assets/images/test/popcorn.jpeg'
+import GFpopcorn from '../assets/images/test/GFpopcorn.jpeg'
+import WWcorn from '../assets/images/test/WWpopcorn.jpeg'
+import MWcorn from '../assets/images/test/MWpopcorn.jpeg'
+import Coco from '../assets/images/test/coco.jpeg'
+import blackberries from '../assets/images/test/blackberries.jpeg'
+import blackgrapes from '../assets/images/test/blackgrapes.jpeg'
+import strawberries from '../assets/images/test/strawberries.jpeg'
+import pears from '../assets/images/test/pears.jpeg'
+
+const ItemPhoto = [
+  {
+     
+      image:Avo
+  },
+  {
+      image: Milk
+  },
+  {
+      image: cornfla
+  },
+  {
+      image: Cheesepopcorn
+  },
+  {
+      image: GFpopcorn
+  },
+  {
+      image: WWcorn
+  },
+  {
+      image: MWcorn
+  },
+  {
+      image: Coco
+  },
+  {
+      image: blackberries
+  },
+  {
+      image: blackgrapes
+  },
+  {
+      image: strawberries
+  },
+  {
+      image: pears
+  },
+]
 
 const DiscountNearby = () => {
     const[clickedTab, setclickedTab] = useState('Food');
@@ -32,7 +85,7 @@ const DiscountNearby = () => {
     },[itemList])
 
     const getItem = async () => {
-        await axios.get(`${api}/item/abc`)
+        await axios.get(`${api}/item`)
         .then(function (response){
             if (response){
                 setItemList(response?.data)
@@ -47,13 +100,13 @@ const DiscountNearby = () => {
     const renderItem = ({item}) => (
         
             <TouchableOpacity style={styles.item}>
-                <View style={styles.imgbox}/>
+                <Image style={styles.image_container} source={ItemPhoto[itemList.indexOf(item)].image} />
                 <View>
                     <Text style={{fontWeight:'bold'}}>{item.name}</Text>
-                    <Text>Category: {item.category}</Text>
+                    <Text>Category: {item.category ? item.category : "Food/Drink"}</Text>
                     <View style={{flexDirection:"row"}}>
                     <Text>Price: {item.price}</Text>
-                    <Text style={{marginLeft:10}}>Discounted Price: {item.discountprice ? item.discountprice : 'N/A'}</Text>
+                    <Text style={{marginLeft:10}}>Discounted Price: {item.discountprice ? item.discountprice : (item.price * 0.8).toFixed(2)}</Text>
                     </View>
                     <Text>Shop: {item.Store}</Text>
                 </View>
@@ -76,58 +129,57 @@ const DiscountNearby = () => {
        } else {
            setFilteredItemList(itemList);
        }
-
-      
-
     }
 
     return(
         <>
          <View>
-                    <View style={styles.Navbar}>
-                        <ScrollView 
-                        horizontal={true}
-                        showsHorizontalScrollIndicator={false}
-                        style={styles.tab}>
-                            <TouchableOpacity onPress={()=>setclickedTab('Food')}>
-                                <Text style={clickedTab === 'Food' ? styles.activeTab : styles.inactiveTab}>
-                                    Food/Drink
+                <View style={styles.Navbar}>
+                    <ScrollView 
+                    horizontal={true}
+                    showsHorizontalScrollIndicator={false}
+                    style={styles.tab}>
+                        <TouchableOpacity onPress={()=>setclickedTab('Food')}>
+                            <Text style={clickedTab === 'Food' ? styles.activeTab : styles.inactiveTab}>
+                                Food/Drink
+                            </Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={{marginLeft:16}} onPress={()=>setclickedTab('Elect')}>
+                            <Text style={clickedTab === 'Elect' ? styles.activeTab: styles.inactiveTab}>
+                                Electronics
                                 </Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={{marginLeft:16}} onPress={()=>setclickedTab('Elect')}>
-                                <Text style={clickedTab === 'Elect' ? styles.activeTab: styles.inactiveTab}>
-                                    Electronics
-                                    </Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={{marginLeft:16}} onPress={()=>setclickedTab('Closing')}>
-                                <Text style={clickedTab === 'Closing' ? styles.activeTab: styles.inactiveTab}>
-                                    Closing/Shoes
-                                    </Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={{marginLeft:16}} onPress={()=>setclickedTab('Closing')}>
-                                <Text style={clickedTab === 'Closing' ? styles.activeTab: styles.inactiveTab}>
-                                    Closing/Shoes
-                                    </Text>
-                            </TouchableOpacity>
-                            
-                        </ScrollView>
-                        <View style={styles.func_btn}>
-                            <TouchableOpacity>
-                                <Classification style={{color:'red'}}/>
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={()=>{setSearching(!searching)}}>
-                                <Filter />
-                            </TouchableOpacity>
-                        </View>
-                    </View> 
-                    {searching ? <TextInput 
-                    placeholder="Searching....."
-                    onChangeText={e => search(e)}
-                    /> 
-                    : null}
-                </View>
-        <SafeAreaView style={styles.container}>
-            <ScrollView 
+                        </TouchableOpacity>
+                        <TouchableOpacity style={{marginLeft:16}} onPress={()=>setclickedTab('Closing')}>
+                            <Text style={clickedTab === 'Closing' ? styles.activeTab: styles.inactiveTab}>
+                                Closing/Shoes
+                                </Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={{marginLeft:16}} onPress={()=>setclickedTab('Closing')}>
+                            <Text style={clickedTab === 'Closing' ? styles.activeTab: styles.inactiveTab}>
+                                Closing/Shoes
+                                </Text>
+                        </TouchableOpacity>
+                        
+                    </ScrollView>
+                    <View style={styles.func_btn}>
+                        <TouchableOpacity>
+                            <Classification style={{color:'red'}}/>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={()=>{setSearching(!searching)}}>
+                            <Filter />
+                        </TouchableOpacity>
+                    </View>
+                </View> 
+                {searching ? <TextInput 
+                style={{padding:10}}
+                placeholder="Searching....."
+                placeholderTextColor={'black'}
+                onChangeText={e => search(e)}
+                /> 
+                : null}
+            </View>
+        <SafeAreaView style={styles.container} >
+            <View
             showsVerticalScrollIndicator={true}>
                 
                 <View style={{padding:20}}>
@@ -139,7 +191,7 @@ const DiscountNearby = () => {
                     /> 
                 </View>
               
-            </ScrollView>
+            </View>
         </SafeAreaView>
         </>
     )
@@ -147,7 +199,7 @@ const DiscountNearby = () => {
 
 const styles = StyleSheet.create({
     container:{
-        justifyContent:"center",
+        justifyContent:'flex-start',
         backgroundColor:'#E5E5E5',
         height:'100%',
     },
@@ -213,7 +265,7 @@ const styles = StyleSheet.create({
         backgroundColor:'white'
    
     },
-    imgbox:{
+    image_container:{
         width:72,
         height:72,
         backgroundColor:'#6B7DDA',
