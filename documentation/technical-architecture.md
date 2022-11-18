@@ -9,13 +9,9 @@ The project will consist of a backend (Express), frontend (React), mobile app (R
 ## Tech Stack:
 
 MySql
-
 MongoDB
-
 Express framework
-
 React Native
-
 Node.js
 
 ## UI DEsign
@@ -29,7 +25,7 @@ The server and frontend can be hosted by a cloud provider.
 Google cloud maybe be available for free via Deakin(Check this).
 We can  starting out as an FaaS during the development/testing phase.
 
-We can also use App Engine or Cloud Funtions and then migrate to something like Kubernetes at a later stage.
+We can also use App Engine or Cloud Functions and then migrate to something like Kubernetes at a later stage.
 
 - https://cloud.google.com/kubernetes-engine
 - https://www.docker.com/
@@ -64,7 +60,7 @@ We use [morgan](https://www.npmjs.com/package/morgan) to log activities on the b
 ## Data Capturing 
 
 For now ask everyone to email receipt images to discountmate@gmail.com 
-Ohter Mechanisms to gather receipt data to be discussed and finalised.This could include cloud drives, webforms, API, etc 
+Ohter Mechanisms to gather receipt data to be discussed and finalised.This could include cloud drives, web-forms, API, etc 
 
 ## Testing
 
