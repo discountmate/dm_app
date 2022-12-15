@@ -344,7 +344,8 @@ import pymysql
 from sqlalchemy import create_engine
 
 #engine = create_engine('mysql+mysqlconnector://{user}:{password}@{host}:{port}/{database}', echo=False)
-con = create_engine('mysql+pymysql://discountmateuser:DMPassword$@discountmate.ddns.net/discountmate')
+#con = create_engine('mysql+pymysql://discountmateuser:DMPassword$@discountmate.ddns.net/discountmate')
+con = create_engine('mysql+pymysql://discountmateuser:DMPassword$@localhost/discountmate')
 
 store = pd.read_sql('SELECT * FROM shops', con=con)
 store.head(10)

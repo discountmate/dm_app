@@ -1,22 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
-import {
-  View,
-  Text,
-  StyleSheet,
-  SafeAreaView,
-  TouchableOpacity,
-  Image
-} from 'react-native';
+import {View,Text,StyleSheet,SafeAreaView,TouchableOpacity,Image} from 'react-native';
 
 import Icon from '../../assets/images/manIcon.png';
 import Arrow from  '../../assets/images/rightarrow.svg'
 
 const Account = () =>{
-    const username = useSelector(state => state.app.username)
+    const username = useSelector(state => state.app.username);
+    const email = useSelector(state => state.app.email);
+    const phone = useSelector(state => state.app.phone);
     const navigation = useNavigation();
-
 
     return(
     <SafeAreaView style={styles.container}>
@@ -26,14 +20,11 @@ const Account = () =>{
             <Text style={styles.edit_text}>Edit</Text>
           </TouchableOpacity> 
       </View>
-       
-
-        <Text style={styles.header}>Ida Marinsson</Text>
-        <Text style={styles.info}>Phone: 545156321</Text>
-        <Text style={styles.info}>Email: discountMate@gmail.com</Text>
+            <Text style={styles.header}>Name: {username}</Text>
+            <Text style={styles.info}>Phone: {phone}</Text>
+            <Text style={styles.info}>Email: {email}</Text>
 
         <View style={{}}>
-          
           <View style={styles.btn}>
             <TouchableOpacity>
               <Text style={styles.btn_text}>Address List</Text>
