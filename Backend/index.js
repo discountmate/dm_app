@@ -25,7 +25,10 @@ app.set("view engine", "ejs");
 //connect to MongoDB
 mongoose.connect(process.env.MONGO_URL,
     { useNewUrlParser: true, useUnifiedTopology: true }, err => {
-        console.log('connected to MongoDB')
+        if (err)
+            console.log(err.message)
+        else
+            console.log('connected to MongoDB')
     });
 
 //endpoints from routes.
@@ -35,6 +38,11 @@ app.use('/receipt', receiptRoute);
 app.use('/OCR', ocrRoute);
 app.use('/user', userRoute);
 app.use('/view', viewReceiptRoute);
+
+//Default request (display no error)
+app.get("/", (req, res) => {
+    res.sendFile(__dirname + "/page/index.html");
+});
 
 //error handling if no route is present etc
 app.use(errorController.get404);

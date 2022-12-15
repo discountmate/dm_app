@@ -1,140 +1,109 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { useNavigation } from '@react-navigation/native';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  ScrollView,
-  FlatList,
-  Image
-} from 'react-native';
+import {View,Text,StyleSheet,TouchableOpacity,FlatList,Image} from 'react-native';
 import axios from "axios";
 import api from '../../core/Service';
-
-
-import Avo from '../../assets/images/test/avo.jpeg'
-import Milk from '../../assets/images/test/milk.jpeg'
-import cornfla from '../../assets/images/test/cornfla.jpeg'
-import Cheesepopcorn from '../../assets/images/test/popcorn.jpeg'
-import GFpopcorn from '../../assets/images/test/GFpopcorn.jpeg'
-import WWcorn from '../../assets/images/test/WWpopcorn.jpeg'
-
-
-const ItemPhoto = [
-  {
-     
-      image:Avo
-  },
-  {
-      image: Milk
-  },
-  {
-      image: cornfla
-  },
-  {
-      image: Cheesepopcorn
-  },
-  {
-      image: GFpopcorn
-  },
-  {
-      image: WWcorn
-  },
-]
-
+import { SelectList } from 'react-native-dropdown-select-list'
 
 const History = () =>{
-    const[itemList, setItemList] = useState();
-    const[filterlist, setfilterlist] = useState();
+    const [itemList, setItemList] = useState();
+    const [listValue, SetListValue] = useState("");
+    const userid = useSelector(state => state.app.userid);
 
-    useEffect(() => {
-        getItem()
-    },[!itemList])
-    useEffect(() => {
-        console.log(itemList)
-    },[itemList])
+    useEffect(() => {getItem()},[!itemList])
 
     const getItem = async () => {
-        await axios.get(`${api}/item`)
-        .then(function (response){
-            if (response){
-                setItemList(response?.data)
-                setfilterlist(itemList.slice(0,5))
-                
-            }
-        })
-        .catch(function (error){
-            console.warn('Get data failed, please reopen the app')
-        })
-        
-       }
+        var currentDate = new Date()
+        switch (listValue) {
+            case '1':
+                currentDate.setDate(currentDate.getDate() - 7);
+                break;
+            case '2':
+                currentDate.setDate(currentDate.getDate() - 30);
+                break;
+            case '3':
+                currentDate.setDate(currentDate.getDate() - 180);
+                break;
+            default:
+                return;
+        }
 
-    const renderItem = ({item}) => (
-        
-            <TouchableOpacity style={styles.item}>
-                <Image style={styles.image_container} source={ItemPhoto[filterlist.indexOf(item)].image} />
-                <View>
-                    <Text style={{fontWeight:'bold'}}>{item.name}</Text>
-                    <Text>Category: {item.category ? item.category : "Food/Drink"}</Text>
-                    <View style={{flexDirection:"row"}}>
-                    <Text>Price: {item.price}</Text>
-                    <Text style={{marginLeft:10}}>Discounted Price: {item.discountprice ? item.discountprice : (item.price * 0.8).toFixed(2)}</Text>
-                    </View>
-                    <Text>Shop: {item.Store}</Text>
-                </View>
-               
-            </TouchableOpacity>
-       
-      );
+        const postobj = { dateVal: currentDate, userid: userid }
+        await axios.post(`${api}/item/searchInvoiceHistory`, postobj)
+            .then(function (response) {
+                if (response) {
+                    setItemList(response?.data);
+                }
+            })
+            .catch(function (error) {
+                console.warn('ERROR: ' + error);
+            })
+    }
 
-    return(
-        <View style={{backgroundColor:'#E5E5E5', height:'100%'}}>
+    const renderItem = ({ item }) => (
+        <TouchableOpacity style={styles.item}>
+            <Image style={styles.image_container} source={{ uri: `${item.IMAGE}` }} />
             <View>
-            <View style={{padding:20}}>
-                    <FlatList
-                        data={filterlist}
-                        renderItem={renderItem}
-                        keyExtractor={item => item?.id}
-                        showsVerticalScrollIndicator={false}
-                    /> 
+                <View style={{ flexDirection: "row" }}>
+                    <Text>Invoice Total: {item.ORDER_TOTAL_PRICE}</Text>
                 </View>
-          
-                
+                <Text>Invoice Date: {item.ORDER_DTTM}</Text>
+                <Text>Shop: {item.STORE_NAME}</Text>
+            </View>
+        </TouchableOpacity>
+    );
+
+    const data = [
+        { key: '1', value: 'Past 1 week' },
+        { key: '2', value: 'Past 1 month' },
+        { key: '3', value: 'Past 3 months' }
+    ]
+
+    return (
+        <View style={{ backgroundColor: '#E5E5E5', height: '100%' }}>
+            <View>
+                <SelectList
+                    style={styles.DropDownList}
+                    setSelected={(val) => SetListValue(val)}
+                    data={data}
+                    save="key"
+                    onSelect={() => getItem()}
+                />
+                <View style={{ padding: 20 }}>
+                    <FlatList
+                        data={itemList}
+                        renderItem={renderItem}
+                        showsVerticalScrollIndicator={true}
+                    />
+                </View>
             </View>
         </View>
     )
-
 }
 
 const styles = StyleSheet.create({
-    container:{
+    container: {
         marginTop: 17,
-        justifyContent:"center",
+        justifyContent: "center"
     },
-
     header:{
         fontSize: 24,
         fontWeight:'bold',
-        color:'black',
+        color:'black'
     },
-
-    info:{
-      fontSize: 15,
+    info: {
+        fontSize: 15,
         fontWeight:'bold',
-        color:'black',
+        color:'black'
     },
-
     btn:{
         marginTop:20,
         backgroundColor: '#C4C4C4',
         paddingVertical: 10
-        
     },
     btn_text:{
         textAlign:'center',
-        fontSize: 20,
+        fontSize: 20
     },
     item:{
         marginVertical:5,
@@ -148,9 +117,7 @@ const styles = StyleSheet.create({
         shadowRadius:4.65,
         elevation: 3,
         backgroundColor:'white'
-   
     },
-   
     image_container:{
         width:72,
         height:72,
@@ -158,5 +125,8 @@ const styles = StyleSheet.create({
         borderRadius:4,
         marginRight:5
     },
+    DropDownList: {
+        backgroundColor: 'white'
+    }
 }) 
 export default History;

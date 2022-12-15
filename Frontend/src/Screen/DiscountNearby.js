@@ -119,9 +119,7 @@ const DiscountNearby = () => {
      
        if (text) {
            const filteredData = itemList.filter(function (item){
-               const itemData = item.name ?
-               item.name.toUpperCase()
-               :''.toUpperCase();
+               const itemData = item.name ? item.name.toUpperCase() : ''.toUpperCase();
                const textData = text.toUpperCase();
                return itemData.indexOf(textData) > -1;
            });
@@ -149,15 +147,25 @@ const DiscountNearby = () => {
                                 Electronics
                                 </Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={{marginLeft:16}} onPress={()=>setclickedTab('Closing')}>
-                            <Text style={clickedTab === 'Closing' ? styles.activeTab: styles.inactiveTab}>
-                                Closing/Shoes
+                        <TouchableOpacity style={{marginLeft:16}} onPress={()=>setclickedTab('Health')}>
+                            <Text style={clickedTab === 'Health' ? styles.activeTab: styles.inactiveTab}>
+                                Health/Beauty
                                 </Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={{marginLeft:16}} onPress={()=>setclickedTab('Closing')}>
-                            <Text style={clickedTab === 'Closing' ? styles.activeTab: styles.inactiveTab}>
-                                Closing/Shoes
+                        <TouchableOpacity style={{marginLeft:16}} onPress={()=>setclickedTab('Clothing')}>
+                            <Text style={clickedTab === 'Clothing' ? styles.activeTab: styles.inactiveTab}>
+                                Clothing/Shoes
                                 </Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={{ marginLeft: 16 }} onPress={() => setclickedTab('House')}>
+                            <Text style={clickedTab === 'House' ? styles.activeTab : styles.inactiveTab}>
+                                Household
+                            </Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={{ marginLeft: 16 }} onPress={() => setclickedTab('Pets')}>
+                            <Text style={clickedTab === 'Pets' ? styles.activeTab : styles.inactiveTab}>
+                                Pets
+                            </Text>
                         </TouchableOpacity>
                         
                     </ScrollView>
@@ -241,14 +249,12 @@ const styles = StyleSheet.create({
 
     activeTab:{
         color:'#4F44D0',
-        fontSize:13,
-        
+        fontSize: 13,
+        fontWeight: 'bold'
     },
-
     inactiveTab:{
         fontSize:13,
-        color:'grey',
-
+        color: 'grey'
     },
 
     item:{

@@ -61,6 +61,8 @@ function applyTimestampsToChildren(now, update, schema) {
             if (createdAt != null) {
               subdoc[createdAt] = now;
             }
+
+            applyTimestampsToChildren(now, subdoc, $path.schema);
           });
         } else {
           if (updatedAt != null) {
@@ -69,6 +71,8 @@ function applyTimestampsToChildren(now, update, schema) {
           if (createdAt != null) {
             op[key][createdAt] = now;
           }
+
+          applyTimestampsToChildren(now, op[key], $path.schema);
         }
       }
     }
@@ -78,11 +82,14 @@ function applyTimestampsToChildren(now, update, schema) {
 function applyTimestampsToDocumentArray(arr, schematype, now) {
   const timestamps = schematype.schema.options.timestamps;
 
+  const len = arr.length;
+
   if (!timestamps) {
+    for (let i = 0; i < len; ++i) {
+      applyTimestampsToChildren(now, arr[i], schematype.schema);
+    }
     return;
   }
-
-  const len = arr.length;
 
   const createdAt = handleTimestampOption(timestamps, 'createdAt');
   const updatedAt = handleTimestampOption(timestamps, 'updatedAt');
@@ -101,6 +108,7 @@ function applyTimestampsToDocumentArray(arr, schematype, now) {
 function applyTimestampsToSingleNested(subdoc, schematype, now) {
   const timestamps = schematype.schema.options.timestamps;
   if (!timestamps) {
+    applyTimestampsToChildren(now, subdoc, schematype.schema);
     return;
   }
 

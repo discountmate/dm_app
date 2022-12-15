@@ -20,13 +20,15 @@ exports.createUser = async (req, res, next) => {
         console.log("creating user...");
         //use the following items to create a new user
         username = req.body.username;
-        password = await bcrypt.hash(req.body.password,10); //use bcrypt to encrypt the passwords, can add password salting later for more secure login
+        //password = await bcrypt.hash(req.body.password,10); //use bcrypt to encrypt the passwords, can add password salting later for more secure login
+        password = req.body.password;
         email = req.body.email;
         mobile = req.body.mobile;
         postcode = req.body.postcode;
-        const permission = 0; //admin is 1, user is 0
+        //const permission = 0; //admin is 1, user is 0
         const searchradius = 100; //default search radius (km)
-        const active = 1; //user is active (1)
+        //const active = 1; //user is active (1)
+        regdate = req.body.regdate;
 
         //establish connection to db
         db.getConnection((err, connection) => 
@@ -34,12 +36,12 @@ exports.createUser = async (req, res, next) => {
             if (err) throw (err)
 
             //sql search query
-            const sqlSearch = "SELECT * FROM users WHERE username = ?"
+            const sqlSearch = "SELECT * FROM USER WHERE USER_NAME = ?"
             const search_query = mysql.format(sqlSearch,[username])
 
             //sql insert query
-            const sqlInsert = "INSERT INTO users (username, password, email, mobile, permission, postcode, searchradius, active) VALUES (?,?,?,?,?,?,?,?)"
-            const insert_query = mysql.format(sqlInsert,[username, password, email, mobile, permission, postcode, searchradius, active])
+            const sqlInsert = "INSERT INTO USER (USER_NAME, USER_PWD, USER_EMAIL, USER_MOBILE, USER_POSTCODE, USER_SEARCH_RDS, USER_REG_DTTM) VALUES (?,?,?,?,?,?,?)"
+            const insert_query = mysql.format(sqlInsert,[username, password, email, mobile, permission, postcode, searchradius, regdate])
             //start search query
             connection.query (search_query, (err, result) => 
             {
@@ -74,61 +76,80 @@ exports.createUser = async (req, res, next) => {
       }
 }
 
+exports.searchUser = async (req, res, next) => {
+    try {
+        //try and get item by name, could have multiple responses.
+        const [userData] = await User.searchUser(req.body.username);
+        res.status(200).json(userData);
+    } catch (err) {
+        if (!err.statusCode) {
+            err.statusCode = 500;
+        }
+        next(err);
+    }
+}
+
 //log in
 exports.Login = async (req, res, next) => {
 try {
      //user details
-     username = req.body.username;
-     password = req.body.password;
+    username = req.body.username;
+    password = req.body.password;
      //start db connection
      db.getConnection ( async (err, connection)=> 
      {
-         if (err) throw (err)
-         //sql search query
-         const sqlSearch = "Select * from users where username = ?"
-         const search_query = mysql.format(sqlSearch, [username])
- 
+         const search_query = mysql.format("Select * from USER where USER_NAME = ?", [username])
+
          //query db
          connection.query (search_query, async (err, result) => 
          {
              connection.release()
              
              
-             if (err) throw (err)
+             //if (err) throw (err)
              //if no results
              if (result.length == 0) 
              {
-                 console.log("-> User does not exist")
-                 res.status(404).send("Username does not exist");
+                 console.log("-> Username/Password Incorrect")
+                 res.status(404).send("Username/Password Incorrect!");
              } 
              else 
              {
                  //if there is a result
-                 const hashedPassword = result[0].password
- 
+                 //const hashedPassword = result[0].password
+                 const hashedPassword = await bcrypt.hash(req.body.password, 10);
                  //get the hashedPassword from result
                  if (await bcrypt.compare(password, hashedPassword)) 
                  {
                      //generate access token
-                     console.log("--> Login Successful")
-                     console.log("--> Generating accessToken")
+                     console.log("--> Login Successful");
+                     console.log("--> Generating accessToken");
                      //console.log(result[0].id);
-                     process.env.USERID = result[0].id;
-                     process.env.USER = username;
+
+                     //process.env.USERID = result[0].USER_ID;
+                     //process.env.USER = result[0].USER_NAME;
+
+
+
                      const accessToken =  generateAccessTokens({username: username})
                      console.log({accessToken: accessToken})
                      //used for /routes/receipt.js
-                     res.status(200).send("Login successful, token: " + accessToken.toString());
+                     const data = {
+                         token: accessToken.toString(),
+                         user_id: result[0].USER_ID,
+                         phone: result[0].USER_MOBILE,
+                         email: result[0].USER_EMAIL
+                     }
+                     res.status(200).send(data);
                  } 
                  else 
                  {
-                     console.log("-> Password Incorrect")
-                     res.status(403).send("Password Incorrect!");
+                     console.log("-> Username/Password Incorrect")
+                     res.status(403).send("Username/Password Incorrect!");
                  }
              }
          })
      })
-     
 } catch (err) {
     console.log("error:", err);
     if (!err.statusCode) {
@@ -143,14 +164,14 @@ exports.ResetPassword = async (req, res, next) => {
     try {
         //user details
         username = req.body.username;
-        password = req.body.password;
-        newpassword = await bcrypt.hash(req.body.newpassword,10);;
+        password = await bcrypt.hash(req.body.password, 10);
+        newpassword = await bcrypt.hash(req.body.newpassword,10);
         //start db connection
         db.getConnection ( async (err, connection)=> 
         {
             if (err) throw (err)
             //sql search query
-            const sqlSearch = "Select * from users where username = ?"
+            const sqlSearch = "Select * from USER where USER_NAME = ?"
             const search_query = mysql.format(sqlSearch, [username])
 
             //query db
@@ -162,8 +183,8 @@ exports.ResetPassword = async (req, res, next) => {
                 //if no results
                 if (result.length == 0) 
                 {
-                    console.log("-> User does not exist")
-                    res.status(404).send("User does not exist");
+                    console.log("-> Username/Password Incorrect")
+                    res.status(404).send("Username/Password Incorrect!");
                 } 
                 else 
                 {
@@ -176,7 +197,7 @@ exports.ResetPassword = async (req, res, next) => {
                         //generate access token
                         console.log("--> Password reset")
                         //return db.execute('UPDATE users SET password = ? WHERE username = ?', [newpassword, username]);
-                        connection.query ('UPDATE users SET password = ? WHERE username = ?', [newpassword, username], async (err, result) => 
+                        connection.query ('UPDATE USER SET USER_PWD = ? WHERE USER_NAME = ?', [newpassword, username], async (err, result) => 
                         {
                             connection.release()
                             
@@ -196,8 +217,8 @@ exports.ResetPassword = async (req, res, next) => {
                     } 
                     else 
                     {
-                        console.log("-> Password Incorrect")
-                        res.status(403).send("Password Incorrect!");
+                        console.log("-> Username/Password Incorrect")
+                        res.status(403).send("Username/Password Incorrect!");
                     }
                 }
             })

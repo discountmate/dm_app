@@ -14,18 +14,58 @@ exports.getAllItems = async (req, res, next) => {
       }
 }
 
+exports.getRecommendedItems = async (req, res, next) => {
+    try {
+        //try to get all recommended items from model in a json string
+        const [recommendedItems] = await Item.getRecommended(req.body.userid);
+        res.status(200).json(recommendedItems);
+        console.log("ItemController: getRecommendedItems (OK)");
+    } catch (err) {
+        if (!err.statusCode) {
+            err.statusCode = 500;
+            console.log("ItemController: getRecommendedItems (FAIL) -> " + err);
+        }
+        next(err);
+    }
+}
+
 //searches for an item by name, used in item model
 exports.searchItems = async (req, res, next) => {
-  try {
-      
-      //try and get item by name, could have multiple responses.
-      const [searchItem] = await Item.searchItem(req.body.name);
-      res.status(200).json(searchItem);
-  } catch (err) {
-      if (!err.statusCode) {
-        err.statusCode = 500;
-      }
-      next(err);
+    try {
+        //try and get item by name, could have multiple responses.
+        const [searchItem] = await Item.searchItem(req.body.name);
+        res.status(200).json(searchItem);
+    } catch (err) {
+        if (!err.statusCode) {
+            err.statusCode = 500;
+        }
+        next(err);
+    }
+}
+
+//searches for an item by name, used in item model
+exports.searchItemFilter = async (req, res, next) => {
+    try {
+        //try and get item by name, could have multiple responses.
+        const [searchItemFilter] = await Item.searchItemFilter(req.body.name);
+        res.status(200).json(searchItemFilter);
+    }
+    catch (err) {
+        if (!err.statusCode) { err.statusCode = 500; }
+        next(err);
+    }
+}
+
+//searches for an item by name, used in item model
+exports.searchInvoiceHistory = async (req, res, next) => {
+    try {
+        //try and get item by name, could have multiple responses. 
+        const [searchInvoiceHistory] = await Item.searchInvoiceHistory(req.body.dateVal, req.body.userid);
+        res.status(200).json(searchInvoiceHistory);
+    }
+    catch (err) {
+        if (!err.statusCode) { err.statusCode = 500; }
+        next(err);
     }
 }
 

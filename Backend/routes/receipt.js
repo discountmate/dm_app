@@ -381,11 +381,14 @@ router.post('/', upload.single('image'), (req, res, next) => {
                 pythonPath: 'python',
 
                 //replace this line with your tesseract folder
-                args: ['C:/Users/Joel/Desktop/DiscountMate/Tesseract-OCR/tesseract.exe', WriteFilePath, userID]
+                args: ['C:/Program Files/Tesseract-OCR/tesseract.exe', WriteFilePath, userID]
             }
             
             PythonShell.run('./util/t1_2022_ocr_final.py', options, function (err, results) {
-                if (err) res.status(500).send("Error processing OCR script");
+                if (err) {
+                    console.log("Error: " + err);
+                    res.status(500).send("Error processing OCR script");
+                } 
                 // results is an array consisting of messages collected during execution, uncomment to see OCR script output in console log
                 //console.log('results: %j', results);
                 

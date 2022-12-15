@@ -1,8 +1,8 @@
 {
-    "connectionLimit" : 100,
-    "host": "discountmate.ddns.net",
-    "port": "3306",
-    "user": "discountmateuser",
-    "database": "discountmate",
-    "password": "DMPassword$"
+  "connectionLimit": 100,
+  "host": "34.129.7.110",
+  "port": "3306",
+  "user": "dcmdbuser",
+  "database": "dcmdb",
+  "password": "dusit2022t3"
 }

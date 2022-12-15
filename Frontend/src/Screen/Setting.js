@@ -43,28 +43,25 @@ const styles = StyleSheet.create({
         // paddingHorizontal: 32,
         // justifyContent:"center",
     },
-
     header:{
         fontSize: 24,
         fontWeight:'bold',
-        color:'black',
+        color:'black'
     },
-
     info:{
-      fontSize: 15,
+        fontSize: 15,
         fontWeight:'bold',
-        color:'black',
+        color:'black'
     },
-
     btn:{
         marginTop:20,
         backgroundColor: '#C4C4C4',
-        paddingVertical: 10,
+        paddingVertical: 10
         
     },
     btn_text:{
         textAlign:'center',
-        fontSize: 20,
+        fontSize: 20
     },
 }) 
 export default Setting;

@@ -4,12 +4,9 @@ const router = express.Router();
 
 //controller
 const itemController = require('../controllers/item');
-const item = require('../models/item');
-var fs = require('fs');
-const path = require('path');
+
 const mysql = require('mysql2'); //used for mysql calls
 const config = require('../config/config.json'); //used to get db details
-const res = require('express/lib/response');
 require("dotenv").config(); //used to access the .env file easily
 
 //spawn the python process
@@ -24,21 +21,6 @@ const db = mysql.createPool({
     database: config.database
 });
 
-async function getRecommendedItems(res)
-{
-    itemList = [];
-    RecoList = await db.promise().query("SELECT * FROM recommendation WHERE userid = ?", [process.env.USERID]);
-    //console.log(RecoList[0]);
-    for(i in RecoList[0])
-    {
-       var item = await db.promise().query("SELECT * FROM items WHERE id = ?", [RecoList[0][i].itemid]);
-       
-       itemList.push(item[0]);
-    }
-    //console.log(itemList);
-    res.status(201).json(itemList);
-
-}
 //get request
 router.get('/', itemController.getAllItems)
 
@@ -49,20 +31,16 @@ router.post('/', itemController.postItem);
 router.put('/', itemController.putItem);
 
 //get recommended items
-router.get('/recommend', (req, res, next) => {
-    try
-    {
-        getRecommendedItems(res);
-    }
-    catch
-    {
-        res.send(500).send("Error loading recommended items");
-    }
-
-});
+router.post('/recommended', itemController.getRecommendedItems);
 
 //search get request
 router.get('/search?', itemController.searchItems)
+
+//search filter request
+router.post('/searchFilter', itemController.searchItemFilter)
+
+//search invoice request
+router.post('/searchInvoiceHistory', itemController.searchInvoiceHistory)
 
 //export router
 module.exports = router;
