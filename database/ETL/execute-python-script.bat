@@ -1,0 +1,1 @@
+C:\Program Files\Python36\python.exe C:\Python\PythonProject\import_coles_datafile_mysql.py
